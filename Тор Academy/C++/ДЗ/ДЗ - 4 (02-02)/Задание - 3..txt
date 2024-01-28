@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    cout << "Домашнее задание 4.3\n" << endl;
+    int days;
+    cout << "Введите количество дней: ";
+    cin >> days;
+    cout << "Преобразование: " << "Кол-во недель - " << days / 7 << ";" 
+         << " Кол-во дней: " << days % 7 << "." << endl;
+    return 0;
+}

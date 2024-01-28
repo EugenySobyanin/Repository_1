@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    cout << "Домашнее задание 5.1\n" << endl;
+    float s, t;
+    cout << "Введите расстояние в км: ";
+    cin >> s;
+    cout << "Введите время в часах: ";
+    cin >> t;
+    cout << "Скорость с которой нужно ехать: " << s / t << " км/ч";
+    return 0;
+}

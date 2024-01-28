@@ -1,0 +1,96 @@
+﻿#include <iostream>
+#include <time.h>
+
+
+void find_number(int numbers[], int len, int num);
+
+void bubble_sort(int arr[], int len);
+
+int main()
+{
+    using namespace std;
+    srand(time(NULL));
+    setlocale(LC_ALL, "RU");
+
+    const int len = 20;
+    int numbers[len]{};
+
+    //заполняем массив случайными числами и выводим его
+    for (int i = 0; i < len; i++)
+    {
+        numbers[i] = rand() % 20;
+        cout << numbers[i] << " ";
+    }
+    cout << endl;
+
+    bubble_sort(numbers, len);
+
+    // выводим отсортированный массив
+    for (int i = 0; i < len; i++)
+    {
+        cout << numbers[i] << " ";
+    }
+    cout << endl;
+
+    find_number(numbers, len, 3);
+
+
+}
+
+void find_number(int numbers[], int len, int num)
+{
+    using namespace std;
+    int mid, left = 0, right = len - 1;
+    while (left <= right)
+    {
+        mid = (left + right) / 2;
+        if (numbers[mid] == num)
+        {
+            while (numbers[mid] == numbers[mid - 1])
+            {
+                --mid;
+            }
+            cout << "Искомый элемент находится под индексом: " << mid << endl;
+            break;
+        }
+
+        else if (numbers[mid] > num)
+        {
+            right = mid - 1;
+        }
+
+        else if (numbers[mid] < num)
+        {
+            left = mid + 1;
+        }
+    }
+
+    if (left > right)
+    {
+        cout << "Искомого элемента нет в массиве." << endl;
+    }
+}
+
+
+void bubble_sort(int arr[], int len) {
+    bool sorted;
+    for (int i = 1; i < len; i++)
+    {
+        sorted = true;
+        for (int j = 0; j < len - i; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                sorted = false;
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+
+            }
+        }
+        if (sorted)
+        {
+            break;
+        }
+    }
+}
