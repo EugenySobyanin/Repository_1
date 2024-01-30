@@ -31,26 +31,30 @@ def scitolochka(count_peoples, takts):
     while len(people_list) > 1:
     
         
-        for takt in range(takts):
-            if takt < len(people_list) - 1 or takt == 0:
+        for takt in range(1, takts + 1):
+
+            if takt == takts:
+                pass
+
+            elif count < len(people_list) - 1:
                 count += 1
+
             else:
                 count = 0
         
         
-            if takt == takts - 1:
+            if takt == takts:
 
                 people_list.pop(count)
     
-    print(people_list )
     return people_list[0]
 
 
-# if __name__ == '__main__':
-#     count_peoples_test2 = int(sys.stdin.readline().rstrip())
-#     takts_test2 = int(sys.stdin.readline().rstrip())
+if __name__ == '__main__':
+    count_peoples_test2 = int(sys.stdin.readline().rstrip())
+    takts_test2 = int(sys.stdin.readline().rstrip())
     
-    # print(scitolochka(count_peoples_test2, takts_test2))
+    print(scitolochka(count_peoples_test2, takts_test2))
     
 
 
