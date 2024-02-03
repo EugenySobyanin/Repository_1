@@ -1,0 +1,24 @@
+    for(int i=0; i < n; ++i){
+        if(i < n/2){
+            for(int  j= 0; j < n; ++j){
+                if(j>=i && j < n - i){
+                    cout << arr[i][j] << "\t";
+                    maxElement = arr[i][j] > maxElement ? arr[i][j]: maxElement;
+                }else{
+                    cout << "\t";
+                }
+            }
+        }else{
+            for(int  j= 0; j < n; ++j){
+                if(j>= n/2 - border && j <= n/2+border){
+                    cout << arr[i][j] << "\t";
+                    maxElement = arr[i][j] > maxElement ? arr[i][j]: maxElement;
+                }else{
+                    cout << "\t";
+                }
+            }
+            ++border;
+        }
+        
+        cout << endl;
+    }

@@ -1,0 +1,144 @@
+
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+
+
+int print() {
+    cout << "лох";
+    return 5 + 5;
+}
+
+int my_cycle(int massive[], int a) {
+    int sum = 0;
+    for (int i = 0; i < a; i++) {
+        sum += massive[i];   
+    }
+    return sum;
+}
+
+void foo(int number, int base) {
+    while (number > 0) {
+        int rem = number % base;
+        if (rem < 10) {
+            cout << rem;
+        }
+        else {
+            switch (rem){
+                case 10:
+                    cout << 'A';
+                    break;
+                case 11:
+                    cout << 'B';
+                    break;
+                case 12:
+                    cout << 'C';
+                    break;
+                case 13:
+                    cout << 'D';
+                    break;
+                case 14:
+                    cout << 'E';
+                    break;
+                case 15:
+                    cout << 'F';
+                    break;
+                case 16:
+                default:
+                   break;
+            }
+        }
+        number /= base;
+    }
+
+}
+int one_shot() {
+    int a = rand() % 6 + 1;
+    return a;
+}
+int coice_start() {
+    int choice;
+    cout << "Каким номером вы хотите начать игру? 1 или 2: ";
+    cin >> choice;
+    return choice;
+}
+void main_game() {
+
+    int sum_1 = 0, sum_2 = 0;
+    int b = coice_start();
+    for (int i = 1; i <= 10; i++) {
+        if (b == 1) {
+            if (i % 2 != 0) {
+                int a = one_shot();
+                sum_1 += a;
+                cout << "Вы - " << a << endl;
+            }
+            else {
+                int a = one_shot();
+                sum_2 += a;
+                cout << "Computer - " << a << endl;
+            }
+        }
+        else {
+            if (i % 2 != 0) {
+                int a = one_shot();
+                sum_2 += a;
+                cout << "Computer - " << a << endl;
+            }
+            else {
+                int a = one_shot();
+                sum_1 += a;
+                cout << "Вы - " << a << endl;
+            }
+
+        }
+
+
+
+
+
+
+    }
+    cout <<endl <<  "1ый игрок: " << sum_1 << endl
+         << "2ой игрок: " << sum_2 << endl;
+}
+
+void square(int a, int b) {
+    for (int i = 0; i < b; i++) {
+        for (int j = 0; j < a; j++) {
+            if (i == 0 or j == 0 or i == b -1 or j == a - 1) {
+                cout << " * ";
+            }
+            else {
+                cout << "   ";
+            }
+                
+        }
+        cout << endl;
+    }
+   
+
+}
+    
+
+
+
+int main()
+{
+    srand(time(0));
+    setlocale(LC_ALL, "RU");
+    //print();
+    //if (5 > 3 or 1 > 2) {
+    //    cout << "cool";
+    //}
+
+
+
+    //int arr[5] = { 1, 2, 3, 4, 5 };
+    //cout << my_cycle(arr, 5);
+
+    //foo(155, 16);
+    //main_game();
+    square(10, 10);
+}

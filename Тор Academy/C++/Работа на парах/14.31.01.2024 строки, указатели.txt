@@ -1,0 +1,174 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+void showElement(const char* str, char symbol) {//задача 1.1
+    /*Принимает строку и символ
+    * Выводит индексы элементов (начиная с 1) где находится этот символ
+    */
+    int size = strlen(str);
+    for (int i = 0; i < size; ++i) {
+        if (str[i] == symbol) {
+            cout << i + 1 << endl;
+        }
+    }
+}
+
+void showElement_2(const char* str, char symbol) { //задача 1.2
+    /*Принимает строку и символ
+    * Выводит последний индекс элемента (начиная с 1) где находится этот символ
+    */
+    int size = strlen(str);
+    for (int i = size; i > 0; --i) {
+        if (str[i] == symbol) {
+            cout << i + 1 << endl;
+            break;
+        }
+    }
+}
+
+void change_space(char* s, char c = ' ') {//задача 2
+    int size = strlen(s);
+
+    for (int i = 0; i < size; ++i) {
+        if (s[i] == c) {
+            s[i] = '\t';
+        }
+    }
+   
+}
+
+void calc_symbols(const char* str) {//задача 3
+
+    //strupr(str);
+    
+    int size = strlen(str);
+    int letters = 0;
+
+    for (int i = 0; i < size; ++i) {
+        
+        if (int(i) >= 0 and int(i) <= 10) {
+            letters += 1;
+        }
+    }
+    std::cout << "Letters: " << letters << endl;
+}
+
+int count_words(const char* str) {//задача 4
+    int size = strlen(str);
+    int result = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (str[i] == ' ') {
+            result += 1;
+        }
+    }
+    return result + 1;
+}
+
+
+bool is_polindrom(const char* str) {//задача 5
+
+    int left = 0;
+    int right = strlen(str) - 1;
+
+    while (left < right) {
+
+        if (str[left] != str[right])
+
+            return false;
+        left += 1;
+        right -= 1;
+
+    }
+    return true;
+    
+}
+
+template<typename T>//задача 6
+T sum(T a, T b) {
+    return a + b;
+}
+
+template<typename T>//задача 6
+T minus2(T a, T b) {
+    return a - b;
+}
+
+template<typename T>//задача 6
+T devide(T a, T b) {
+    return a /  b;
+}
+
+template<typename T>//задача 6
+T mult(T a, T b) {
+    return a * b;
+}
+
+template<typename T>//задача 6
+T calcul(T a, T b, T (*func)(T , T )) {
+    return func(a, b);
+}
+
+
+template<typename T>//задача 7
+void genArr(T* a, T* b, T* c, int size) {
+    
+    for (int i = 0; i < size; ++i) {
+        c[i] = a[i] + b[i];
+    }
+}
+
+
+
+
+
+
+int main()
+
+{
+    //задача 7
+    int* a = new int[5] {1, 2, 3, 4, 5};
+    int* b = new int[5] {1, 2, 3, 4, 5};
+    int* c = new int[5] {0};
+
+    genArr(a, b, c, 5);
+    for (int i = 0; i < 5; i++) {
+        cout << c[i] << " ";
+    }
+
+    //задача 6
+    /*Калькулятор без if  и switch 
+    * используя 'массив указателей на функции'
+    */
+    //int a = 10, b = 5;
+    //int (*arrFunc[])(int, int) = { sum, mult, minus2, devide };
+    //cout << "\t0-plus\n\t1-mult\n\t2-minus\n\t3-devide\n";
+    //int i; cin >> i;
+    //cout << calcul(a, b, arrFunc[i]);
+    
+    //задача 5
+    //cout << is_polindrom("шалаш");
+
+    //задача 4
+    //cout << count_words("Hello world my");
+
+    //задача 3
+    //calc_symbols("ABCD");
+
+    //задача 2
+    //char test1[50] = "Y r ll";
+    //change_space(test1);
+    //cout << test1 << endl;
+
+    // задача 1.2
+    //showElement_2("Hello World", 'l'); 
+
+    //задача 1.1
+    //showElement("Hello World", 'l'); 
+
+    // остальное
+    //const char* word = "Hello world";
+    //cout << word << endl;
+    
+}

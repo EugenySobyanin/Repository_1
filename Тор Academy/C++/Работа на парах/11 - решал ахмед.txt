@@ -1,0 +1,86 @@
+#include <iostream>
+
+
+void randomize(int* arr, int size){
+    for(int i = 0; i < size; ++i){
+        arr[i] = rand() % 101;
+    }
+}
+
+void print(int* arr, int size){
+    for(int i = 0; i < size; ++i){
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+template<typename T>
+T* createArr(int size){
+    return new T[size];
+}
+
+template <typename T>
+bool isAttend(T *arr, int size, T key){
+    for(int i = 0; i < size; ++i){
+        if(arr[i] == key){
+            return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
+void relloc(T* &arr, int size, int newSize){
+    if(size == newSize){
+        return;
+    }
+    
+    T *newArr = new T[newSize];
+    int sz = newSize < size ? newSize : size;
+    for(int i = 0; i < sz; ++i){
+        newArr[i] = arr[i];
+    }
+    
+    delete[] arr;
+    arr = newArr; 
+}
+
+template <typename T>
+T* cut(T *A, T *B, int &size){
+    T *C = new T[size];
+    int k = 0;
+    for(int i = 0; i < size; ++i){
+        if(!isAttend(B, size, A[i])){
+            if(!isAttend(C, size, A[i])){
+                C[k++] = A[i];
+            }
+        }
+    }
+    
+    if(k != size){
+        relloc(C, size, k);
+    }
+    size = k;
+    return C;
+}
+
+int main()
+{
+    int size = 10;
+    int *A = createArr<int>(10);
+    int *B = createArr<int>(10);
+    randomize(A, size);
+    randomize(B, size);
+    
+    print(A, size);
+    print(B, size);
+    
+    int *C = cut(A, B, size);
+    print(C, size);
+    
+    delete[] A;
+    delete[] B;
+    delete[] C;
+
+    return 0;
+}
