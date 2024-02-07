@@ -14,7 +14,8 @@ def insertion_sort(arr):
             prev -= 1
         # Вставляем current в отсортированную часть массива на нужное место.
         arr[prev + 1] = current
-        print(f'Шаг {i}, отсортировано элементов: {i + 1}, {arr}')
+        
 
-
-insertion_sort([2, 9, 11, 7, 1])
+arr1 = [9, 11, 5, 23, 3, 4, 2, 7, 9, 10]
+insertion_sort(arr1)
+print(arr1)
