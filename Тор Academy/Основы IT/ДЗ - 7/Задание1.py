@@ -2,19 +2,27 @@
 не превышающих 4млн.
 '''
 
-def sum_even_fibonaci(limit):
-    
+
+def sum_even_fibonaci(limit=4_000_000):
+
     num1 = num2 = 1
-    result = 2
-    
-    for i in range(2, limit + 1):
+    result = 0
+
+    while True:
+
         num1, num2 = num2, num1 + num2
-        result += num2
-        
+
+        if not num2 % 2:
+            result += num2
+
+        if num1 + num2 > limit:
+            break
+
     return result
 
-print(sum_even_fibonaci(5))
-        
+
+print(sum_even_fibonaci())
+
 
 
 
