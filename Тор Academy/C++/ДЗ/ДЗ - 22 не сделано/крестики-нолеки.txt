@@ -1,0 +1,121 @@
+#include <iostream>
+#include<time.h>
+using namespace std;
+
+
+char** createArr(int size){
+    
+    int k = 0;
+    char nums[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    char **arr = new char*[size];
+    
+    for (int i = 0; i < size; ++i){
+        arr[i] = new char[size]{};
+        
+        for (int j = 0; j < size; ++j){
+            arr[i][j] = nums[k++];
+        }
+    }
+    
+    return arr;
+}
+
+void make_move(char **arr, int step, int player_number){
+    
+    char symbol;
+    if (player_number == 1) symbol = '+';
+    else symbol = '0';
+    
+    
+    int k = 0;
+    
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++){
+            
+            if(k == step - 1) arr[i][j] = symbol;
+            
+            ++k;
+        }
+    }
+}
+
+void show_situation_in_play(char **arr){
+    
+    cout << " _______________" << endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[0][0] << " |  " << arr[0][1] << "  |  " << arr[0][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[1][0] << " |  " << arr[1][1] << "  |  " << arr[1][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[2][0] << " |  " << arr[2][1] << "  |  " << arr[2][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+
+    
+}
+
+
+void computer_move(char **arr, int player_number, int free_cells){
+    
+    while (true){
+        int choice = rand() % 9 + 1;   /////////////////////////////////////////дописать эту функцию
+        if ()
+    }
+    
+}
+
+
+void main_play(){
+    
+    int free_cells[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+    
+    int my_position;
+    
+    cout << "Добро пожаловать в игру крестики-нолики!" << endl;
+    cout << "Начинать игру первым - 1\nНачинать игру вторым - 2\n";
+    cin >> my_position;
+    
+    char **massive = createArr(3);
+    
+
+    while(true){
+        
+        int step;
+        show_situation_in_play(massive);
+        cout << "Введите номер ячейки куда вы хотите сделать ход:" << endl;
+        cin >> step;
+        free_cells[step] = 0
+        
+        make_move(massive, step,  1);
+        show_situation_in_play(massive);
+        //дальше должен делать ход компьютер
+    }
+
+    
+
+    
+    //show_situation_in_play(massive);
+        
+        
+        
+    
+}
+
+
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    srand(time(0));
+    int my_position;
+    
+    main_play();
+
+
+
+    return 0;
+}
+

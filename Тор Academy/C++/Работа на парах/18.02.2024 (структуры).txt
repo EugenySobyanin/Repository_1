@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+
+
+struct Student {
+	char* fullname;
+	int age;
+	int numberOfGroup;
+};
+
+struct Group {
+	Student stud;
+	int number;
+};
+
+
+int main()
+{
+	Student Ivan = { new char[50] {"Ivan"}, 23, 105 };
+
+	cout << Ivan.age << endl;
+
+	Group gr = { Ivan, 105 };
+
+	cout << gr.stud.fullname << endl;
+
+	
+   
+}
