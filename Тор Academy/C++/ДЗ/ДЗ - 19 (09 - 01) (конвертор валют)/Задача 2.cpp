@@ -30,8 +30,6 @@ int main()
     sum_massive_element(nums_1, nums_2, numbers, len);
     
 
-
-
     return 0;
 }
 

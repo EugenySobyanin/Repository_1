@@ -1,0 +1,91 @@
+<mxfile host="app.diagrams.net" modified="2024-02-17T20:18:03.456Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 YaBrowser/24.1.0.0 Safari/537.36" etag="725V1C2sgV-hKscOjEbk" version="23.1.5" type="device">
+  <diagram name="Страница — 1" id="KXM4fesVoZThwW96pbuJ">
+    <mxGraphModel dx="1066" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GFJ3YKUdAa9FuP8lDUYn-1" value="&lt;h1&gt;Сортировка подсчетом&lt;/h1&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="370" y="40" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-1" value="&lt;h5&gt;&lt;font face=&quot;Lucida Console&quot;&gt;Сложность O(n + r), где r&lt;br&gt; &lt;/font&gt;&lt;font face=&quot;PfUzMNhyIiIcuB7v7KRG&quot;&gt;количество уникальных эл.тов&lt;/font&gt;&lt;/h5&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="301" y="90" width="198" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-3" target="Szmw_6imXWy1Ow3QGUE5-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-3" value="Начало алгоритма" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="160" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-5" target="Szmw_6imXWy1Ow3QGUE5-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-5" value="Получаем на вход массив (arr) и максимальное значение (max)" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-7" target="Szmw_6imXWy1Ow3QGUE5-9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-7" value="Создаем массив count, где кол.во эл.тов - это max + 1, заполняем его 0" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="320" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-9" target="Szmw_6imXWy1Ow3QGUE5-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-9" value="Начало цикла,&lt;br&gt;проходим по всем элементам(item) массива arr" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-11" target="Szmw_6imXWy1Ow3QGUE5-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-11" value="Добавляем единицу к элементу в массиве count c индексом item" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="510" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-15" value="Конец цикла" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;direction=west;" parent="1" vertex="1">
+          <mxGeometry x="340" y="600" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="Szmw_6imXWy1Ow3QGUE5-19" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="760" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Szmw_6imXWy1Ow3QGUE5-19" target="CFhJ3tXdv0iDTbVCfYKl-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-19" value="Начало цикла.&lt;br&gt;item От 0 до мах + 1" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="800" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Szmw_6imXWy1Ow3QGUE5-23" value="Создаем пустой массив sorted_arr" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="700" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CFhJ3tXdv0iDTbVCfYKl-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="1000" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-1" value="Добавляем в sorted_arr item * count[item]" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="900" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CFhJ3tXdv0iDTbVCfYKl-6" target="CFhJ3tXdv0iDTbVCfYKl-7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-6" value="Возвращаем sorted_arr" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="1100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-7" value="Конец алгоритма" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="1190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CFhJ3tXdv0iDTbVCfYKl-9" target="CFhJ3tXdv0iDTbVCfYKl-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="CFhJ3tXdv0iDTbVCfYKl-9" value="Конец алгоритма" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;direction=west;" parent="1" vertex="1">
+          <mxGeometry x="340" y="1000" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

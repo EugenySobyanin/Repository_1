@@ -1,0 +1,41 @@
+﻿#include <iostream>
+
+int main()
+{
+    using namespace std;
+    setlocale(LC_ALL, "RU");
+    
+    
+    // сумма депозита в евро
+    double deposit;
+    // процентная ставка
+    double interestRate;
+    // максимальная сумма снятия
+    double maxWithdrowl;
+    // курс доллара по отношению к евро за каждый месяц
+    double exchangeRate[12]{ 0 };
+    int month;
+
+    cout << "Введите сумму депозита: ";
+    cin >> deposit;
+
+    cout << "Введите процентную ставку: ";
+    cin >> interestRate;
+
+    for (int i = 0; i < 12; i++) {
+        cout << "Введите курс доллара за месяц " << i + 1 << " :";
+        cin >> exchangeRate[i];
+    }
+
+    cout << "Введите месяц в котором хотите снять деньги (1 - 12): ";
+    cin >> month;
+
+    maxWithdrowl = deposit * exchangeRate[month - 1] * (1 + interestRate / 100);
+
+    if (maxWithdrowl > 500) {
+        maxWithdrowl *= 0.5;
+    }
+
+    cout << "Максимальная сумма для снятия: " << maxWithdrowl << " $" << endl;
+}
+

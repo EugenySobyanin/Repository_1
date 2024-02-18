@@ -2,7 +2,7 @@ from random import randint
 
 
 def counting_sort(arr: list, maximum: int) -> list:
-    #Создаем массив для подсчета всех значений
+    # Создаем массив для подсчета всех значений
     count = [0] * (maximum + 1)
 
     for item in arr:
