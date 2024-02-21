@@ -2,8 +2,11 @@
 import sys
 
 
-def decoding_str(code: str) -> str:
-    stack: list = []
+def decoding(code: str) -> str:
+    '''
+    Возвращает расшифрованную строку - последовательность букв.
+    '''
+    stack: list = [tuple(int, str)]
     current_num: int = 0
     current_str: str = ''
     
@@ -13,15 +16,14 @@ def decoding_str(code: str) -> str:
         elif el == '[':
             stack.append((current_num, current_str))
             current_num = 0
-            current_str = ''
+            result = ''
         elif el == ']':
             prev_num, prev_str = stack.pop()
-            current_str = prev_str + current_str * prev_num
+            result = prev_str + result * prev_num
         else: 
-            current_str += el
-    return current_str
+            result += el
+    return result
     
     
 if __name__ == '__main__':
-    input_str = sys.stdin.readline().rstrip()
-    print(decoding_str(input_str))
+    print(decoding(sys.stdin.readline().rstrip()))
