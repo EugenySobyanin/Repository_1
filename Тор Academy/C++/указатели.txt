@@ -1,0 +1,30 @@
+
+#include <iostream>
+
+
+
+
+
+
+
+int main()
+{
+    // int x = 10;
+    // int *word = &x;
+    
+    // std::cout << word << std::endl;
+    // std::cout << &x << std::endl;
+    // std::cout << &word << std::endl;
+    
+    char *word;
+    char text[] = "robot!";
+    //word = &text[0];
+    //Вместо этого:
+    word = text;
+    std::cout << word << std::endl;
+    
+    char a = *word;
+    std::cout << a << std::endl;
+
+    return 0;
+}
