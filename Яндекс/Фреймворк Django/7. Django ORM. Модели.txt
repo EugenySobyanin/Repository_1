@@ -1,2 +1,206 @@
 Урок 2. Описание Таблиц с помощью классов.
+
 	- Django ORM - часть фреймворка, которая переводить запросы с Python на SQL и обратно.
+
+	- За подключение и настройку БД в проекте отвечает константа DATABASE в settings.py
+
+Пример:
+	# <название проекта>/settings.py
+
+	DATABASES = {
+    		'default': {
+        	# К проекту по умолчанию подключена СУБД SQLite:  
+        	'ENGINE': 'django.db.backends.sqlite3',
+        	# Файл с базой данных находится в одной папке с manage.py.
+        	'NAME': BASE_DIR / 'db.sqlite3',
+    		}
+	}
+
+Пример создания модели:
+	# cinema/models.py
+	# Импортируем модуль с классом Model, от которого будем наследовать модели:
+	from django.db import models
+
+	class VideoProduct(models.Model):
+    		title = models.CharField(max_length=128)
+
+Типы полей в Django:
+	- models.IntegerField() - натуральное число 
+	- models.FloatField() - число с плавающей точкой
+	- models.BooleanField() - булев тип
+	- models.CharField() - строка, ограничена по кол.ву символов
+	- models.TextField() - текстовое поле
+	- models.DateField() - дата
+	- models.DateTimeField() - дата и время
+	- models.SlugField() - обычно используют для создания человекочитаемого URL
+	- models.ImageField() - для изображений
+
+Параметры для полей:
+	- max_length=256 - максимальная длина 256 символов
+	- unique=True - уникальное значение в пределах таблицы
+	- default=True - значение по умолчанию "True"
+
+Что бы указать диапазон для поля INT:
+	- from django.core.validators import MaxValueValidator, MinValueValidator
+	- в параметрах указываем: validators=[
+                                           MaxValueValidator(32767),
+                                           MinValueValidator(0)
+                                       ]
+
+Урок 3. Описание связей между моделями
+	Связи между таблицами так же описываются в полях моделей
+
+___Связь один к одному___
+
+	- сперва описывается модель НА КОТОРУЮ ссылаются
+
+Пример:
+	# cinema/models.py
+	from django.db import models
+
+	class OriginalTitle(models.Model):
+    		title = models.CharField(max_length=128)
+
+	class VideoProduct(models.Model):
+    		title = models.CharField(max_length=128)
+    		# Описываем поле, ссылающееся на модель OriginalTitle:
+    		original_title = models.OneToOneField(
+        	# На какую модель ссылаемся
+        	OriginalTitle,
+        	# Поведение при удалении:
+        	# если оригинальное имя будет удалено,
+        	# то и сам фильм будет удалён. 
+        	on_delete=models.CASCADE
+    		)
+	
+	- ссылающуюся модель можно описать и до той НА КОТОРУЮ ссылаются
+	тогда имя модели НА КОТОРУЮ ссылаемся надо взять в кавычки!
+
+
+При описании связей есть обязательный аргумент on_delete
+	Варианты:
+		on_delete=models.CASCADE - при удалении записи НА КОТОРУЮ ссылаются
+		исчезнет и запись которая ссылается
+
+		on_delete=models.SET_NULL - при удалении записи НА КОТОРУЮ ссылаемся
+		значение станет NULL, но тогда надо указать null=TRUE
+		Пример:
+			class VideoProduct(models.Model):
+    				...
+    				original_title = models.OneToOneField(
+        			OriginalTitle,  
+        			on_delete=models.SET_NULL,
+        			null=True
+    				) 
+
+Для on_delete есть и другие аргументы:  SET_DEFAULT, PROTECT , RESTRICT и DO_NOTHING. 
+
+
+___Связь многие к одному___
+
+	Порядок описания моделей тоже имеет значение. Если ссылающаяся модель описывается ДО,
+	то нужны кавычки
+	
+	Пример:
+		# cinema/models.py
+		from django.db import models
+
+		class ProductType(models.Model):
+    			title = models.CharField(max_length=128)
+
+		class VideoProduct(models.Model):
+    			title = models.CharField(max_length=128)
+    			product_type = models.ForeignKey(
+        			ProductType,
+        			on_delete=models.CASCADE
+    			) 
+
+___Связь многие к одному___
+
+	Пример с вспомогательной моделью:
+
+		from django.db import models
+
+		class VideoProduct(models.Model):
+    			title = models.CharField(max_length=128)
+
+		class Director(models.Model):
+    			full_name = models.CharField(max_length=128)
+
+		class DirectorVideoProduct(models.Model):
+    			video_product = models.ForeignKey(VideoProduct, on_delete=models.CASCADE)
+    			director = models.ForeignKey(Director, on_delete=models.CASCADE) 
+
+	Пример без вспомогательной таблицы(она создается под капотом):
+
+		from django.db import models
+
+		class Director(models.Model):
+    			full_name = models.CharField(max_length=128)
+
+		class VideoProduct(models.Model):
+    			title = models.CharField(max_length=128)
+    			directors = models.ManyToManyField(Director)  # Вот оно, поле!  
+
+При использовании поля ManyToManyField Django ORM позволяет указать промежуточную модель, которая будет использоваться для управления отношениями «многие ко многим». В этой модели можно описать и дополнительные поля (например, добавить поле для текста, описывающего эту связь). 
+
+Промежуточная модель указывается при описании поля ManyToManyField при помощи параметра through. Для нашего кинематографического примера код будет выглядеть так:
+
+Пример кода: 
+
+from django.db import models
+
+class Director(models.Model):
+    full_name = models.CharField(max_length=128)
+
+class VideoProduct(models.Model):
+    title = models.CharField(max_length=128)
+    # Параметр through указывает, какую модель надо назначить промежуточной:
+    directors = models.ManyToManyField(Director, through='Partnership')
+
+class Partnership(models.Model):
+    # Поле, ссылающееся на модель Director:
+    director = models.ForeignKey(Director, on_delete=models.CASCADE)
+    # Поле, ссылающееся на модель VideoProduct:
+    videoproduct = models.ForeignKey(VideoProduct, on_delete=models.CASCADE)
+    # Дополнительные поля:
+    # дата начала работы режиссёра над фильмом...
+    date_joined = models.DateField()
+    # ...и история о том, почему на фильм пригласили именно этого режиссёра.
+    invite_reason = models.CharField(max_length=300)
+		
+
+Урок 4. Наследование от абстрактных моделей
+	- применяется для избежания повторений, когда поле указывается во всех моделях
+
+	Чтобы не запутаться в назначении классов, в названиях абстрактных моделей обычно используют слово Model: BaseModel, CartModel, ProductModel.
+
+	Класс Meta необязательный, он требуется не во всех классах, но в абстрактных моделях он необходим — именно в Meta модель объявляется абстрактной:
+
+	Пример кода:
+		class BaseModel(models.Model):
+    			"""
+    			Абстрактная модель. 
+    			Добавляет к модели дату создания и последнего изменения. 
+    			"""
+    			# Параметр auto_now_add=True означает
+    			# "при СОЗДАНИИ записи автоматически записывать в это поле текущее время".
+    			created_at = models.DateTimeField(auto_now_add=True)
+    			# Параметр auto_now=True означает
+    			# "при ИЗМЕНЕНИИ записи автоматически записывать в это поле текущее время".
+    			modified_at = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+   			# С помощью необязательного внутреннего класса Meta можно добавить
+    			# к модели дополнительные настройки. 
+    			class Meta:
+        		# Эта строка объявляет модель абстрактной:
+        			abstract = True 
+
+Урок 5. Миграции
+	- создание файлов миграций - python manage.py makemigrations 
+
+	Файл миграций — это инструкция для составления SQL-запроса. Увидеть запрос, который будет создан, можно с помощью 	команды:  - python manage.py sqlmigrate ice_cream 0001
+
+	- применение миграции - python manage.py migrate
+	
+		
