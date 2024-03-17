@@ -1,0 +1,231 @@
+#include <iostream>
+#include <cstdlib>
+#include <iomanip>
+using namespace std;
+
+void filling_the_array(char(&arr)[10][10]) {
+    /*Заполнение массива нулями*/
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            arr[i][j] = '=';
+        }
+    }
+}
+
+
+int get_column_number(char* cell) {
+    /*Получает ячейку в виде строки, возвращает номер столбца*/
+
+    int column_number;
+
+    switch (cell[0]) {
+    case('A'):
+        column_number = 0;
+        break;
+    case('B'):
+        column_number = 1;
+        break;
+    case('C'):
+        column_number = 2;
+        break;
+    case('D'):
+        column_number = 3;
+        break;
+    case('E'):
+        column_number = 4;
+        break;
+    case('F'):
+        column_number = 5;
+        break;
+    case('G'):
+        column_number = 6;
+        break;
+    case('H'):
+        column_number = 7;
+        break;
+    case('I'):
+        column_number = 8;
+        break;
+    case('J'):
+        column_number = 9;
+        break;
+    }
+    return column_number;
+}
+
+
+int get_row_number(char* cell) {
+    /*Получает ячейку в виде строки, возвращает номер строки*/
+
+    int row_number;
+
+    if (cell[2] == '0')
+        return 9;
+
+    switch (cell[1]){
+    case('1'):
+        row_number = 0;
+        break;
+    case('2'):
+        row_number = 1;
+        break;
+    case('3'):
+        row_number = 2;
+        break;
+    case('4'):
+        row_number = 3;
+        break;
+    case('5'):
+        row_number = 4;
+        break;
+    case('6'):
+        row_number = 5;
+        break;
+    case('7'):
+        row_number = 6;
+        break;
+    case('8'):
+        row_number = 7;
+        break;
+    case('9'):
+        row_number = 8;
+        break;
+    }
+    return row_number;
+}
+
+void filling_ships(char(&arr)[10][10], int column_number, int row_number, char direction, int ship_length) {
+    /*Для заполнения двухпалубных кораблей и больше*/
+
+    switch (direction) {
+    case('<'):
+        for (int i = 0; i < ship_length; i++) {
+            arr[row_number][column_number + i] = '#';
+        }
+        break;
+    case('>'):
+        for (int i = 0; i < ship_length; i++) {
+            arr[row_number][column_number - i] = '#';
+        }
+        break;
+    case('^'):
+        for (int i = 0; i < ship_length; i++) {
+            arr[row_number - i][column_number] = '#';
+        }
+        break;
+    case('!'):
+        for (int i = 0; i < ship_length; i++) {
+            arr[row_number + i][column_number] = '#';
+        }
+        break;
+    }
+    
+
+
+}
+
+
+
+
+
+
+
+void show_fields(char (&user)[10][10], char (&computer)[10][10]) {
+    cout << setw(55) << "Морской Бой." << endl;
+    cout << setw(20) << " " << "  A B C D E F G H I J" << setw(15) << " " << "  A B C D E F G H I J" << endl;
+    cout << setw(20) << " " << " ---------------------" << setw(15) << " " << "---------------------" << endl;
+    for (int i = 0; i < 10; i++) {
+
+        if (i < 9) cout << setw(18) << " " << i + 1 << ". |";
+        else cout << setw(17) << " " << i + 1 << ". |";
+
+        for (int j = 0; j < 10; j++) {
+            cout << user[i][j] << "|";
+        }
+
+        if (i < 9) cout << setw(12) << " " << i + 1 << ". |";
+        else cout << setw(11) << " " << i + 1 << ". |";
+
+        for (int k = 0; k < 10; k++) {
+            cout << computer[i][k] << "|";
+        }
+        cout << endl;
+        cout << setw(20) << " " << " ---------------------" << setw(15) << " " << "---------------------" << endl;
+    }
+    
+}
+
+const int field_size = 10;
+char user_field[field_size][field_size];
+char computer_field[field_size][field_size];
+
+
+void the_arrangement_of_ships(char(&arr)[10][10]) {
+    /*Ручное заполнение поля кораблями*/
+
+    // принимает координаты ячейки
+    char cell[3];
+    // направление корабля
+    char direction;
+    int column_number;
+    int row_number;
+
+    cout << "Расстоновка кораблей" << endl;
+    cout << "Вы будете вводить ячейку расположения корабля и его направление" << endl;
+    cout << "Расстановка начинается с четырехпалубного корабля и заканчивается однопалубными" << endl;
+
+
+
+    for (int i = 0; i < 10; i++) {
+
+        cout << "Введите ячейку в которую хотите поставить корабль: ";
+        cin >> cell;
+        if (i < 6) {
+            cout << "Введите направление корабля" << "'<' - направлен влево\n'>' - направлен вправо\n'^' - направлен вниз\n'!' - направлени вниз\n :";
+            cin >> direction;
+        }
+        column_number = get_column_number(cell);
+        row_number = get_row_number(cell);
+
+        // Ставим четырехпалубный
+        if (i == 0) {
+            filling_ships(arr, column_number, row_number, direction, 4);
+            show_fields(arr, computer_field);
+        }
+        else if (i < 3) {
+            filling_ships(arr, column_number, row_number, direction, 3);
+            show_fields(arr, computer_field);
+        }
+        else if (i < 6) {
+            filling_ships(arr, column_number, row_number, direction, 2);
+            show_fields(arr, computer_field);
+        }
+        else {
+            filling_ships(arr, column_number, row_number, direction, 1);
+            show_fields(arr, computer_field);
+        }
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+
+    filling_the_array(user_field);
+    filling_the_array(computer_field);
+    show_fields(user_field, computer_field);
+    the_arrangement_of_ships(user_field);
+
+
+}
+
