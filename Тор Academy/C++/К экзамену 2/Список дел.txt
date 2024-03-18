@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+
+struct datetime{
+    int day;
+    int mounth;
+    int year;
+    int hour = 0;
+    int minute = 0;
+    int second = 0;
+};
+
+
+
+
+
+struct Task{
+    char* title;
+    int priority;
+    char* description;
+    datetime date;
+    
+
+};
+
+
+
+Task* to_do_list = new Task[0];
+
+
+Task &add_case(Task* list, Task obj){
+    
+}
+
+
+
+
+
+
+
+
+
+int main(){
+    datetime date_1 = {23, 07, 2024, 0, 0, 0};
+    //Task task1  = {char[50] = "помыть собаку", 7, char[100] = "нужно срочно помыть собаку", date_1};
+    cout << date_1.day;
+
+}

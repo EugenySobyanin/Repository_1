@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+
+void show_user_field(int *user_field);
+
+void computer_field(int * computer_field);
+
+void main_play();
+
+int main()
+{
+    
+    
+}
+
+// Вывод поля для юзера (с кораблями)
+void show_user_field(int *user_field)
+{
+    cout << " А Б В Г Д Е Ж З И К" << endl;
+    cout << " --------------------" << endl;
+    for (int i = 0; i < 100; i++)
+    {
+        if (i % 10 == 0) cout << endl << "-";
+        
+        if (i )
+        
+        if (user_field[i] == 1) cout << "* "; // промах
+        else if (user_field[i] == 2) cout << "X ";
+        else if (user_field[i] == 3) cout << "/";
+        else cout << "  ";
+    }
+}
+
+
+// Заполнение кораблями в начале игры, в ручную пользователем
+void the_arrangement_of_ships_user(int* arr)
+{
+    char cell[3]{};
+    int part_of_the_ship = 24
+    while (part_of_the_ship > 0)
+    {
+        cout << "Введите ячейку где хотите поставить корабль" << endl;
+        cin >> cell;
+    }
+}
+
+
+void main_play()
+{
+    cout << "Добро пожаловать в игру морской бой!" << endl;
+    // Сделали 2 массива
+    int user_massive[100]{};
+    int computer_massive[100]{};
+    // Расставаить корабли
+}
+
