@@ -173,15 +173,6 @@ bool correct_cell_input(int column_number, int row_number, char direction, int s
             
 }
 
-bool correct_around_ship(char(&arr)[10][10], int row_number, int colum_number, char direction, int ship_length) {
-    /*Проверяет не соприкасается ли новый корабль с кораблями которые уже на поле */
-
-    return true;
-    
-
-
-}
-
 
 void filling_incorrect_cell(char(&arr)[10][10]) {
     /*Заполняет ячейки вокруг кораблей звездочками*/
@@ -205,6 +196,67 @@ void filling_incorrect_cell(char(&arr)[10][10]) {
         }
     }
 }
+
+
+bool correct_around_ship(char(&arr)[10][10], int row_number, int column_number, char direction, int ship_length) {
+    /*Проверяет не соприкасается и не наславиваетмся ли новый корабль с кораблями которые уже на поле */
+    
+    
+    switch (direction) {
+    case('<'):
+        for (int i = 0; i < ship_length; i++) {
+            if (arr[row_number][column_number + i] == '*'){
+                return false;
+            }
+            // else{
+            //     arr[row_number][column_number + i] = '#';
+            // }
+        }
+        //filling_incorrect_cell(arr); она наверно не нужна
+        break;
+        
+    case('>'):
+        for (int i = 0; i < ship_length; i++) {
+            if (arr[row_number][column_number - i] == '*'){
+                return false;
+            }
+            // else{
+            //     arr[row_number][column_number - i] = '#';
+            // }
+            
+        }
+        //filling_incorrect_cell(arr); она наверно не нужна
+        break;
+        
+    case('^'):
+        for (int i = 0; i < ship_length; i++) {
+            if (arr[row_number + i][column_number] == '*'){
+                return false;
+            }
+            // else{
+            //     arr[row_number + i][column_number] = '#';
+            // }
+        }
+        //filling_incorrect_cell(arr); она наверно не нужна
+        break;
+        
+    case('!'):
+        for (int i = 0; i < ship_length; i++) {
+            if (arr[row_number - i][column_number] == '*'){
+                return false;
+            }
+            // else{
+            //     arr[row_number - i][column_number] = '#';
+            // }
+        }
+        //filling_incorrect_cell(arr); она наверно не нужна
+        break;
+    }
+    return true;
+}
+
+
+
 
 void unfilling_incorrect_cell(char (&arr)[10][10]){
     /*Убирает звездочки*/
@@ -255,7 +307,8 @@ void the_arrangement_of_ships(char(&arr)[10][10]) {
         // Ставим четырехпалубный
         if (i == 0) {
             bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 4);
-            if (ship_length_is_okay) NULL;
+            bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 4);
+            if (ship_length_is_okay and around_ship_is_good) NULL;
             else {
                 --i;
                 cout << "Выберите другую ячейку\nТак поставить корабль нельзя." << endl;
@@ -271,7 +324,8 @@ void the_arrangement_of_ships(char(&arr)[10][10]) {
         // Ставим 2 трехпалубных
         else if (i < 3) {
             bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 3);
-            if (ship_length_is_okay) NULL;
+            bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 3);
+            if (ship_length_is_okay and around_ship_is_good) NULL;
             else {
                 --i;
                 cout << "Выберите другую ячейку\nТак поставить корабль нельзя." << endl;
@@ -285,8 +339,9 @@ void the_arrangement_of_ships(char(&arr)[10][10]) {
         }
         // Ставим 3 двухпалубных
         else if (i < 6) {
-            bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 3);
-            if (ship_length_is_okay) NULL;
+            bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 2);
+            bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 2);
+            if (ship_length_is_okay and around_ship_is_good) NULL;
             else {
                 --i;
                 cout << "Выберите другую ячейку\nТак поставить корабль нельзя." << endl;
@@ -300,6 +355,13 @@ void the_arrangement_of_ships(char(&arr)[10][10]) {
         }
         // Ставим 4 однопалубных
         else {
+            bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 1);
+            if (around_ship_is_good) NULL;
+            else{
+                --i;
+                cout << "Выберите другую ячейку\nТак поставить корабль нельзя." << endl;
+                continue;
+            }
             filling_ships(arr, column_number, row_number, direction, 1);
             filling_incorrect_cell(arr);
             ///////////////////////////////////////////////////////////////////////////////
@@ -315,7 +377,7 @@ void the_arrangement_of_ships(char(&arr)[10][10]) {
 void auto_arrangenment(char (&arr)[10][10]){
     /*Автоматическое заполнение поля кораблями*/
     
-    srand(time(0));
+    srand(rand() % 10);
     bool flag = false;
     int column_number, row_number, direction_choice;
     char direction;
@@ -354,7 +416,8 @@ void auto_arrangenment(char (&arr)[10][10]){
             // Ставим четырехпалубный
             if (i == 0){
                 bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 4);
-                if (ship_length_is_okay) NULL;
+                bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 4);
+                if (ship_length_is_okay and around_ship_is_good) NULL;
                 else{
                     --i;
                     continue;
@@ -365,7 +428,8 @@ void auto_arrangenment(char (&arr)[10][10]){
             // Ставим трехпалубные
             else if (i < 3){
                 bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 3);
-                if (ship_length_is_okay) NULL;
+                bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 3);
+                if (ship_length_is_okay and around_ship_is_good) NULL;
                 else{
                     --i;
                     continue;
@@ -376,7 +440,8 @@ void auto_arrangenment(char (&arr)[10][10]){
             // Ставим двухпалубные
             else if (i < 6){
                 bool ship_length_is_okay = correct_cell_input(column_number, row_number, direction, 2);
-                if (ship_length_is_okay) NULL;
+                bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 2);
+                if (ship_length_is_okay and around_ship_is_good) NULL;
                 else{
                     --i;
                     continue;
@@ -387,6 +452,12 @@ void auto_arrangenment(char (&arr)[10][10]){
             
             // Ставим однопалубные
             else{
+                bool around_ship_is_good = correct_around_ship(arr, row_number, column_number, direction, 1);
+                if (around_ship_is_good) NULL;
+                else{
+                    --i;
+                    continue;
+                }
                 filling_ships(arr, column_number, row_number, direction, 1);
                 filling_incorrect_cell(arr);
             }
@@ -426,7 +497,10 @@ void main_play(char(&user_field)[10][10], char(&computer_field)[10][10]) {
             // Автоматическая расстановка игрока
             auto_arrangenment(user_field);
         }
-        
+        // расстановка компьютера
+        cout << "Компьютер расставляет корабли..." << endl;
+        Sleep(2000);
+        cout << "Почти готово..." << endl;
         auto_arrangenment(computer_field);
         unfilling_incorrect_cell(user_field);
         unfilling_incorrect_cell(computer_field);
