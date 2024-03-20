@@ -524,84 +524,131 @@ bool is_destoyed(char (&arr1)[10][10], char (&arr2)[10][10], int row_number, int
 }
 
 
+int is_end_game(char(&user_field)[10][10], char (&computer_field_for_shooting)[10][10]){
+    int user_count = 0, computer_count = 0;
+    for (int i = 0; i < 10; i++){
+        for (int j = 0; j < 10; j++){
+            if (user_field[i][j] == 'X'){
+                user_count += 1;
+            }
+            if (computer_field_for_shooting[i][j] == 'X'){
+                computer_count += 1;
+            }
+        }
+    }
+    if (user_count == 20){
+        cout << "Игра окончена." << endl;
+        cout << "Победил компьютер" << endl;
+        return 2;
+    }
+    else if (computer_count == 20){
+        cout << "Игра окончена." << endl;
+        cout << "Вы победили!" << endl;
+        return 1;
+    }
+    else return 0;
+}
+
+
+bool user_shot(char (&user_field)[10][10], char (&computer_field)[10][10], char (&computer_field_for_shooting)[10][10]){
+    /*Один выстрел юзера*/
+    
+    bool hit, destroy; // попадание
+    int row_number, column_number;
+    char cell[3];
+    cout << "Ваш ход" << endl;
+    cout << "Введите ячейку: ";
+    cin >> cell;
+    row_number = get_row_number(cell);
+    column_number = get_column_number(cell);
+    hit = is_hit(computer_field, row_number, column_number);
+    if (hit){
+        computer_field_for_shooting[row_number][column_number] = 'X';
+        system("cls");
+        cout << "Есть попадание!" << endl;
+        show_fields(user_field, computer_field_for_shooting);
+        destroy = is_destoyed(computer_field, computer_field_for_shooting, row_number, column_number);
+        if (destroy){
+                    filling_incorrect_cell_2(computer_field_for_shooting);
+                    system("cls");
+                    cout << "Корабль убит!" << endl;
+                    show_fields(user_field, computer_field_for_shooting);
+                    return true;
+                }
+        // корабль не убит        
+        else{
+            return true;
+        }
+    }
+    // попадание мимо
+    else{
+        computer_field_for_shooting[row_number][column_number] = '*';
+        system("cls");
+        cout << "Есть промах(" << endl;
+        show_fields(user_field, computer_field_for_shooting);
+        return false;
+    }
+}
+
+
+bool computer_shot(char (&user_field)[10][10], char (&computer_field_for_shooting)[10][10]){
+    /*Один выстрел компьютера*/
+    
+    bool hit, flag = true; // попадание
+    int row_number, column_number;
+    while (flag){
+        row_number = rand() % 10;
+        column_number = rand() % 10;
+        if (user_field[row_number][column_number] != '*' and user_field[row_number][column_number] != 'X'){
+            flag = false;
+        }
+    }
+    hit = is_hit(user_field, row_number, column_number);
+    if (hit){
+        user_field[row_number][column_number] = 'X';
+        system("cls");
+        cout << "Компьютер попал!" << endl;
+        show_fields(user_field, computer_field_for_shooting);
+        return true;
+    }
+    else{
+        user_field[row_number][column_number] = '*';
+        system("cls");
+        show_fields(user_field, computer_field_for_shooting);
+        return false;
+    }
+    
+}
+
+
+
+
+
 void shootig_process(char (&user_field)[10][10], char (&computer_field)[10][10], char(&computer_field_for_shooting)[10][10]){
-    bool end_game = false;
+    int end_game = 0;
     int iteration_count = 0;
     char cell[3];
     int column_number, row_number;
     while(!end_game){
         if (iteration_count > 19){
             // нужна проверка на конец игры, кто-то уже мог победить
-            NULL;
+            end_game = is_end_game(user_field, computer_field_for_shooting);
         }
         // Ходит Юзер
-        bool hit = true;// попал или нет
-        bool destroy; // убит или нет
-        while(hit){
-            cout << "Ваш ход.\nВведите ячейку куда хотите выстрелить: ";
-            cin >> cell;
-            row_number = get_row_number(cell);
-            column_number = get_column_number(cell);
-            // Проверка попал или нет
-            hit = is_hit(computer_field, row_number, column_number);
-            if (hit){
-                cout << "Есть попадание" << endl;
-            }
-            else{
-                cout << "Промах!" << endl;
-            }
-            if (hit){
-                // Если попал
-                computer_field_for_shooting[row_number][column_number] = 'X';
-                show_fields(user_field, computer_field_for_shooting);
-                // Проверка убит или нет
-                destroy = is_destoyed(computer_field, computer_field_for_shooting, row_number, column_number);
-                // Если корабль убит - ставим вокруг него звездочки
-                if (destroy){
-                    cout << "Корабль убит" << endl;
-                    filling_incorrect_cell_2(computer_field_for_shooting);
-                    show_fields(user_field, computer_field_for_shooting);
-                }
-            }
-            else{
-                // когда выстрел мимо
-                computer_field_for_shooting[row_number][column_number] = '*';
-                show_fields(user_field, computer_field_for_shooting);
-                hit = false;
-            }
+        bool shot = true;// стрелять еще или нет
+        while(shot){
+            shot = user_shot(user_field, computer_field, computer_field_for_shooting);
         }
-            //show_fields(user_field, computer_field_for_shooting);
             
-            // Ходит компьютер
-            cout << "Компьютер делает свой ход" << endl;
-            hit = true;
-            while(hit){
-                row_number = rand() % 9;
-                column_number = rand() % 9;
-                hit = is_hit(user_field, row_number, column_number);
-                if (hit){
-                    cout << "Есть попадание" << endl;
-                }
-                else{
-                    cout << "Промах!" << endl;
-                }
-                if (hit){
-                    user_field[row_number][column_number] = 'X';
-                    show_fields(user_field, computer_field_for_shooting);
-                }
-                else{
-                    user_field[row_number][column_number] = '*';
-                    hit = false;
-                }
-            }
+        // Ходит компьютер
+        shot = true;
+        cout << "Компьютер делает свой ход" << endl;
+        while(shot){
+            shot = computer_shot(user_field, computer_field_for_shooting);
+        }
             
             
     }
-        
-        
-        
-        
-        
         ++iteration_count;
 }
 
@@ -621,7 +668,7 @@ void main_play(char(&user_field)[10][10], char(&computer_field)[10][10]) {
     // Режим игры Человек - компьютер
     if (choice == 1) {
         cout << "Выберите режим расстановки кораблей: " << endl;
-        cout << "Ручнач расстановка - 1\nАвтоматическая расстановка - 2\n";
+        cout << "Ручная расстановка - 1\nАвтоматическая расстановка - 2\n";
         cin >> choice;
         if (choice == 1) {
             // Ручная расстановка
@@ -647,7 +694,7 @@ void main_play(char(&user_field)[10][10], char(&computer_field)[10][10]) {
         filling_the_array(computer_field_for_shooting);
         
         //show_fields(user_field, computer_field_for_shooting);
-        show_fields(user_field, computer_field);
+        show_fields(user_field, computer_field_for_shooting);
         shootig_process(user_field, computer_field, computer_field_for_shooting);
 
     }

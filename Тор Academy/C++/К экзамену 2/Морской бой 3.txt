@@ -491,7 +491,7 @@ void auto_arrangenment(char(&arr)[10][10]) { ///////////////////////////////////
 
 }
 
-bool is_hit(char (&arr)[10][10], int row_number, int column_number){
+bool is_hit(char (&arr)[10][10], int column_number, int row_number){
     /*Проверяет попал ли выстрел в корабль или нет*/
     /*Отмечает символом 'X' ячейку корабля в которую попали*/
     
@@ -506,15 +506,13 @@ bool is_hit(char (&arr)[10][10], int row_number, int column_number){
 }
 
 
-bool is_destoyed(char (&arr1)[10][10], char (&arr2)[10][10], int row_number, int column_number){
+bool is_destoyed(char (&arr)[10][10], int row_number, int column_number){
     // проверяет убит корабль или нет
-    // arr1  - поле с кораблями
-    // arr2  - поле для игры
     
-    if (arr1[row_number + 1][column_number] == '#' and arr2[row_number + 1][column_number] != 'X'
-       or arr1[row_number - 1][column_number] == '#' and arr2[row_number - 1][column_number] != 'X'
-       or arr1[row_number][column_number + 1] == '#' and arr2[row_number][column_number + 1] != 'X'
-       or arr1[row_number][column_number - 1] == '#' and arr2[row_number][column_number - 1] != 'X'){
+    if (arr[row_number + 1][column_number] == '#'
+       or arr[row_number - 1][column_number] == '#'
+       or arr[row_number][column_number + 1] == '#'
+       or arr[row_number][column_number - 1] == '#'){
            return false;
     }
     else{
@@ -545,66 +543,28 @@ void shootig_process(char (&user_field)[10][10], char (&computer_field)[10][10],
             // Проверка попал или нет
             hit = is_hit(computer_field, row_number, column_number);
             if (hit){
-                cout << "Есть попадание" << endl;
-            }
-            else{
-                cout << "Промах!" << endl;
-            }
-            if (hit){
                 // Если попал
                 computer_field_for_shooting[row_number][column_number] = 'X';
-                show_fields(user_field, computer_field_for_shooting);
                 // Проверка убит или нет
-                destroy = is_destoyed(computer_field, computer_field_for_shooting, row_number, column_number);
+                destroy = is_destoyed(computer_field, row_number, column_number);
                 // Если корабль убит - ставим вокруг него звездочки
                 if (destroy){
-                    cout << "Корабль убит" << endl;
                     filling_incorrect_cell_2(computer_field_for_shooting);
-                    show_fields(user_field, computer_field_for_shooting);
                 }
             }
             else{
                 // когда выстрел мимо
                 computer_field_for_shooting[row_number][column_number] = '*';
-                show_fields(user_field, computer_field_for_shooting);
                 hit = false;
             }
+            show_fields(user_field, computer_field_for_shooting);
         }
-            //show_fields(user_field, computer_field_for_shooting);
-            
-            // Ходит компьютер
-            cout << "Компьютер делает свой ход" << endl;
-            hit = true;
-            while(hit){
-                row_number = rand() % 9;
-                column_number = rand() % 9;
-                hit = is_hit(user_field, row_number, column_number);
-                if (hit){
-                    cout << "Есть попадание" << endl;
-                }
-                else{
-                    cout << "Промах!" << endl;
-                }
-                if (hit){
-                    user_field[row_number][column_number] = 'X';
-                    show_fields(user_field, computer_field_for_shooting);
-                }
-                else{
-                    user_field[row_number][column_number] = '*';
-                    hit = false;
-                }
-            }
-            
-            
-    }
-        
-        
-        
+        // Ходит компьютер
         
         
         ++iteration_count;
+    }
 }
-
 
 
 void main_play(char(&user_field)[10][10], char(&computer_field)[10][10]) {
@@ -646,8 +606,7 @@ void main_play(char(&user_field)[10][10], char(&computer_field)[10][10]) {
         // заполняем игровой игровой массив компьютера пробелами
         filling_the_array(computer_field_for_shooting);
         
-        //show_fields(user_field, computer_field_for_shooting);
-        show_fields(user_field, computer_field);
+        show_fields(user_field, computer_field_for_shooting);
         shootig_process(user_field, computer_field, computer_field_for_shooting);
 
     }
