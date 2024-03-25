@@ -1,0 +1,58 @@
+#include <iostream>
+using namespace std;
+
+void create_arr(int* arr, int size){
+    /*Заполнение одномерного массива*/
+    for(int i =0; i < size; i++){
+        arr[i] = rand() % 21;
+    }
+}
+
+
+void print_arr(int* arr, int size){
+    /*Вывод одномерного массива в консоль*/
+    for (int i = 0; i < size; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int* copy_arr(int* arr1, int size){
+    /*Возращает указатель на динамический массив*/
+    int* arr = new int[10];
+    for(int i = 0; i < size; i++){
+        *(arr+i) = *(arr1 + i); 
+    }
+    return arr;
+}
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    
+    const int size = 10;
+    int* ptr1;  
+    int* ptr2;
+    int arr1[size];
+    int arr2[size];
+    //Сохраняем в указатель адрес первой ячейки массива
+    ptr1 = &arr1[0];
+    ptr2 = &arr2[0];
+    // Печатаем массивы через указатели
+    srand(2);
+    create_arr(ptr1, size);
+    cout << "Перый массив: ";
+    print_arr(ptr1, size);
+    srand(12);
+    create_arr(ptr2, size);
+    cout << "Второй массив: ";
+    print_arr(ptr2, size);
+    // Перекидываем указатель ptr2 на другую область памяти
+    // arr2 указывает на ту же область памяти
+    ptr2 = copy_arr(ptr1, size);
+    cout << "Массив на который указывает ptr2: ";
+    print_arr(ptr2, size);
+    cout << "Массив arr2: ";
+    print_arr(arr2, size);
+
+}

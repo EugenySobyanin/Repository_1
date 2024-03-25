@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+
+template<typename T>
+T** generateArr(int row, int col, int start = 0, int end = 101) {
+
+	T** arr = new T * [row];
+	for (int i = 0; i < row; ++i) {
+		arr[i] = new int[col];
+
+		for (int j = 0; j < col; ++j) {
+			arr[i][j] = rand() % (end - start) + start;
+		}
+	}
+	return arr;
+}
+
+template<typename T>
+void print(T** arr, int row, int col) {
+
+	//вывод двумерного динамического массива
+	for (int i = 0; i < row; ++i) {
+		for (int j = 0; j < col; ++j) {
+			cout << arr[i][j] << "\t\t";
+		}
+		cout << endl;
+	}cout << endl;
+}
+
+
+template<typename T>
+void delArray(T** arr, int row, int col) {
+
+	//удаление двумерного динамического массива
+
+	for (int i = 0; i < row; ++i) {
+		delete[] arr[i];
+	}
+
+	delete[] arr;
+
+}
+
+
+template<typename T>
+T** sumMatrix(T** arr1, T** arr2, int row, int col) {
+	//задача 1
+
+	T** result = new T * [row];
+	for (int i = 0; i < row; i++) {
+		result[i] = new T[col];
+
+		for (int j = 0; j < col; ++j) {
+
+			result[i][j] = arr1[i][j] + arr2[i][j];
+		}
+	}
+	return result;
+}
+
+
+
+template<typename T>
+T** multMatrix(T** arr_1, T** arr_2, int row, int col, int r, int c) {
+
+	//Задача 2
+
+	T** result = generateArr<int>(col, c, 0, 1 );
+
+	for (int i = 0; i < row; ++i) {
+
+		for (int j = 0; j < c; ++j) {
+
+			for (int s = 0; s < r; ++s) {
+				result[i][j] += arr_1[i][s] * arr_2[s][j];
+			}
+
+
+		}
+
+	}
+	return result;
+}
+
+int main()
+{
+
+	//Задача 2
+	int row = 2, col = 3;
+	int row_2 = 3, col_2 = 2;
+	int** arr_1 = generateArr<int>(row, col, -5, 5);
+	int** arr_2 = generateArr<int>(col, row, 5, 15);
+	int **res = multMatrix(arr_1, arr_2, row, col,  row_2, col_2);
+	print(arr_1, row, col);
+	print(arr_2, row, col);
+	print(res, row, col);
+
+	delArray(arr_1, row, col);
+	delArray(arr_2, row, col);
+	delArray(res, row, col);
+
+	cout << "huita";
+	
+
+
+
+	//задача 1
+	//int row = 3, col = 5;
+	//int** arr_1 = generateArr<int>(row, col, -5, 5);
+	//int** arr_2 = generateArr<int>(row, col, 5, 15);
+	//int** res = sumMatrix(arr_1, arr_2, row, col);
+	//print(arr_1, row, col);
+	//print(arr_2, row, col);
+	//print(res, row, col);
+
+	//delArray(arr_1, row, col);
+	//delArray(arr_2, row, col);
+	//delArray(res, row, col);
+   
+}

@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+void create_arr(int* arr, int size){
+    /*Заполнение одномерного массива*/
+    for(int i =0; i < size; i++){
+        arr[i] = rand() % 21;
+    }
+}
+
+
+void print_arr(int* arr, int size){
+    /*Вывод одномерного массива в консоль*/
+    for (int i = 0; i < size; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+
+void reverse_arr(int* arr, int size){
+    /*Разворачивает одномерный массив наоборот*/
+    int left = 0, right = size - 1;
+    do{
+        swap(*(arr+left), *(arr+right));
+        ++left;
+        --right;
+    }while (left < right and right != left);
+
+}
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    
+    int size = 6;
+    int* arr1 = new int[size];
+    srand(2);
+    create_arr(arr1, size);
+    print_arr(arr1, size);
+    reverse_arr(arr1, size);
+    cout << "Перевернутая строка: " << endl;
+    print_arr(arr1, size);
+    
+    delete[] arr1;
+}
+

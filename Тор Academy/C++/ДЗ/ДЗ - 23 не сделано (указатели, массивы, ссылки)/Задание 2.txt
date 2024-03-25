@@ -1,0 +1,147 @@
+#include <iostream>
+using namespace std;
+
+void create_arr(int* arr, int size){
+    /*Заполнение одномерного массива*/
+    for(int i =0; i < size; i++){
+        arr[i] = rand() % 21;
+    }
+}
+
+
+void print_arr(int* arr, int size){
+    /*Вывод одномерного массива в консоль*/
+    for (int i = 0; i < size; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+
+bool in_massive(int* arr, int size, int el){
+    /* Проверяем вхождение эл.та в массив */
+    for (int i = 0; i < size; i++){
+        if (arr[i] == el){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void find_size3(int* arr1, int* arr2 , int size1, int size2, int& size3){
+    // Опрелеляет размер итогового массива
+    size3 = 0;
+    int helper_size = size1 + size2;
+    bool in_arr2; // прверяет есть ли эл.т из arr1 в arr2
+    bool in_arr1; // проверяем есть ли эл.т из arr2 в arr1
+    bool in_helper_arr; // для проверки на повторяющиеся значения
+    int* helper_arr = new int[helper_size]; /* здесь итоговые значения,
+    но массив большего размера*/
+    int helper_indx = 0;
+    
+    // перебираем первый массив
+    for (int i = 0; i < size1; i++){
+        in_arr2 = in_massive(arr2, size2, arr1[i]);
+        if (in_arr2 == false){
+            in_helper_arr = in_massive(helper_arr, helper_size, arr1[i] );
+            if (in_helper_arr == false){
+                ++size3;
+                helper_arr[helper_indx++] = arr1[i];
+            }
+        }
+    }
+    
+    // перебираем второрй массив
+    for (int i = 0; i < size2; i++){
+        in_arr1 = in_massive(arr1, size1, arr2[i]);
+        if (in_arr1 == false){
+            in_helper_arr = in_massive(helper_arr, helper_size, arr2[i] );
+            if (in_helper_arr == false){
+                ++size3;
+                helper_arr[helper_indx++] = arr2[i];
+            }
+        }
+    }
+
+}
+
+
+int* intersection(int* arr1, int* arr2, int size1, int size2, int size3){
+    /*Возращает третий массив в котором те элементы,
+    которые есть в массиву arr1 и которых нет в массиву arr2, 
+    исходный массив не содержит повторений*/
+    int* result = new int[size3];
+    int k = 0;
+    int helper_size = size1 + size2;
+    int* helper_arr = new int[helper_size];
+    int helper_indx = 0;
+    bool in_arr2;
+    bool in_arr1;
+    bool in_helper_arr;
+    
+
+    // перебираем первый массив
+    for (int i = 0; i < size1; i++){
+        in_arr2 = in_massive(arr2, size2, arr1[i]);
+        if (in_arr2 == false){
+            in_helper_arr = in_massive(helper_arr, helper_size, arr1[i] );
+            if (in_helper_arr == false){
+                helper_arr[helper_indx++] = arr1[i];
+                result[k++] = arr1[i];
+            }
+        }
+    }
+    
+    // перебираем второрй массив
+    for (int i = 0; i < size2; i++){
+        in_arr1 = in_massive(arr1, size1, arr2[i]);
+        if (in_arr1 == false){
+            in_helper_arr = in_massive(helper_arr, helper_size, arr2[i] );
+            if (in_helper_arr == false){
+                helper_arr[helper_indx++] = arr2[i];
+                result[k++] = arr2[i];
+            }
+        }
+    }
+    return result;
+}
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    srand(time(0));
+    
+    int size1, size2, size3;
+    cout << "Введите размер первого массива: ";
+    cin >> size1;
+    cout << "Введите размер второго массива: ";
+    cin >> size2;
+    int* arr1 = new int[size1];
+    int* arr2 = new int[size2];
+    
+    // Заполняем и выводим массив arr1
+    create_arr(arr1, size1);
+    cout << "Первый массив: " << endl;
+    print_arr(arr1, size1);
+    
+    // Заполняем и выводим массив arr2
+    create_arr(arr2, size2);
+    cout << "Второй массив: " << endl;
+    print_arr(arr2, size2);
+    
+    // Определяем size3
+    find_size3(arr1, arr2, size1, size2, size3);
+    cout << "Размер итогового массива: " << size3 << endl;
+    
+    // Объявляем исходный массив arr3
+    int* arr3 = new int[size3];
+    
+    // Принимает возрат ф.ции difference
+    arr3 = intersection(arr1, arr2, size1, size2, size3);
+    
+    // Выводим третий массив
+    cout << "Третий массив: " << endl;
+    print_arr(arr3, size3);
+
+}

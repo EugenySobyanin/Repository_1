@@ -1,0 +1,118 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cmath>
+#include <stdio.h>
+#include <fstream>
+#include <io.h>
+
+using namespace std;
+
+
+
+int main(){
+
+	setlocale(LC_ALL, "RU");
+
+
+
+
+
+	//Работа с файлами
+	_finddata_t myfileinfo;
+
+	long done = _findfirst("my_data.txt", &myfileinfo);
+	int i = _findnext(done, &myfileinfo);
+
+
+
+
+
+
+	//FILE* myfile;
+	//myfile = fopen("my_data.txt", "r");
+
+	//if (myfile == nullptr) {
+	//	cout << "Происходит какая-то дичь";
+	//}
+	//else {
+	//	//запись числа в файл
+	//	fprintf(myfile, "%d", 4444);
+	//	//запись строки в файл
+	//	fprintf(myfile, "%s", "Hello world!");
+
+	//	char str[100]{ 0 };
+	//	int a;
+	//	fscanf(myfile, "%i", str);
+	//	cout << str << endl;
+	//}
+	//fclose(myfile);
+
+
+	
+
+
+
+
+	//Объединения
+	/*Надо разобраться с этим
+	*/
+	union {
+		short component1;
+		int component2;
+		long component3;
+
+	};
+
+	struct A {
+		short i : 2;
+		short j : 2;
+		//int k : 2;
+		
+	};
+
+	cout << sizeof(A) << "\n\n\n";
+
+
+
+
+	// Битовые операции
+	
+	int i = 8;
+	int j = i << 1; // << - оператор который делает сдвиг, все биты сдвигаются на одну позицию влево
+	int f = i >> 1; // >> - сдвигает биты влево
+	cout << j << " " << f << endl;
+
+	cout << (i & j) << endl; // сравнивает по битово - битовое И
+	cout << (i | j) << endl; // битовое ИЛИ
+	cout << (i ^ j) << endl; // битовое исключающее ИЛИ XOR
+
+	
+
+
+
+	//Задача 1
+	int len = 0;
+	// массив в котором 5 строк
+	char* str[5];
+
+
+	for (int i = 0; i < 5; i++) {
+		//Итый элемент равен динамическому массиву
+		str[i] = new char[50] {0};
+		//Заполняем этот массив
+		std::cin.getline(str[i], 50);
+
+		if (strlen(str[i]) > len) {
+			len = strlen(str[i]);
+		}
+	}
+
+	cout << len << endl;
+
+	//удаляем выделенную память
+	for (int i = 0; i < 5; ++i) {
+		delete[] str[i];
+	}
+
+}
+
