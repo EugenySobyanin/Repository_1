@@ -1,0 +1,112 @@
+#include <iostream>
+using namespace std;
+
+
+int* create_arr(int size){
+    /*Функция создания динамического массива*/
+    return new int[size];
+}
+
+
+void randomizer(int* arr, int size){
+    /*Заполняет массив случайными числами*/
+    for (int i = 0; i < size; i++){
+        arr[i] = -10 + rand() % 21;
+    }
+}
+
+
+template<typename T>
+void print_arr(T* arr, int size){
+    /*Выводит массив в коносоль*/
+    for (int i = 0; i < size; i++){
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+
+template <typename T>
+void relloc(T* &arr, int size, int newsize) {
+    /*Функция реалокации массива
+    - урезает массив, если для него требуется меньший размер*/
+    if (size = newsize) {
+        return;
+    }
+    T* newArr = new T[size];
+    T sz = newsize < size ? newsize : size;
+    for (int i = 0; i < sz; ++i) {
+        newArr[i] = arr[i];
+    }
+    delete[] arr;
+    arr = newArr;
+}
+
+
+template <typename T>
+int* distribution(T* arr, int size, T* &positive_el, T* &negative_el, T* &zero_el){
+    /*Распределяем эл.ты массива по трем массивам:
+    положительные эл.ты, отрицательные эл.ты, нулевые эл.ты,
+    возращает массив с размером 3 массивов*/
+    
+    int new_size_positive = 0, new_size_negative = 0, new_size_zero = 0;
+    int* new_sizes = new int[3];
+    
+    for(int i = 0; i < size; i++){
+        if (arr[i] > 0){
+            positive_el[new_size_positive++] = arr[i];
+        }
+        else if(arr[i] < 0){
+            negative_el[new_size_negative++] = arr[i];
+        }
+        else{
+            zero_el[new_size_zero++] = arr[i];
+        }
+    }
+    relloc(positive_el, size, new_size_positive);
+    relloc(negative_el, size, new_size_negative);
+    relloc(zero_el, size, new_size_zero);
+    //new_sizes = {new_size_positive, new_size_negative, new_size_zero};
+    new_sizes[0] = new_size_positive;
+    new_sizes[1] = new_size_negative;
+    new_sizes[2] = new_size_zero;
+    return new_sizes;
+}
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    srand(time(0));
+    
+    // Создаем статический массив
+    const int size = 10;
+    int arr[size] = {};
+    
+    // Заполняем массив случайными числами
+    // и выводим в консоль
+    randomizer(arr, size);
+    cout << "Исходный массив: " << endl;
+    print_arr(arr, size);
+    
+    //Создаем 3 динамических массива,
+    // куда будут распределены эл.ты
+    int* positive_el = create_arr(size);
+    int* negative_el = create_arr(size);
+    int* zero_el = create_arr(size);
+    
+    // Распределяем эл.ты по массивам
+    // и возвращаем массив с их размерами
+    int* new_size = new int[3];
+    new_size = distribution(arr, size, positive_el, negative_el, zero_el);
+    
+    // Выводим получившиеся массивы на экран
+    cout << "Массив положительных чисел: " << endl;
+    print_arr(positive_el, new_size[0]);
+    cout << "Массив отрицательных чисел: " << endl;
+    print_arr(negative_el, new_size[1]);
+    cout << "Массив нулевых чисел: " << endl;
+    print_arr(zero_el, new_size[2]);
+    
+    delete[] positive_el, negative_el, zero_el, new_size;
+}
+
