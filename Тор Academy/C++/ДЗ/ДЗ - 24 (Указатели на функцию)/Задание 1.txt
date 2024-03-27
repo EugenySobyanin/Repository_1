@@ -1,0 +1,112 @@
+#include <iostream>
+#include <time.h>
+using namespace std;
+
+
+int max_in_two_arr(int* arr1, int* arr2, int size1, int size2){
+    /*Ищет максимальное значение в 2-х массивах*/
+    int max_el = arr1[0];
+    for (int i = 0; i < size1; ++i){
+        if(arr1[i] > max_el){
+            max_el = arr1[i];
+        }
+    }
+    for (int i = 0; i < size2; ++i){
+        if (arr2[i] > max_el){
+            max_el = arr2[i];
+        }
+    }
+    return max_el;
+}
+
+
+int min_in_two_arr(int* arr1, int* arr2, int size1, int size2){
+    /*Ищет максимальное значение в 2-х массивах*/
+    int min_el = arr1[0];
+    for (int i = 0; i < size1; ++i){
+        if(arr1[i] < min_el){
+            min_el = arr1[i];
+        }
+    }
+    for (int i = 0; i < size2; ++i){
+        if (arr2[i] < min_el){
+            min_el = arr2[i];
+        }
+    }
+    return min_el;
+}
+
+
+int avg_in_two_arr(int* arr1, int* arr2, int size1, int size2){
+    /*Ищем среднее значение в двух массивах*/
+    int sum = 0;
+    for (int i = 0; i < size1; i++){
+        sum += arr1[i];
+    }
+    for (int i = 0; i < size2; i++){
+        sum += arr2[i];
+    }
+    return sum / (size1 + size2);
+}
+
+template <typename T>
+void randomizer(T* arr, int size){
+    /*Заполняет массив случайными числами*/
+    for (int i = 0; i < size; i++){
+        arr[i] = rand() % 20;
+    }
+}
+
+
+template <typename T>
+void print_arr(T* arr, int size){
+    /*Вывод массива в консоль*/
+    for (int i = 0; i < size; i++){
+        cout << arr[i] << " "; 
+    }
+    cout << endl;
+}
+
+//template <typename T>
+int Action(int* arr1, int* arr2, int size1, int size2, int (*function)(int*, int*, int, int)){
+    return (*function)(arr1, arr2 , size1, size2);
+}
+
+
+int main(){
+    srand(time(0));
+    int size1 = 10;
+    int size2 = 15;
+    int* arr1 = new int[size1];
+    int* arr2 = new int[size2];
+    randomizer(arr1, size1);
+    randomizer(arr2, size2);
+    cout << "Первый массив: " << endl;
+    print_arr(arr1, size1);
+    cout << "Второй массив: " << endl;
+    print_arr(arr2, size2);
+    
+    // int (*function)(int*, int*, int, int); // указатель на функцию
+    // function = max_in_two_arr;
+    // cout << function(arr1, arr2, size1, size2);
+
+    int choice;
+    cout << "\n\nВыберите опцию:\nНайти максимальный эл.т - 1\n";
+    cout << "Найти минимальный эл.т - 2\n";
+    cout << "Найти среднее значение - 3\nВвод: ";
+    cin >> choice;
+    switch(choice){
+        case(1):
+            cout << "Максимальный элемент: " << endl;      
+            cout << Action(arr1, arr2, size1, size2, max_in_two_arr);
+            break;
+        case(2):
+            cout << "Минимальный элемент: " << endl;        
+            cout << Action(arr1, arr2, size1, size2, min_in_two_arr);
+            break;
+        case(3):
+            cout << "Среднее значение: " << endl;        
+            cout << Action(arr1, arr2, size1, size2, avg_in_two_arr);
+            break;
+    }
+}

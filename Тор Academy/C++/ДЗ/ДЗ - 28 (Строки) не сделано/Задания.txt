@@ -34,9 +34,14 @@ char* changeWord(char* text, char* word)
     Запрашивает у пользователя слово для замены
     Возврщает текст в котором слово из аргумента заменено на слово пользователя*/
     int text_len = strlen(text);
-    char* result = new char[text_len];
-    result = text;
-    return result;
-
-    
+    char* p;
+    p = strstr(text, word);
+    cout << p << endl;
+    if(p){
+        return p;
+    }
+    else{
+        char* word = new char[50]{"Что-то пошло не так"};
+        return word;
+    }
 }

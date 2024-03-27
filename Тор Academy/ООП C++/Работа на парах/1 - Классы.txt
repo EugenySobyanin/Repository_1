@@ -1,0 +1,182 @@
+#define _CRT_SECURE_NO_WARNINGS 
+
+#include <iostream>
+#include <cstring>
+#include <time.h>
+#include <stdio.h>
+#include <fstream>
+using namespace std;
+
+//    ООП
+//    Классы
+
+
+// Просто пример
+class Person {
+public:
+	Person() {
+		strcpy(_name, "no name");
+		_age = -1;
+	}
+
+	Person(const char* name, int age) {
+		strcpy(_name, name);
+		_age = age;
+	}
+
+	void print() {
+		cout << _name << ", " << _age << endl;
+	}
+
+
+private:
+	char _name[50];
+	int _age;
+};
+
+// Задание 1
+class Student {
+public:
+	Student(const char* fullname, const char* birthday, const char* telephone, const char* group_number) {
+		strcpy(_fullname, fullname);
+		strcpy(_birth_day, birthday);
+		strcpy(_telephone, telephone);
+		strcpy(_group_number, group_number);
+	}
+
+	void print() {
+		cout << "Good luck" << endl;
+	}
+	char* getName() { return _fullname; }
+	char* getTelephone() { return _telephone; }
+
+
+
+private:
+	char _fullname[50];
+	char _birth_day[10];
+	char _telephone[20];
+	char _town[50] = "Tver";
+	char _country[50] = "Russia";
+	char _group_number[10];
+
+};
+
+// Задание 2
+class Point {
+public:
+	// конструктор
+	Point(int x, int y, int z) : _x{ x }, _y{ y }, _z{ z } { // при такой записи переменные сразу записываются в поля
+		++count;
+	};
+
+	Point(int x) : Point(x, 0, 0) {}
+	Point (int x, int y) : Point(x, y, 0) {}
+	//Point(int x, int y, int z) : Point(x, y, z) {}
+	~Point() {}
+
+	// Геттеры
+	int getX() { return _x; }
+	int getY() { return _y; }
+	int getZ() { return _z; }
+	// Сеттеры
+	//void setX(int x) { _x = x; }
+	void setY(int y) { _y = y; }
+	void setZ(int z) { _z = z; }
+
+	void in_file() {
+		/* Записываем данные координат в файл */
+
+		ofstream file;
+		file.open("c:/Sobyanin_Eugeny/point_task.txt");
+		
+		file << "x = " << _x << "\n";
+		file << "y = " << _y << "\n";;
+		file << "z = " << _z << "\n";;
+		file.close();
+	}
+
+	void read_file() {
+		/* Считываем данные из файла */
+
+
+		/*ifstream file("c:/Sobyanin_Eugeny/point_task.txt");;
+		char x_str[10];
+		char y_str[10];
+		char z_str[10];
+		file.getline(x_str, 10);
+		file.getline(y_str, 10);
+		file.getline(z_str, 10);*/
+		FILE* file = fopen("c:/Sobyanin_Eugeny/point_task.txt", "r");
+		if (file != NULL) {
+
+			//fseek(file, 4, SEEK_CUR);
+			//fscanf(file, "%d", &_x);
+
+			fseek(file, 4, SEEK_CUR);
+			fscanf(file, "%d", &_y);
+
+			fseek(file, 4, SEEK_CUR);
+			fscanf(file, "%d", &_z);
+		}
+	}
+	static int count; // статическая переменная
+	static int getCount() { // статический метод, в нем мы можем использовать только статические поля
+		return count;
+	}
+
+
+
+private:
+	const int _x;
+	int _y;
+	int _z;
+	
+};
+
+
+
+// статические поля
+// статические методы
+// делегирование конструктора
+// указатель this
+
+int Point::count = 0; //статическая переменная инициализируется вне класса
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	// Просто пример
+	Person Maxim("Мохов", 38);
+	Maxim.print();
+
+
+	// Задание 1
+	Student Moh("Moh", "26.09.2006", "45-45-22", "6-A");
+	Moh.print();
+	cout << Moh.getName() << endl;
+
+
+	// Задание 2
+	Point a(1, 2, 3);
+	cout << a.getX() << endl; // получили доступ к полю через геттер
+	//a.setX(10);               // поменяли значение поля 
+	cout << a.getX() << endl;
+
+	//a.in_file();            // записываем данные полей в файл
+	a.read_file();            // записываем данные из файла в поля объекта
+	cout << a.getX() << endl;
+
+
+
+
+	Point c(1, 1, 1);
+	Point b(2, 2);
+
+	cout << Point::count << endl;
+	cout << Point::getCount() << endl;;
+
+	 
+
+
+}
