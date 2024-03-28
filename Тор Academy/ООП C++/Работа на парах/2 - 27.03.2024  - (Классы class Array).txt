@@ -1,0 +1,91 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+// Задание: Сделать class Array
+
+// релизация Ахмеда
+class Array {
+public:
+    Array(size_t cap, size_t sz) : capacity{ 8 }, size{ 0 }, arr {new int [capacity]}
+    {}
+
+    Array(size_t cap) : Array(cap, 0)
+    {}
+
+    Array(const Array& obj) : Array(obj.capacity, obj.size)
+    {
+        for (size_t i = 0; i < size; i++) {
+            this->arr[i] = obj.arr[i];
+        }
+    }
+
+    Array& add(int value) {
+
+        if (this->size >= this->capacity) {
+            this->relocation(this->capacity >> 1);
+        }
+        this->arr[size++] = value;
+        return *this;
+    }
+
+    void relocation(size_t new_cap) {
+        int* tmp = new int[new_cap];
+        this->capacity = new_cap;
+        size_t length = new_cap < this->size ? new_cap : this->size;
+        for (size_t i = 0; i < length; i++) {
+            tmp[i] = this->arr[i];
+        }
+        delete[] this->arr;
+        
+        this->arr = tmp;
+        this->size = length;
+    }
+
+
+
+    void print() {
+        for (size_t i = 0; i < this->size; i++) {
+            cout << this->arr[i] << "; ";
+        }
+        cout << endl;
+    }
+
+    Array& Sort() {
+        sort(this->arr, this->arr + this->size);
+
+        return *this;
+    }
+
+    
+    int Maxim() {
+        int tmp = this->arr[0];
+        for (size_t i = 0; i < this->size; i++) {
+            if (this->arr[i] > tmp) {
+                tmp = this->arr[i];
+            }
+        }
+        return tmp;
+    }
+
+private:
+    size_t capacity;
+    size_t size;
+    int* arr;
+};
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    Array arr1(10);
+    // Добавили эл.ты
+    arr1.add(2).add(1).add(-5).add(0);
+    arr1.print();
+    // Отсортировали
+    arr1.Sort();
+    arr1.print();
+    cout << "Максимальный эл.т: " << arr1.Maxim() << endl;
+    
+
+}

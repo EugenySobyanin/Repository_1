@@ -1,0 +1,161 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// Задание библиотека
+
+struct Book{
+  const char* title;
+  const char* author;
+  const char* genre;
+  const char* publishing_house;
+};
+
+
+void show_books(Book *library, int size){
+    /* Вывод книг на экран */
+    
+    cout << endl << "Список всех книг: " << endl;
+    for (int i = 0; i < size; i++){
+        if (library[i].title != NULL){
+            cout << i + 1 << "- " << library[i].title << endl;
+        }
+    }
+}
+
+
+void search_author(Book *library, const char * author, int size){
+    /* Поиск книг по автору */
+    
+    cout << endl << "Книги автора \"" << author << "\" :" << endl;
+    int counter = 0;
+    for (int i = 0; i < size; i++){
+        if (library[i].author == author){
+            ++counter;
+            cout << counter << ".- " << library[i].title << endl;
+        }
+    }
+}
+
+
+void search_title(Book *library, const char * title, int size){
+    /* Поиск книг по названию книги */
+    
+    cout << endl << "Полная информация о книге \"" << title << "\": " << endl;
+    for (int i = 0; i < size; i++){
+        if (library[i].title == title){
+            cout << library[i].title << endl
+                 << library[i].author << endl
+                 << library[i].genre << endl
+                 << library[i].publishing_house << endl;
+        }
+    }
+}
+
+
+void title_sort(Book* library, int size){
+    /*Сортировка по названию*/
+    int comp;
+    bool is_sort = true;
+    int last_indx = size - 1;
+    while (is_sort){
+        is_sort = false;
+        int current_indx = 1;
+        for (int i = 0; i < last_indx; i++){
+            comp = strcmp(library[current_indx].title, library[current_indx - 1].title);
+            if (comp < 0){
+                swap(library[current_indx], library[current_indx - 1]);
+                is_sort = true;
+            }
+            ++current_indx;
+        }
+        --last_indx;
+    }
+}
+
+
+void author_sort(Book* library, int size){
+    /*Сортировка по автору*/
+    int comp;
+    bool is_sort = true;
+    int last_indx = size - 1;
+    while (is_sort){
+        is_sort = false;
+        int current_indx = 1;
+        for (int i = 0; i < last_indx; i++){
+            comp = strcmp(library[current_indx].author, library[current_indx - 1].author);
+            if (comp < 0){
+                swap(library[current_indx], library[current_indx - 1]);
+                is_sort = true;
+            }
+            ++current_indx;
+        }
+        --last_indx;
+    }
+}
+
+
+void published_sort(Book* library, int size){
+    /*Сортировка по издательству*/
+    int comp;
+    bool is_sort = true;
+    int last_indx = size - 1;
+    while (is_sort){
+        is_sort = false;
+        int current_indx = 1;
+        for (int i = 0; i < last_indx; i++){
+            comp = strcmp(library[current_indx].publishing_house, library[current_indx - 1].publishing_house);
+            if (comp < 0){
+                swap(library[current_indx], library[current_indx - 1]);
+                is_sort = true;
+            }
+            ++current_indx;
+        }
+        --last_indx;
+    }
+}
+
+
+int main(){
+    const int size = 10;
+    Book library[size];
+    library[0] = {"Духлесс", "С.Минаев", "роман", "неизвестно"};
+    library[1] = {"99 франков", "Ф. Бегбедер", "роман", "неизвестно"};
+    library[2] = {"101 привычка", "неизвестен", "нон-фикшн", "альпина-паблишер"};
+    library[3] = {"РАБ", "С.Минаев", "роман", "неизвестно"};
+    library[4] = {"Бунт и смута на Руси", "С.Минаев", "исторический", "неизвестно"};
+    library[5] = {"Дети капитана Гранта", "Ж. Верн", "приключения", "неизвестно"};
+    library[6] = {"Любовь живет 3 года", "Ф. Бегбедер", "роман", "неизвестно"};
+    library[7] = {"Человек-паук", "неизвестен", "комиксы", "марвел-комикс"};
+    library[8] = {"Таинственный остров", "Ж. Верн", "приключения", "неизвестно"};
+    library[9] = {"Невероятный Халк", "неизвестен", "комиксы", "марвел-комикс"};
+    
+    // Редактирование поля структуры
+    library[0].publishing_house = "АСТ";
+    cout << library[0].publishing_house << endl;
+    
+    // Вывод в консоль названий всех книг
+    show_books(library, size);
+    
+    // Вывод в консоль книг определенного автора
+    search_author(library, "С.Минаев", 10);
+    
+    // Вывод полной информации о конретной книги
+    search_title(library, "РАБ", 10);
+    
+    //Применяем сортировку по названию
+    cout << "\n\nПрименяет сортировку по названию: " << endl;
+    title_sort(library, size);
+    show_books(library, size);
+    
+    // Применяем сортировку по автору
+    cout << "\n\nПрименяет сортировку по автору: " << endl;
+    author_sort(library, size);
+    show_books(library, size);
+    
+    // Применяем сортировку по издательству
+    cout << "\n\nПрименяет сортировку по издательству: " << endl;
+    published_sort(library, size);
+    show_books(library, size);
+}
+

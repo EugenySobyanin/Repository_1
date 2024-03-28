@@ -1,0 +1,52 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cmath>
+#include <stdio.h>
+#include <fstream>
+#include <io.h>
+
+using namespace std;
+
+int main()
+{
+    FILE* file1 = fopen("file1.txt", "r");
+    FILE* file2 = fopen("file2.txt", "r");
+    char buffer1[100]{ 0 };
+    char buffer2[100]{ 0 };
+
+    // Способ считывания из файла 1
+    if (file1 != NULL) { 
+        while (!feof(file1)) {
+            char s[100];
+            fgets(s, 100, file1);
+            
+            strcat(buffer1, s);
+        }
+    }
+    else {
+        cout << "ERORR!";
+    }
+
+
+    // Способ считывания из файла 2
+    if (file2 != NULL) {
+        while (!feof(file2)) {
+            size_t size = 0;
+            fgets(buffer2 + size, 100, file2);
+            size = strlen(buffer1);
+        }
+    }
+    else {
+        cout << "ERORR!";
+    }
+
+
+    fclose(file1);
+    fclose(file2);
+
+    cout << buffer1 << endl;
+    cout << buffer2 << endl;
+    
+}
+
+
