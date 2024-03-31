@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+char* changeWord(char* text, char* word1, char* word2);
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+
+    char text[] = "Мы сидим в «Vogue Cafe», в котором (как известно из московской тусовки) плохая\n"
+        "кухня, проблемы с паркингом, хамоватый персонал и вечные толпы у барной стойки.\n"
+        "Несмотря на всю кучу сказанных об этом ресторане гадостей, он продолжает оставаться\n"
+        "одним из самых популярных московских заведений.Видимо, тусовка ловит от нахождения\n"
+        "в нем особый, сродни мазохистскому, кайф, если терпит все эти ужасы, сравнимые,\n"
+        "безусловно, только с присутствием в нацистском концлагере.В те моменты, когда очередной\n"
+        "московский тусовщик с именем Мигель или Дэн, отчаянно жестикулируя, рассказывает\n"
+        "тебе очередную историю о том, как его «обхамили в “Vogue”», а после того, как он\n"
+        "попытался поставить на место официанта, еще и специально «отравили дорадой», и при\n"
+        "этом сравнивает сей ресторан с «этим… ну, ты понял… концлагерем… как его… Муратау,\n"
+        "по - моему», – ты понимаешь, что, во - первых, этот...\n";
+
+    char text2[] = "Hello, world";
+    //cout << "Исходный текст: " << endl << text << endl;
+    char word1[] = "во - первых";
+    char word2[] = "ВО - ВТОРЫХ";
+    char word3[] = "world";
+    char word4[] = "Mike";
+    char* result;
+    char* result2;
+    result = changeWord(text, word1, word2);
+    cout << result << endl << endl;
+    result2 = changeWord(text2, word3, word4);
+    cout << result2 << endl << endl;
+
+    
+
+}
+
+
+char* changeWord(char* text, char* word1, char* word2)
+{
+    /*Принимает некий текст, заменяемое слово и
+    слово которое надо заменить*/
+    int new_size = strlen(text) + strlen(word2) - strlen(word1); 
+    char* tmp = new char[new_size];
+    int i = 0;
+    char* p;
+    p = strstr(text, word1); // указатель на первый символо слова, которое нам надо заменить
+    
+    if (p) {
+        /*Копируем в массив tmp часть из массива text
+        которая идет до заменяемого слова (word1)*/ 
+        for (int i = 0; i < strlen(text); i++) {
+            if (i == p - text) {
+                break;
+            }
+            else {
+                tmp[i] = text[i];
+            }
+        }
+        /*Копируем новое слово (word2) в массив tmp*/
+        for (int i = 0; i < strlen(word2); i++) {
+            int indx = p - text + i;
+            tmp[indx] = word2[i];
+        }
+        /*Копируем часть массмва text после заменяемого слова в массив
+        tmp*/
+        // индекс массива text с которого надо начать копирование
+        int text_indx = p - text + strlen(word1); 
+        // индекс массива tmp в который надо начать копирование
+        int tmp_indx = p - text + strlen(word2); 
+        for (int i = 0; i < strlen(text) - text_indx; i++) {
+            tmp[tmp_indx + i] = text[text_indx + i];
+        }
+        return tmp;
+    }
+    else {
+        return new char[100] {"Данное слово в тексте не найдено."};
+        //cout << "Данное слово в тексте не найдено." << endl;
+    }
+}
