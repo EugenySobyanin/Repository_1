@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+
+class Fraction{
+    
+private:
+    int _numerator;
+    int _denominator;
+
+
+public:
+    Fraction(int numerator, int denominator) : _numerator(numerator), 
+                                               _denominator(denominator)
+    {}
+    
+    Fraction() : _numerator(0), _denominator(1)
+    {}
+    
+    
+    int getNumerator() const { return this->_numerator; }
+    int getDenominator() const { return this->_denominator; }
+    void setNumerator(int num) { _numerator = num; }
+    void setDenominator(int denom) { _denominator = denom; }
+    
+    void print(){
+        cout << this->_numerator << "/" << this->_denominator << endl;
+    }
+    
+    // Определение наименьшего общего кратного (возможно стоит вынести из класса)
+    int find_lowest_denominator(int a, int b){
+        int t;
+        while (b != 0) {
+            t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+        
+
+    // Перегрузка оператора +
+    Fraction& operator+=(Fraction& obj){
+        // Получаем общий знаменатель
+        int common_denom = find_lowest_denominator(
+            this->_denominator,
+            obj._denominator);
+        cout << "Общий знаменатель: " << common_denom << endl;
+        // Домножаем числители    
+        this->_numerator *= common_denom / this->_denominator;
+        obj._numerator *= common_denom / obj._denominator;
+        
+        // Получаем результат числителя и записываем общий знаменатель
+        this->_denominator = common_denom;
+        this->_numerator += obj._numerator;
+        
+        return *this;
+    }
+};
+
+
+
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    
+    Fraction obj1(3, 5);
+    Fraction obj2(2, 10);
+    obj1 += obj2;
+    obj1.print();
+
+    
+    
+    
+    
+    
+}

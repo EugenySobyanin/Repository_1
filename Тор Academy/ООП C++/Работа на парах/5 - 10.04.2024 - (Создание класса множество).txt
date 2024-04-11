@@ -1,0 +1,186 @@
+#include <iostream>
+#include <cstring>
+using namespace	std;
+
+//  создать класс множество
+
+
+class Set {
+
+private:
+	size_t cap;
+	size_t size;
+	int* arr;
+
+	void relocation();
+
+	//void relocation(int sz);
+
+
+public:
+	Set(size_t count) : cap(count), size(0), arr(new int[cap])
+	{}
+
+	Set() : Set(0)
+	{}
+
+	// конструктро копирования
+	Set(const Set& obj) : cap(obj.cap), size(obj.size), arr(new int[cap]) 
+	{
+		for (size_t i = 0; i < this->size; i++) {
+			this->arr[i] = obj.arr[i];
+		}
+	}
+
+	// деструктор
+	~Set() {
+		if (this->arr != nullptr) {
+			delete[] this->arr;
+		}
+	}
+	// геттеры
+	int getCap() const { return this->cap; }
+	int getSize() const { return this->size; }
+
+
+	// метод класса который проверяет есть ли эл.т в сете
+	bool isValue(int value) const {
+		for (size_t i = 0; i < this->size; i++) {
+			if (this->arr[i] == value) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	// перегрузка оператора += методом класса
+	Set& operator+=(int value) {
+		if (this->size >= this->cap) {
+			this->relocation();
+		}
+		if (!this->isValue(value)) {
+			this->arr[size++] = value;
+		}
+		
+		return *this;
+
+	}
+
+	// перегрузка += для двух объектов методом класса
+	Set& operator+=(const Set& set) {
+		for (size_t i = 0; i < set.size; i++) {
+			*this += set.arr[i];
+		}
+		return *this;
+	}
+
+	// Перегрузка оператора + дружественной функцией
+	friend Set operator+(const Set& s1, const Set& s2) {
+		Set tmp(s1);
+		tmp += s2;
+		return tmp;
+		
+	}
+
+	// Перегрузка оператора && (пересечение множеств)
+	friend Set operator && (const Set& s1, const Set& s2) {
+		Set tmp;
+		for (size_t i = 0; i < s1.size; i++) {
+			if (s2.isValue(s1.arr[i])) {
+				tmp += s1.arr[i];
+			}
+		}
+		return tmp;
+	}
+
+	// Перегрузка оператора -= (минус-равно)
+	//Set& operator -=(int value) {
+	//	for (size_t i = 0)
+	//}
+
+	// Перегрузка оператора = с помощью метода класса
+	Set& operator=(const Set& obj) {
+		if (this == &obj) {
+			return *this;
+		}
+		delete[] this->arr;
+
+		this->cap = obj.cap;
+		this->size = 0;
+		this->arr = new int[this->cap];
+
+		*this += obj;
+
+		return *this;
+
+	}
+
+
+	// перегрузка оператора вывода дружественной функцией
+	friend std::ostream& operator << (std::ostream& out, const Set& obj) {
+		for (size_t i = 0; i < obj.size; i++) {
+			out << obj.arr[i] << "\t";
+		}
+		out << endl;
+
+		return out;
+	}
+};
+
+// метод класса, реалокации
+void Set::relocation() {
+	this->cap > 0 ? this->cap <<= 1 : this->cap = 8;
+	int* tmp = new int[this->cap];
+	//copy(tmp, tmp + size, this->arr);
+	for (int i = 0; i < size; i++) {
+		tmp[i] = this->arr[i];
+	}
+
+	delete[] this->arr;
+	this->arr = tmp;
+}
+
+//void Set::relocation(int sz) {
+//	this->cap = sz;
+//	int* tmp = new int[this->cap];
+//	copy(tmp, tmp + size, this->arr);
+//	delete[] this->arr;
+//	this->arr = tmp;
+//}
+
+
+int main() {
+	setlocale(LC_ALL, "Ru");
+	
+	Set set0(4);
+	set0 += 1;
+	set0 += 3;
+	set0 += 5;
+	set0 += 7;
+	set0 += 9;
+	set0 += 9;
+	//cout << set << endl;
+
+	Set set2(8);
+	set2 += 3;
+	set2 += 5;
+	set2 += 10;
+	//set += set2;
+
+	//cout << set << endl;
+	//cout << set.getCap() << endl;
+	//cout << set.getSize() << endl;
+
+	//Set set3(10);
+	//set3 = set2 + set;
+
+	//cout << set3 << endl;
+
+	Set set4;
+	set4 = set0 && set2;
+	cout << "set0: " << set0 << endl;
+	cout << "set2: " << set2 << endl;
+	cout << "set4: " << set4 << endl;
+
+}

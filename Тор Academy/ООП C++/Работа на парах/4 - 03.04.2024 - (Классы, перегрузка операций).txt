@@ -1,0 +1,242 @@
+#include <iostream>
+using namespace std;
+
+
+// Конструктор перемещения
+// 
+
+
+
+class Array {
+public:
+	// explicit - отменяет неявные преобразования
+	explicit Array (int size) : size{size}, arr {new int [size]}
+	{
+		this->randomizer();
+	}
+
+	Array() : Array(8)
+	{}
+
+	// Конструктор копирования
+	Array(const Array& obj) : Array(obj.size) {
+		for (int i = 0; i < size; ++i) {
+			this->arr[i] = obj.arr[i];
+		}
+	}
+
+	// Конструктор перемещения
+	Array(Array&& obj) : size{ obj.size }, arr{ obj.arr } {
+		obj.arr = nullptr;
+		obj.size = 0;
+	}
+
+	~Array() {
+		if (this->arr != nullptr) {
+			delete[] this->arr;
+		}
+	}
+
+
+	void bar() const {
+		// cons - запрещает менять поля внутри объекта
+		// но если поля "mutable", то поле можно менять
+		size = 20;
+	}
+
+		
+
+	void randomizer(int s = 0, int e = 101) {
+		for (size_t i = 0; i < this->size; i++) {
+			this->arr[i] = rand() % (s - s) + s;
+		}
+	}
+
+	/*void print() {
+		for (int i = 0; i < this->size; i++) {
+			cout << this->arr[i] << " ";
+		}
+		cout << endl;
+	}*/
+
+
+	// Перегрозка оператора вывода
+	friend std::ostream& operator<<(std::ostream& out, const Array& obj) {
+		for (int i = 0; i < obj.size; i++) {
+			out << obj.arr[i] << " ";
+		}
+		out << endl;
+
+		return out;
+	}
+
+	friend std::istream& operator>>(std::istream& in, const Array& obj) {
+		for (size_t i = 0; i < obj.size; i++) {
+			in >> obj.arr[i];
+		}
+		return in;
+	}
+
+
+
+
+
+	// Перегрузка оператора =
+	Array& operator=(const Array& obj) {
+		
+		if (this == &obj) {
+			return *this;
+		}
+
+		delete[] this->arr;
+
+		this->size = obj.size;
+		this->arr = new int[size];
+
+		for (size_t i = 0; i < size; i++) {
+			this->arr[i] = obj.arr[i];
+		}
+
+		return *this;
+	}
+
+	// Перегрузка инкремента префиксная форма
+	Array operator++() {
+		for (size_t i = 0; i < size; i++) {
+			++arr[i];
+		}
+
+		return *this;
+	}
+
+	// Перегрузка инкремента постфикная форма
+	Array operator++(int) {
+
+		Array tmp = *this;
+		for (size_t i = 0; i < size; i++) {
+			++arr[i];
+		}
+
+		return tmp;
+	}
+
+	// Дружественная функция 
+	// Перегрузка оператора +
+	friend Array operator+(const Array& obj1, const Array& obj2);
+
+
+private:
+	mutable int size;
+	int* arr;
+
+};
+
+Array bar() {
+	return Array();
+}
+
+
+Array operator+(const Array& obj1, const Array& obj2) {
+	
+	int size = obj1.size + obj2.size;
+	Array tmp(size);
+	size_t i;
+	for (i = 0; i < obj1.size; i++) {
+		tmp.arr[i] = obj1.arr[i];
+	}
+	int k = 0;
+	for (i; i < size; i++) {
+		tmp.arr[i] = obj2.arr[k++];
+	}
+	return tmp;
+}
+
+
+class Set {
+public:
+	Set(int len) : cap{ len }, size{ 0 }, arr { new int[cap] }
+	{}
+
+	friend std::ostream& operator<<(std::ostream& out, const Set& obj) {
+		for (int i = 0; i < obj.size; i++) {
+			out << obj.arr[i] << " ";
+		}
+		out << endl;
+
+		return out;
+	}
+
+
+	bool isElement(int key) {
+		for (size_t i = 0; i < this->size; i++) {
+			if (this->arr[i] == key) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	
+	// Перегрузка оператора +=
+	void operator+=(int val) {
+		if (!isElement(val)) {
+			this->arr[size++] = val;
+		}
+		    
+	}
+
+	bool el_in_set(const Set& obj, int el) {
+		for (size_t i = 0; i < obj.size; i++) {
+			if (obj.arr[i] == el) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	// Перегрузка оператора +
+	friend Set operator+(const Set& obj1, const Set& obj2) {
+		int new_cap;
+		for (size_t i = 0; i < obj1.cap; i++) {
+			if (!el_in_set(obj2, obj1.arr[i])){
+				++new_cap;
+			}
+
+		}
+
+
+
+	}
+
+
+
+private:
+	int cap;
+	int size;
+	int* arr;
+};
+
+
+
+
+int main() {
+
+	Set mset(9);
+
+	mset += 10;
+	mset += 20;
+	mset += 30;
+	mset += 20;
+	std::cout << mset;
+
+
+
+	Array arr;
+
+	cout << arr;
+
+
+
+}

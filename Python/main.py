@@ -1,10 +1,17 @@
-import datetime as dt
+
+def fib():
+    x1 = 0
+    x2 = 1
+    def get_next_number():
+        nonlocal x1, x2
+        x3 = x1 + x2
+        x1, x2 = x2, x3
+        return x3
+    return get_next_number
 
 
-dt_now = dt.datetime.now()
+foo = fib()
 
-
-
-test = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-print(test[:3])
+for i in range(10):
+    print(f'Итерация {i}')
+    print(foo())
