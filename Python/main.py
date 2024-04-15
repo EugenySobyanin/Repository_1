@@ -1,17 +1,46 @@
+class Bird:
+    def __init__(self, name, size):
+        self.name = name
+        self.size = size
 
-def fib():
-    x1 = 0
-    x2 = 1
-    def get_next_number():
-        nonlocal x1, x2
-        x3 = x1 + x2
-        x1, x2 = x2, x3
-        return x3
-    return get_next_number
+    
+    def describe(self, full=False):
+        return f'Размер птицы {self.name} — {self.size}.'
+    
 
+class Parrot(Bird):
+    def __init__(self, name, size,color):
+        super().__init__(name, size)
+        self.color = color
 
-foo = fib()
+    def describe(self, full=False):
+        if full:
+            return (f'Попугай {self.name} — заметная птица, окрас её перьев — {self.color}, '
+                    f'а размер — {self.size}. Интересный факт: попугаи чувствуют ритм, '
+                    f'а вовсе не бездумно двигаются под музыку. Если сменить композицию, '
+                    f'то и темп движений птицы изменится.')
+        else: 
+            return super().describe(full)
 
-for i in range(10):
-    print(f'Итерация {i}')
-    print(foo())
+    
+
+class Penguin(Bird):
+    def __init__(self, name, size,genus):
+        super().__init__(name, size)
+        self.genus = genus
+    
+    def describe(self, full=False):
+        if full:
+            return (f'Размер пингвина {self.name} из рода {self.genus} — {self.size}. '
+                    f'Интересный факт: '
+                    f'однажды группа геологов-разведчиков похитила пингвинье яйцо, '
+                    f'и их принялась преследовать вся стая, не пытаясь, впрочем, при этом нападать. '
+                    f'Посовещавшись, похитители вернули птицам яйцо, и те отстали.')
+        else:
+            return super().describe(full)
+
+kesha = Parrot('Ара', 'средний', 'красный')
+kowalski = Penguin('Королевский', 'большой', 'Aptenodytes')
+
+print(kesha.describe())
+print(kowalski.describe(True))
