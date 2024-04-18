@@ -1,0 +1,164 @@
+#include <iostream>
+using namespace std;
+
+
+// Определение наименьшего общего делителя (возможно стоит вынести из класса)
+int find_max_diveder(int a, int b){
+    int t;
+    while (b != 0) {
+        t = b;
+        b = a % b;
+        a = t;
+    }
+        return a;
+}
+
+
+class Fraction{
+    
+private:
+    int _numerator;
+    int _denominator;
+
+
+public:
+    Fraction(int numerator, int denominator) : _numerator(numerator), 
+                                               _denominator(denominator)
+    {}
+    
+    // Конструктор по умолчанию
+    Fraction() : _numerator(0), _denominator(1)
+    {}
+    
+    // Конструктор копирования
+    Fraction(const Fraction& obj) : _numerator(obj._numerator), _denominator(obj._denominator)
+    {}
+    
+    
+    // Геттеры и сеттеры
+    int getNumerator() const { return this->_numerator; }
+    int getDenominator() const { return this->_denominator; }
+    void setNumerator(int num) { _numerator = num; }
+    void setDenominator(int denom) { _denominator = denom; }
+    
+    
+    // Метод класса - вывод дроби
+    void print(){
+        cout << this->_numerator << "/" << this->_denominator << endl;
+    }
+    
+    
+    /*Метод класса - сумма дробей
+    - принимает объект класса Fraction
+    - возврщает указатель на объект класса(меняет первую дробь)*/
+    Fraction& SumFraction(const Fraction& obj){
+        
+        // Копируем объект obj (второе слагаемое)
+        Fraction obj_copy(obj);
+        // Приводим дроби к общему знаменателю
+        to_common_denominator(*this, obj_copy);
+        this->_numerator += obj_copy._numerator;
+        reduction(*this);
+        return *this;
+    }
+    
+    
+    /*Метод класса - разность дробей
+    - принимает объект класса Fraction
+    - возврщает указатель на объект класса(меняет первую дробь)*/
+    Fraction& Difference(const Fraction& obj){
+        
+        // Копируем объект obj (вычитаемое)
+        Fraction obj_copy(obj);
+        // Приводим дроби к общему знаменателю
+        to_common_denominator(*this, obj_copy);
+        this->_numerator -= obj_copy._numerator;
+        reduction(*this);
+        return *this;
+    }
+    
+    
+    /*Метод класса - умножение дробей*/
+    Fraction& Mult(const Fraction& obj){
+        
+        this->_numerator *= obj._numerator;
+        this->_denominator *= obj._denominator;
+        reduction(*this);
+        return *this;
+    }
+    
+    
+    /*Метод класса - деление дробей*/
+    Fraction& Division(const Fraction& obj){
+        
+        this->_numerator *= obj._denominator;
+        this->_denominator *= obj._numerator;
+        reduction(*this);
+        return *this;
+    }
+    
+    
+    // Дружественная функция - сокращение дроби
+    friend void reduction(Fraction& obj){
+        /*Находим наибольший общий делитель
+        для числителя и знаменателя*/
+        int max_diveder = find_max_diveder(obj._numerator, obj._denominator);
+        obj._numerator /= max_diveder;
+        obj._denominator /= max_diveder;
+    }
+
+    
+    // Дружественная функция - Приведение дробей к общему знаменателю
+    friend void to_common_denominator(Fraction& obj1, Fraction& obj2){
+        
+        // Случай если дроби уже с общим знаменателем
+        if (obj1._denominator == obj2._denominator){
+            return;
+        }
+        
+        // Находим наибольший общий делитель
+        int max_diveder = find_max_diveder(
+            obj1._denominator,
+            obj2._denominator);
+            
+        // Если наибольший общий делитель 1
+        if (max_diveder == 1){
+            int tmp = obj1._denominator;
+            obj1._denominator *= obj2._denominator;
+            obj1._numerator *= obj2._denominator;
+            obj2._denominator *= tmp;
+            obj2._numerator *= tmp;
+            
+        }
+        // Если знаменатель второрй дроби больше чем знаменатель первой
+        else if (obj2._denominator > obj1._denominator){
+            // Множитель на который домножаем первую дробь
+            int mult = obj2._denominator / max_diveder;
+            obj1._denominator *= mult;
+            obj1._numerator *= mult;
+        }
+        // Если знаменатель первой дроби больше чем знаменатель второй
+        else if (obj1._denominator > obj2._denominator){
+            // Множитель на который домножаем вторую дробь
+            int mult = obj1._denominator / max_diveder;
+            obj2._denominator *= mult;
+            obj2._numerator *= mult;
+        }
+        else{
+            cout << "Произошла непредвиденная ошибка." << endl;
+        }
+    }
+    
+};
+
+
+int main(){
+    setlocale(LC_ALL, "RU");
+    
+    Fraction obj1(6, 6);
+    Fraction obj2(3, 3);
+    obj1.Difference(obj2).print();
+    
+    
+
+} 

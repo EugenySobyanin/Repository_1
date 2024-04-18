@@ -1,0 +1,123 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+using namespace std;
+
+class Book {
+
+private:
+    char* _author;
+    char* _title;
+    char* _publisher;
+    int _year;
+    int _quantity;
+    int _pages_range;
+    
+
+
+public:
+
+    Book(const char* author,
+        const char* title,
+        const char* publisher,
+        int year,
+        int quantity,
+        int pages_range) :
+        _author(new char[strlen(author) + 1]),
+        _title(new char[strlen(title) + 1]),
+        _publisher(new char[strlen(publisher) + 1]),
+        _year(year),
+        _quantity(quantity),
+        _pages_range(pages_range)
+    {
+        strcpy(_author, author);
+        strcpy(_title, title);
+        strcpy(_publisher, publisher);
+    }
+
+    /*explicit Book(): Book("no author", "no_author", "no_publisher", 0, 0, 0)
+    {}*/
+
+
+    Book()
+    {}
+    
+
+    // Конструктор копирования
+    Book (const Book& obj) : 
+        _author(new char[strlen(obj._author) + 1]),
+        _title(new char[strlen(obj._title) + 1]),
+        _publisher(new char[strlen(obj._publisher) + 1]),
+        _year(obj._year),
+        _quantity(obj._quantity),
+        _pages_range(obj._pages_range)
+    {
+        strcpy(_author, obj._author);
+        strcpy(_title, obj._title);
+        strcpy(_publisher, obj._publisher);
+    }
+
+
+    ~Book() {
+        delete[] this->_author;
+        delete[] this->_title;
+        delete[] this->_publisher;
+    }
+
+
+    const char* getTitle() const {return this->_title; }
+    const char* getAuthor() const { return this->_author; }
+    const char* getPublisher() const { return this->_publisher; }
+
+    void print_book() {
+        cout << this->_author << " "
+            << this->_title << " "
+            << this->_publisher << " "
+            << this->_year;
+    }
+
+    friend ostream& operator << (ostream& out, const Book& book) {
+        out << book._author << " " << book._title << " " << book._publisher << " " << book._year << endl;
+        return out;
+    }
+
+
+};
+
+void get_books(Book* books, const char* str, int size_libary) {
+    for (size_t i = 0; i < size_libary; i++) {
+        if (strcmp(books[i].getAuthor(), str) == 0 or strcmp(books[i].getPublisher(), str) == 0){
+        // if (5 == 5){
+            cout << books[i];    
+        }
+    }
+}
+
+
+//void get_books(Book* books, int year, int size_libary) {
+//    for (size_t i = 0; i < size_libary; i++) {
+//        if (strcmp(books[i].getAuthor(), str) == 0) {
+//            cout << books[i];
+//        }
+//    }
+//}
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+
+
+    Book obj1("С.Минаев", "Духлесс", "Издат", 2003, 150000, 345);
+    Book obj2("Ф.Бегбедер", "99 франков", "Издат", 1998, 200000, 370);
+    Book obj3("С.Минаев", "Селфи", "Издат", 2015, 90000, 310);
+    Book obj4("Ф.Бегбедер", "Любовь живет 3 года", "Нью издат", 2001, 230000, 290);
+    Book obj5("C.Кинг", "22.11.1963", "Нью издат", 2009, 650000, 690);
+    Book obj6("C.Кинг", "Оно", "Нью издат", 2011, 2000000, 540);
+
+    Book book_list[] = {obj1, obj2, obj3, obj4, obj5, obj6};
+
+    get_books(book_list, "С.Минаев", 6);
+    
+}
+
+

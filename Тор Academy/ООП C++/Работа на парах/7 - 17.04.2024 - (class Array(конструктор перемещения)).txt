@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+class Array {
+private:
+    int cap;
+    int size;
+    int* arr;
+
+
+public:
+    Array(int c): cap(c), size(0), arr(new int[cap])
+    {}
+    Array() : Array(8)
+    {}
+
+    // конструктор копирования
+    Array(const Array& obj) : Array(obj.cap){
+        this->size = obj.size;
+        for (size_t i = 0; i < this->size; i++) {
+            this->arr[i] = obj.arr[i];
+        }
+    }
+
+    // конструктор перемещения
+    Array(Array&& obj) :cap(obj.cap), size(obj.size), arr(obj.arr)
+    {
+        obj.arr = nullptr;
+        obj.size = 0;
+        obj.cap = 0;
+    }
+    
+    // перегрузка оператора []
+    int& operator[](int index) {
+        return this->arr[index];
+    }
+
+    // непонятно нахрена нужен
+    const int operator[](int index) const {
+        return this->arr[index];
+    }
+
+    // перегрузка оператора +=
+    Array& operator+=(int val) {
+        this->arr[size++] = val;
+
+        return *this;
+    }
+
+    // перегрузка оператора = (через копирование)
+    Array& operator=(const Array& obj) {
+        if (this == &obj) {
+            return *this;
+        }
+        delete this->arr;
+
+        this->cap = obj.cap;
+        this->size = obj.size;
+        this->arr = new int[cap];
+        for (size_t i = 0; i < this->size; i++) {
+            this->arr[i] = obj.arr[i];
+        }
+
+        return *this;
+    }
+
+    // перегрузка оператора присваивания через перемещение
+    Array& operator=(Array&& obj) {
+        delete this->arr;
+
+        this->cap = obj.cap;
+        this->size = obj.size;
+        this->arr = obj.arr;
+
+        obj.arr = nullptr;
+        obj.size = 0;
+        obj.cap = 0;
+
+        return *this;
+    }
+
+    friend ostream& operator <<(ostream& out, const Array& obj) {
+        for (size_t i = 0; i < obj.size; i++) {
+            out << obj.arr[i] << " ";
+        }
+        cout << endl;
+        return out;
+    }
+
+};
+
+
+int main()
+{
+    Array obj1;
+    obj1 += 1;
+    obj1 += 2;
+    cout << obj1;
+    cout << obj1[0];
+}
