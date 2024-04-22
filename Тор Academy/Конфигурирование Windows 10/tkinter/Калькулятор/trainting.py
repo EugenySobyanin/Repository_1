@@ -1,20 +1,20 @@
-from tkinter import *
-from tkinter import ttk
- 
-def show_message():
-    label["text"] = entry.get()     # получаем введенный текст
- 
-root = Tk()
-root.title("METANIT.COM")
-root.geometry("250x200") 
- 
-entry = ttk.Entry()
-entry.pack(anchor=NW, padx=6, pady=6)
-  
-btn = ttk.Button(text="Click", command=show_message)
-btn.pack(anchor=NW, padx=6, pady=6)
- 
-label = ttk.Label()
-label.pack(anchor=NW, padx=6, pady=6)
-  
-root.mainloop()
+def correct_bracket(expression):
+    stack = []
+    open_brackets = '([{'
+    close_brackets = ')]}'
+    expression = str(expression)
+    for i in range(len(expression)):
+        if expression[i] in open_brackets:
+            stack.append(expression[i])
+        elif expression[i] in close_brackets:
+            if close_brackets.find(expression[i]) == open_brackets.find(stack[len(stack) - 1]):
+                stack.pop()
+            else:
+                return False
+    return True
+
+
+test1 = '([)]'
+
+
+print(correct_bracket(test1))
