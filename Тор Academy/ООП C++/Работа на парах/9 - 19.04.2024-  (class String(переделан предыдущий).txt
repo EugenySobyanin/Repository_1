@@ -1,0 +1,180 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+using namespace std;
+
+// класс стринг
+
+class String {
+private:
+    int cap;
+    int size;
+    char* str;
+public:
+    String(const char* word) : cap(strlen(word) + 1), size(strlen(word)), str(new char[cap]) {
+        strcpy(str, word);
+        this->str[size] = '\0';
+    }
+    String() : String("") 
+    {
+        delete[] str;
+    }
+
+    // конструктор копирования
+    String(const String& obj) {
+        this->cap = obj.cap;
+        this->size = obj.size;
+        this->str = new char[this->size];
+        strcpy(str, obj.str);
+    }
+
+    // конструктор перемещения
+    String(String&& obj) : cap(obj.cap), size(obj.size), str(obj.str) {
+
+        obj.str = nullptr;
+        obj.cap = 0;
+        obj.size = 0;
+    }
+
+
+    //~деструктор
+    ~String() {
+        delete[] this->str;
+    }
+    
+
+    // перегрузка оператора +   // нужно заново выделить память
+    //String& operator+(const String& obj) {
+    //    this->cap = this->cap + obj.cap;
+    //    this->size = this->size + obj.size;
+    //    const int sz = this->cap;
+    //    //char tmp[sz] = 
+    //    //delete[] this->str;
+    //    strcat(this->str, obj.str);
+    //    return *this;
+    //}
+
+
+    void relloc(int c) {
+        char* tmp = new char[c + 1];
+        strcpy(tmp, this->str);
+        delete[] this->str;
+        this->str = tmp;
+        cout << this->str << endl;
+    }
+
+
+    //// перегрузка оператора += (с char)
+    String& operator+=(const char* s) {
+        this->cap += strlen(s);
+        this->size += strlen(s);
+        relloc(this->cap);
+        strcat(this->str, s);
+        return *this;
+
+    }
+
+    // перегрузка оператора += (с объектом String)
+    String& operator+=(const String& s) {
+        *this += s.str;
+        return *this;
+    }
+
+
+    // перегрузка оператора вывода
+    friend ostream& operator<<(ostream& out, const String& obj) {
+        out << obj.str;
+        out << endl;
+        return out;
+    }
+
+
+    // перегрузка оператора присваивания через копирование
+    String& operator=(const String& line) {
+        cout << "Сработала перегрузка оператора присваивания через копирование" << endl;
+        if (this == &line) {
+            return *this;
+        }
+        if (this->cap < line.cap) {
+            this->cap = line.cap;
+            delete[] this->str;
+            this->str = new char[cap];
+        }
+        this->size = line.size;
+        strcpy(this->str, line.str);
+        return *this;
+    }
+
+
+    // перегрузка оператора присваивания через перемещение
+    String& operator=(String&& line) {
+        if (this != &line) {
+            delete[] this->str;
+            this->str = line.str;
+            this->cap = line.cap;
+            this->size = line.size;
+
+            line.str = nullptr;
+        }
+
+        return *this;
+    }
+
+
+    // метод lower()
+    String& lower() {
+        int i = 0;
+        while (this->str[i] != '\0') {
+            if (this->str[i] > 64 and this->str[i] < 91) {
+                this->str[i] += 32;
+            }
+            ++i;
+        }
+        return *this;
+    }
+
+    // метод upper()
+    String& upper() {
+        int i = 0;
+        while (this->str[i] != '\0') {
+            if (this->str[i] > 96 and this->str[i] < 123) {
+                this->str[i] -= 32;
+            }
+            ++i;
+        }
+        return *this;
+    }
+
+
+
+};
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+
+    String obj1("Kfljkljlkej");
+    cout << obj1;
+
+    //String obj2(obj1);
+
+    //String obj2("aaaaaaaaaaaaA");
+    //cout << obj1 + obj2;
+    obj1 += "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    //obj1 += obj2;
+    cout << obj1;
+
+    //String obj3("HELLO, WORLD!");
+    //cout << obj3.lower();
+    //cout << obj3.upper();
+
+    ///*cout << (int)('A') << endl;
+    //cout << (int)('a') << endl;
+    //cout << (int)('z') << endl;*/
+
+    //obj1 = obj3;
+    //cout << obj3;
+
+
+
+    //String obj2;
+}
