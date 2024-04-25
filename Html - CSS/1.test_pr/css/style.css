@@ -1,0 +1,30 @@
+.main-text {
+    color: brown;
+}
+
+.main-link {
+    color:aqua;
+    text-decoration: underline;  /*подчекивание*/
+}
+
+.main-link:hover { /*псевдокласс - срабатывает при наведении на текст*/
+    color: red;
+    text-decoration: double;
+    text-decoration-color: black;
+    cursor: pointer;
+}
+
+.main-link:active { /*псевдокласс - срабатывает при нажатии на текст*/
+    text-decoration: line-through;
+}
+
+.main-link:visited { /*псевдокласс - срабатывает после перехода по ссылке*/
+    color: gray;
+}
+
+body {
+    background: black;
+}
+
+input { color: red;}
+input:focus {color: blue;}
