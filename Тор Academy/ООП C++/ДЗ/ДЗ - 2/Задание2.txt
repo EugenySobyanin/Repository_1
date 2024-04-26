@@ -6,27 +6,56 @@ using namespace std;
 
 // Класс телефонная книга
 
-class Phone_Book{
+class Phone_Book {
 private:
     char* _fullname;
     char* _telephone;
     char* _info;
-    
+
 public:
-    Phone_Book(const char fullname, const char telephone, const char info) : 
-    _fullname(new char[strlen(fullname)+1]), 
-    _telephone(new char[strlen(telephone)+1]),
-    _info(new char[strlen(info)+1])
+    Phone_Book(const char* fullname, const char* telephone, const char* info) :
+        _fullname(new char[strlen(fullname) + 1]),
+        _telephone(new char[strlen(telephone) + 1]),
+        _info(new char[strlen(info) + 1])
     {
         strcpy(_fullname, fullname);
         strcpy(_telephone, telephone);
         strcpy(_info, info);
     }
-    
-    Phone_Book(){
-        
+
+
+    Phone_Book() 
+    {}
+
+
+    const char* getFullname() { return _fullname; }
+    const char* getTelephone() { return _telephone; }
+    const char* getInfo() { return _info; }
+
+    void setFullname(const char* fullname)
+    {
+        _fullname = new char[100];
+        strcpy(_fullname, fullname);
+        _fullname[strlen(fullname)] = '\0';
     }
 };
+
+
+int main() {
+    setlocale(LC_ALL, "RU");
+
+    Phone_Book obj1("Собянин Е.А.", "89040272035", "Никаких данных");
+    cout << obj1.getFullname() << endl;
+    cout << obj1.getTelephone() << endl;
+    cout << obj1.getInfo() << endl;
+
+    Phone_Book obj2;
+    obj2.setFullname("Анатолий Полено");
+    cout << obj2.getFullname() << endl;
+    obj1.setFullname("Чебурек");
+    cout << obj1.getFullname() << endl;
+
+}
 
 
 
