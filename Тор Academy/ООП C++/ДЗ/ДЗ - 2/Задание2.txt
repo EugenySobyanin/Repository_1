@@ -6,14 +6,14 @@ using namespace std;
 
 // Класс телефонная книга
 
-class Phone_Book {
-private:
-    char* _fullname;
-    char* _telephone;
-    char* _info;
+class Abonent {
+
+    char* _fullname{ nullptr };
+    char* _telephone{ nullptr };
+    char* _info{ nullptr };
 
 public:
-    Phone_Book(const char* fullname, const char* telephone, const char* info) :
+    Abonent(const char* fullname, const char* telephone, const char* info="") :
         _fullname(new char[strlen(fullname) + 1]),
         _telephone(new char[strlen(telephone) + 1]),
         _info(new char[strlen(info) + 1])
@@ -24,8 +24,7 @@ public:
     }
 
 
-    Phone_Book() 
-    {}
+    Abonent() {}
 
 
     const char* getFullname() { return _fullname; }
@@ -41,28 +40,46 @@ public:
 };
 
 
-int main() {
-    setlocale(LC_ALL, "RU");
+void show_menu() {
+    cout << "Показать список всех абонентов\t- нажмите 1" << endl;
+    cout << "Добавить абонента\t\t- нажмите 2" << endl;
+    cout << "Удалить абонента\t\t- нажмите 3" << endl;
+    cout << "Найти абонента\t\t\t- нажмите 4" << endl;
+    cout << "Завершить программу\t\t- нажмите 5" << endl;
+}
 
-    Phone_Book obj1("Собянин Е.А.", "89040272035", "Никаких данных");
-    cout << obj1.getFullname() << endl;
-    cout << obj1.getTelephone() << endl;
-    cout << obj1.getInfo() << endl;
 
-    Phone_Book obj2;
-    obj2.setFullname("Анатолий Полено");
-    cout << obj2.getFullname() << endl;
-    obj1.setFullname("Чебурек");
-    cout << obj1.getFullname() << endl;
-
+void add_abonent(Abonent* book) {
+    const char* name;
+    const char* telephone;
+    const char* info;
 }
 
 
 
-int main(){
+
+void functional(int choice) {
+    NULL;
+}
+
+
+int main() {
     setlocale(LC_ALL, "RU");
-    
-    
-    Phone_Book obj1("Собянин Евгений Андреевич", "89040272035", "Доп.инфо отсутствует");
-    
-} 
+
+    Abonent* abonent_list = new Abonent[100];
+    Abonent obj1("Собянин Е.А.", "89040006789");
+    Abonent obj2 = { "Марат", "890001112233", "Риэлтор" };
+    abonent_list[0] = obj1;
+    abonent_list[1] = obj2;
+
+    cout << "Приложение телефонная книга." << endl << endl;
+    int choice;
+    while (true) {
+        show_menu();
+        cin >> choice;
+        functional(choice);
+        if (choice == 5) break;
+    }
+
+
+}

@@ -9,14 +9,14 @@
 
 .main-link:hover { /*псевдокласс - срабатывает при наведении на текст*/
     color: red;
-    text-decoration: double;
+    text-decoration: overlines;
     text-decoration-color: black;
     cursor: pointer;
 }
 
-.main-link:active { /*псевдокласс - срабатывает при нажатии на текст*/
-    text-decoration: line-through;
-}
+/* .main-link:active { /*псевдокласс - срабатывает при нажатии на текст*/
+    /*text-decoration: line-through;
+} */
 
 .main-link:visited { /*псевдокласс - срабатывает после перехода по ссылке*/
     color: gray;
