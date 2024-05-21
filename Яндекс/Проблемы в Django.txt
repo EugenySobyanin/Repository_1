@@ -1,0 +1,8 @@
+Проблемы или недостаточное понимание в Django
+- select_related()
+- методы CBV классов
+	- get_context_data()
+	- get_queryset()
+	- dispath()
+	- form_valid()
+	
