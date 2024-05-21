@@ -65,6 +65,7 @@ def clear_display():
 
 # Создаём основное окно tkinter
 parent = tk.Tk()
+parent.configure(bg="black")
 parent.title("Калькулятор")
 
 # В этой переменной храним значение для отображения на экране
@@ -73,7 +74,7 @@ display.set("")
 
 
 display_entry = tk.Entry(parent, textvariable=display,
-                         font=("Arial", 18), justify="right")
+                         font=("Arial", 18), justify="right", bg="lightpink")
 display_entry.grid(row=0, column=0, columnspan=4,
                    padx=10, pady=10, ipadx=10, ipady=10)
 
@@ -90,13 +91,14 @@ col_val = 0
 
 for label in button_labels:
     if label == '=':
-        tk.Button(parent, text=label, padx=20, pady=20, font=(
-            "Arial", 16), command=calculate_result).grid(row=row_val, column=col_val)
+        tk.Button(parent, text=label, padx=30, pady=30, width=2, height=1, font=(
+            "Arial", 16), bg="sky blue", command=calculate_result).grid(row=row_val, column=col_val)
     elif label == 'C':
-        tk.Button(parent, text=label, padx=20, pady=20, font=(
-            "Arial", 16), command=clear_display).grid(row=row_val, column=col_val)
+        tk.Button(parent, text=label, padx=30, pady=30, width=2, height=1, font=(
+            "Arial", 16), bg="sky blue", command=clear_display).grid(row=row_val, column=col_val)
     else:
-        tk.Button(parent, text=label, padx=20, pady=20, font=("Arial", 16),
+        print(f'Сработал цикл блок элс для {label}')
+        tk.Button(parent, text=label, padx=30, pady=30, width=2, height=1, font=("Arial", 16), bg="sky blue",
                   command=lambda l=label: update_display(l)).grid(row=row_val, column=col_val)
 
     col_val += 1
