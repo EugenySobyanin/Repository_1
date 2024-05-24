@@ -1,0 +1,48 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+using namespace std;
+
+class Date {
+//private:
+//	int day;
+//	int mounth;
+//	int year;
+
+public:
+	int day;
+	int mounth;
+	int year;
+
+
+
+
+
+	Date(int d, int m, int y) : day(d), mounth(m), year(y)
+	{}
+
+
+	//Перегрузка оператора +=
+	Date& operator+=(int days) {
+		this->day += days;
+		this->mounth += day / 30;
+		day %= 30;
+		return *this;
+	}
+
+
+	// Перегрузка оператора вывода
+	friend ostream& operator<<(ostream& out, const Date& obj) {
+		out << obj.day << "/" << obj.mounth << "/" << obj.year << endl;
+		return out;
+	}
+};
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+	Date obj1(30, 12, 2023);
+	cout << obj1;
+	obj1 += 10;
+	cout << obj1;
+	
+}

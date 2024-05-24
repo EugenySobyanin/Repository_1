@@ -1,0 +1,147 @@
+#include <iostream>
+#include <string.h>
+#include <string>
+using namespace std;
+
+// Cтроки string
+
+// Задача 1
+// Удаление комментариев из строки
+void delComment(string& str) {
+	int start = 0, end = 0;
+
+	while (1) {
+		start = str.find("/*", start);
+		if (start != -1) {
+			end = str.find("*/", start);
+			str.replace(start, end - start + 2, "");
+			start = end + 1;
+		}
+		else {
+			break;
+		}
+	}
+
+	start = 0;
+	while (1) {
+		start = str.find("//", start);
+		if (start != -1) {
+			end = str.find("\n", start);
+			str.replace(start, end - start + 2, "");
+			start = end + 1;
+		}
+		else {
+			break;
+		}
+	}	
+}
+
+
+// Задача 2
+// Поиск подстроки и взятие в скобки
+string find_and_bracket(string str, string sub) {
+	int start = 0;
+	while (1) {
+		start = str.find(sub, start);
+		if (start != -1) {
+			str.insert(start, "(");
+			str.insert(start + sub.length() + 1, ")");
+			start += sub.length();
+		}
+		else {
+			break;
+		}
+	}
+	return str;
+}
+
+
+// Задача 3
+void calculate(string& str) {
+	string op1 = "", op2 = "", sign = "";
+	string nums = "1234567890";
+	string signs = "+-";
+
+	for (int i = 0; i < str.length(); ++i) {
+		if (nums.find(str[i]) != -1 and sign == "") {
+			op1 += str[i];
+		}
+		else if (signs.find(str[i]) != -1) {
+			sign += str[i];
+		}
+		else if (nums.find(str[i] != -1 and sign != "")) {
+			op2 += "";
+		}
+		else if (nums.find(str[i]) == -1 and signs.find(str[i]) == -1) {
+			sign = "";
+		}
+
+		int s1 = stoi(op1);
+		int s2 = stoi(op2);
+		
+
+
+
+	}
+}
+
+
+// Задача 3, решает Ахмед
+void calcul(string& s1) {
+	int start = 0, end = 0;
+	while (1) {
+		int operation = s1.find_first_of('+', start);
+		if (operation == -1) break;
+		int pos1 = s1.rfind(" ", operation) + 1;
+		int num1 = stoi(s1.substr(pos1, operation - pos1));
+		
+		int pos2 = s1.find(" ", operation + 1);
+		int num2 = stoi(s1.substr(operation + 1, pos2 - operation));
+
+		string result = to_string(num1 + num2);
+		s1.replace(pos1, pos2 - pos1, result);
+
+		start = pos2;
+	}
+	start = 0;
+	while (1) {
+		int operation = s1.find_first_of("+-", start);
+		if (operation == -1) break;
+		int pos1 = s1.rfind(" ", operation) + 1;
+		int num1 = stoi(s1.substr(pos1, operation - pos1));
+
+		int pos2 = s1.find(" ", operation + 1);
+		int num2 = stoi(s1.substr(operation + 1, pos2 - operation));
+
+		// Здесь нужена проверка какой сейчас оператор, иначе он только складывает
+		string result = to_string(num1 + num2);
+		s1.replace(pos1, pos2 - pos1, result);
+
+
+		start = pos2;
+	}
+}
+
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	string s = "// hello";
+	int start = s.find("//");// or s.find("/*");
+	//cout << start;
+
+	string example = "Начинается текст /*Комментарий1*/ Текст заканчивается //Комментарий2\n";
+	
+	delComment(example);
+	cout << example << endl;
+
+	cout << find_and_bracket("abxxxabxxxxabxxxab", "ab");
+
+	cout << "Задача 3" << endl;
+	string task = "Пример: 5+5 все! 10-2 все!";
+	calcul(task);
+	cout << task << endl;
+
+
+}

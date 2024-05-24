@@ -1,0 +1,131 @@
+#include <iostream>
+#include <string.h>
+#include <string>
+using namespace std;
+
+
+template <typename T>
+
+class Array {
+public:
+
+    int cap;
+    int size;
+    T* arr;
+
+public:
+    Array(int c): cap(c), size(0), arr(new T[cap])
+    {}
+
+    //конструктор по умолчанию с делигированием
+    Array() : Array(16)
+    {}
+
+
+    ~Array() {
+        delete[] this->arr;
+    }
+
+
+    // Конструктор копирования
+    Array(const Array<T>& obj) : Array(obj.cap) {
+        this->size = obj.size;
+        for (int i = 0; i < this->size; ++i) {
+            this->arr[i] = obj.arr[i];
+        }
+    }
+    void relloc(int capParam) {
+        T* tmp = new T[capParam];
+        int sz = size < capParam ? this->size : capParam;
+        for (int i = 0; i < sz; i++) {
+            tmp[i] = this->arr[i];
+        }
+        delete[] this->arr;
+        this->arr = tmp;
+    }
+    // геттеры
+    int getSize() const { return this->size; }
+    int getCap() const { return this->cap; }
+
+    // удаляет лишнюю память
+    void freeExtra() {
+        this->relloc(this->size);
+    }
+    
+    // зануляет все значения
+    void removeAll() {
+        this->size = 0;
+    }
+
+    void Setsize(int size, int grow = 1) {
+        if (size > this->cap) {
+
+        }
+    }
+
+    // Добавляем элемент
+    Array& add(const T& value) {
+        if (size >= cap) {
+            cap <<= 1;
+            this->relloc(cap);
+        }
+        this->arr[size++] = value;
+        return *this;
+    }
+
+    // не дописан
+    /*Array& insertAt(T value, int pos) {
+        if (size >= cap) {
+            cap <<= 1;
+            this->relloc(cap);
+        }
+        for (int i = size; i > pos; --i) {
+            this->arr[i] = this->
+        }
+        return *this;
+    }*/
+
+
+    void RemoveAt(int pos) { this->size = pos; }
+
+
+    // не дописан
+    /*Array append(const T& obj) {
+        int sz = this->size + obj.size;
+        if (sz >= this->cap) {
+            this->relloc(sz);
+        }
+    }*/
+
+
+
+
+    // Перегрузка оператора вывода
+    template<typename U>
+    friend ostream& operator<<(ostream& out, const Array<U>& obj) {
+        for (int i = 0; i < obj.size; i++) {
+            out << obj.arr[i] << " ";
+        }
+        return out;
+    }
+
+
+    
+
+};
+
+
+int main()
+{   
+    //string c = "Головач";
+    Array<int> a(5);
+    a.add(10);
+    a.add(11);
+    a.add(12);
+    a.removeAll();
+    cout << a.arr[0] << endl;
+    cout << a.arr[1] << endl;
+    cout << a.arr[2] << endl;
+
+}
+

@@ -1,0 +1,54 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+
+class Circle {
+private:
+	int radius;
+	int circle;
+	const double PI = 3.141592653589793;
+
+public:
+	Circle(int r): radius(r), circle(2*PI*radius)
+	{}
+
+	Circle(): radius(1)
+	{}
+
+	bool operator==(const Circle& obj) {
+		if (this->radius == obj.radius) return true;
+		else return false;
+	}
+
+	bool operator>(const Circle& obj) {
+		if (this->radius > obj.radius) return true;
+		else return false;
+	}
+
+	bool operator<(const Circle& obj) {
+		if (this->radius < obj.radius) return true;
+		else return false;
+	}
+
+	Circle& operator+=(int num) {
+		radius += num;
+		Circle tmp(radius);
+		this->circle = tmp.circle;
+		return *this;
+	}
+
+
+};
+
+
+int main() {
+
+	Circle obj1(5);
+	Circle obj2(6);
+
+	bool ok = obj1 > obj2;
+	cout << ok;
+
+}
+

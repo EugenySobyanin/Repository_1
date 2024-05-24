@@ -1,0 +1,133 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+#include <cstring>
+
+class Person {
+public:
+    Person(const char* name, int a) : age(a), fullname(new char[50])
+    {
+        strcpy(fullname, name);
+    }
+
+    Person(): Person("", -1)
+    {}
+
+    ~Person() {
+        delete[] this->fullname;
+    }
+
+    void setPerson(const char* name, int age) {
+        this->age = age;
+        strcpy(this->fullname, name);
+    }
+
+
+    const char* getName()const { return fullname; }
+
+    friend std::ostream& operator<<(std::ostream& out, const Person& p) {
+        out << p.fullname << "  " << p.age;
+        return out;
+    }
+
+private:
+    int age;
+    char* fullname;
+};
+
+class Apartment {
+public:
+    Apartment(int countPersons=1, int countRooms=1): countPerson(countPersons), countRooms(countPersons), persons(new Person[countPersons])
+    {}
+
+    ~Apartment() {
+        delete[] persons;
+    }
+
+    Person* &getPerson() { return this->persons; }
+    int getCountPerson()const { return this->countPerson; }
+
+    void setCountPerson(int i) {
+        this->countPerson = i;
+    }
+
+private:
+    int countPerson;
+    int countRooms;
+    Person* persons;
+};
+
+class House {
+public:
+    House(const char* adr, int count) : countFlat(count), address(new char[100]), apartments{ new Apartment[count] }
+    {
+        strcpy(address, adr);
+    }
+
+    ~House() {
+        delete[] address;
+        delete[] apartments;
+    }
+
+    Apartment* getApartment() const { return this->apartments; }
+    int getCountFlat()const { return this->countFlat; }
+
+    friend std::ostream& operator<<(std::ostream& out, const House& house) {
+        Apartment* apartment = house.getApartment();
+        int size = house.getCountFlat();
+        for (size_t i = 0; i < size; i++)
+        {
+            Person* person = (apartment + i)->getPerson();
+            int len = (apartment + i)->getCountPerson();
+            out << "В квартире " << i + 1 << " живут " << len << " людей: ";
+
+            int sz = apartment[i].getCountPerson();
+            for (size_t j = 0; j < sz; j++)
+            {
+                out << "\n\t" << person[j];
+            }
+            out << "\n";
+        }
+
+        return out;
+    }
+
+private:
+    int         countFlat;
+    char*       address;
+    Apartment*  apartments;
+};
+
+void setHouse(House &house) {
+    Apartment* flat = house.getApartment();
+    int size = house.getCountFlat();
+    for (int i = 0; i < size; ++i) {
+        std::cout << "for flat " << i + 1 << " count perons equal: ";
+        int count; std::cin >> count;
+        Person* &person = flat[i].getPerson(); // *(flat + i)
+        delete[] person;
+        person = new Person[count];
+
+        (flat + i)->setCountPerson(count);
+
+        std::cout << "enter age and fullname: \n";
+        for (size_t i = 0; i < count; i++)
+        {
+            char name[50];
+            int age;
+            std::cout << "\t"; std::cin >> age;
+            std::cin >> name;
+            person[i].setPerson(name, age);
+        }
+        //std::cout << std::endl;
+    }
+}
+int main()
+{
+
+    setlocale(LC_ALL, "ru");
+
+    House house("asdsadsa", 3);
+    setHouse(house);
+    std::cout << house;
+}

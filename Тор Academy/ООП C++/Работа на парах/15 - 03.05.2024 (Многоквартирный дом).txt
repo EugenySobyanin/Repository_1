@@ -1,0 +1,143 @@
+// Случается какая-то непонятная ошибка.
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+
+
+
+
+
+// Класс человек
+class Person {
+
+private:
+	char* fullname;
+	int age;
+
+public:
+	Person(const char* name = "Дефолтный человек", int a = 30) : fullname(new char[50]), age(a)
+	{
+		strcpy(fullname, name);
+	}
+
+	// конструктор копирования
+	Person(const Person& obj)
+	{
+		this->age = obj.getAge();
+		strcpy(this->fullname, obj.getName());
+	}
+
+	~Person() {
+		delete[] fullname;
+	}
+
+	void setPerson(const char* name, int age) {
+		this->age = age;
+		strcpy(this->fullname, fullname);
+	}
+
+	const char* getName() const { return fullname; }
+	int getAge() const { return age; }
+};
+
+
+
+
+
+
+// Класс квартира
+class Apartment {
+
+private:
+	int countRooms;
+	Person* persons;
+	int people_count = 0;
+	
+public:
+	Apartment(int count_rooms=0, int count_persons=0): countRooms(count_rooms), persons(new Person[count_persons])
+	{}
+
+	~Apartment() {
+		delete[] persons;
+	}
+
+	Person* getPerson() const { return this->persons; }
+
+	void setPerson(const Person& people)
+	{
+		cout << "People_count = " << people_count << endl;
+		persons[people_count++] = people;
+	}
+};
+
+//int Apartment::people_count = 0;
+
+
+
+
+
+
+// Класс многоквартирный дом
+class House {
+
+public:
+	House(const char* addr="", int apart_count=1) : address(new char[50]), apartments(new Apartment[apart_count])
+	{
+		strcpy(address, addr);
+	}
+
+	~House() {
+		delete[] apartments;
+	}
+
+	Apartment* getApartment() { return this->apartments; }
+
+
+private:
+	char* address;
+	Apartment* apartments;
+};
+
+
+
+
+
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	Person people1("Олег Олег", 28);
+	Person people2("Олег Монгол", 55);
+	Person people3("Олег Младший", 4);
+	Apartment flat(2, 4);
+	Person* persons = flat.getPerson();
+
+	flat.setPerson(people1);
+	flat.setPerson(people2);
+	flat.setPerson(people3);
+
+	cout << "Первый человек" << endl;
+	cout << persons[0].getName() << endl;
+	cout << "Второй человек" << endl;
+	cout << persons[1].getName() << endl;
+	cout << "Третий человек" << endl;
+	cout << persons[2].getName() << endl;
+	/*cout << "Четвертый человек" << endl;
+	cout << persons[3].getName() << endl;*/
+
+
+	
+	
+
+
+
+
+
+}
+

@@ -1,0 +1,65 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+using namespace std;
+
+
+class Airplane {
+private:
+	
+
+public:
+	char* type;
+	int cur_pass;
+	int max_pass;
+	Airplane(const char* t, int cp, int mp) : cur_pass(cp), max_pass(mp), type(new char[100])
+	{
+		strcpy(type, t);
+		type[strlen(type)] = '\0';
+	}
+
+	~Airplane() {
+		delete[] type;
+	}
+
+
+	// перегрузка оператора == (проверяет равенство самолетов по типу)
+	bool operator==(const Airplane& obj) {
+		for (int i = 0; i < strlen(type); i++) {
+			if (type[i] != obj.type[i]) return false;
+			return true;
+		}
+		/*if (type == obj.type) return true;
+		return false;*/
+	}
+
+	// перегрузка оператора ++ (для увеличения кол.ва пассажиров)
+	Airplane& operator++() {
+		this->cur_pass += 1;
+		return *this;
+	}
+
+	Airplane& operator--() {
+		this->cur_pass -= 1;
+		return *this;
+	}
+
+
+};
+
+
+
+int main() {
+
+	Airplane obj1("Боинг", 200, 250), obj2("Боинг2", 400, 500);
+	bool one;
+	one = obj1 == obj2;
+	cout << one << endl;
+
+	++obj1;
+	cout << obj1.cur_pass << endl;
+	--obj1;
+	cout << obj1.cur_pass << endl;
+
+	//cout << obj1.type << endl;
+
+}

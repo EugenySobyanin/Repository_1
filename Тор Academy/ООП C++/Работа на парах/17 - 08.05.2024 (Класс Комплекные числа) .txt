@@ -1,0 +1,89 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <conio.h>
+#include <math.h>
+#include <cstring>
+using namespace std;
+
+
+class Complex {
+
+private:
+	double re, im;
+
+public:
+	Complex(){}
+
+	Complex(double num) : re(num), im(0)
+	{}
+
+	Complex(double num1, double num2) // конструктор по умолчанию
+	{
+		re = num1;
+		im = num2;
+	}
+
+	Complex(const Complex& c)// конструктор копирования
+	{
+		re = c.re;
+		im = c.im;
+	}
+
+	~Complex() {}
+
+
+	const Complex& operator = (const Complex& c)// перегрузка оператора присваивания
+	{
+		re = c.re;
+		im = c.im;
+
+		return (*this);
+	}
+
+
+	friend Complex operator + (const Complex& c, const Complex& v) // перегрузка оператора сложения
+	{
+		return Complex(c.re + v.re, c.im + v.im);	
+	}
+
+
+	friend Complex operator - (const Complex& c, const Complex& v) // перегрузка оператора сложения
+	{
+		return Complex(c.re - v.re, c.im - v.im);
+	}
+
+
+
+
+	friend ostream& operator<<(ostream& out, const Complex& c) // перегрузка оператора <<
+	{
+		out << "(" << c.re << ") + I (" << c.im << ")\n";
+
+		return out;
+	}
+
+	// перегрузка оператора ==
+	friend bool operator==(const Complex& a, const Complex& b)
+	{
+		return (a.re == b.re and a.re == b.re);
+	}
+
+
+	// перегрузка оператора !=
+	friend bool operator!=(const Complex& a, const Complex& b)
+	{
+		return !(a == b);
+	}
+};
+
+
+int main() {
+	Complex obj0;
+	Complex obj1(3, 5);
+	Complex obj2(2, 4);
+	Complex obj3(2, 4);
+	obj0 = obj1 - obj2;
+	cout << (obj2 == obj3);
+	cout << (obj1 != obj2);
+}
+

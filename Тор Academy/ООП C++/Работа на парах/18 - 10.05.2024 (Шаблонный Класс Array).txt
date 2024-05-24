@@ -1,0 +1,127 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+template <typename T>
+class Array {
+
+private:
+	size_t cap;
+	size_t size;
+	T* arr;
+
+public:
+	Array(size_t c): cap(c), size(0), arr(new T[cap]){}
+
+	// Конструктор копирования
+	Array(const Array<T>& obj) : Array(obj.cap) {
+		this->size = obj.size;
+		for (int i = 0; i < this->size; ++i) {
+			this->arr[i] = obj.arr[i];
+		}
+	}
+	
+	// Коструктор перемещения (прототип)
+	Array(Array<T>&& obj);
+
+	// Деструктор
+	~Array() {
+		delete[] arr;
+	}
+
+	void relloc(){}
+
+	// Перегрузка оператора += (прототип)
+	Array& operator+=(T value);
+	
+	// Перегрузка оператор вывода (прототип)
+	template <typename U>
+	friend ostream& operator<<(ostream& out, const Array<U>& obj);
+
+	// Перегрузка орератора []
+	// Для чтения
+	T operator[](int index) const {
+		return this->arr[index];
+	}
+
+	// Для записи
+	T& operator[](int index){
+		return this->arr[index];
+	}
+};
+////////////////////////////////////////////////////////////////////////////////// Конец тела класса
+
+// Специализация шаблона ( не работает )
+//template<>
+//class Array<char*> {
+//
+//private:
+//	size_t cap;
+//	size_t size;
+//	char** arr;
+//
+//public:
+//	Array(const char* str) : cap(1), size(1), arr(new char* [1]) {
+//		arr[0] = new char[strlen(str) + 1];
+//		strcpy(arr[0], str);
+//	}
+//};
+
+
+// Перегрузка оператора +=
+template <typename T>
+Array<T>& Array<T>::operator+=(T value) {
+	if (this->size <= this->cap) {
+		this->relloc();
+	}
+	this->arr[size++] = value;
+	return *this;
+}
+
+
+// Перегрузка оператора вывода
+template <typename U>
+ostream& operator<<(ostream& out, const Array<U>& obj) {
+	for (int i = 0; i < obj.size; ++i) {
+		out << obj.arr[i] << " ";
+	}
+	return out;
+}
+
+
+// не работает (вынос конструктора копирования за пределы класса)
+//template <typename T>
+//Array<T>::Array<T>(const Array<T>& obj) : Array(obj.cap) {
+//	this->size = obj.size;
+//	for (int i = 0; i < this - size; ++i) {
+//		this->arr[i] = obj.arr[i];
+//	}
+//}
+
+
+// Конструктор перемещения
+template <typename T>
+Array<T>::Array(Array<T>&& obj) : cap(obj.cap), size(obj.size), arr(obj.arr) {
+	obj.arr = nullptr;
+	obj.cap = 0;
+	obj.size = 0;
+}
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	Array<int> obj1(100);
+	obj1 += 5;
+	obj1 += 6;
+	obj1 += 8;
+	cout << obj1 << endl;
+
+	Array<int> obj2(obj1);
+	cout << obj2 << endl;
+
+	//Array<char*> arr1("Hello"); // относится к куску кода со специализацией шаблона
+	//cout << arr1 << endl;
+
+}
