@@ -19,9 +19,9 @@ from math import sqrt
 # print(variation_coef)
 
 laboratory = [
-    2_900_000,
-    2_788_585,
-    2_936_958.80
+    2_300_000,
+    2_153_100,
+    2_284_860
 ]
 
 
