@@ -1,26 +1,31 @@
-import time
+class Contact:
 
+    def __init__(self, name, year_birth, is_programmer):
+        self.name = name        
+        self.year_birth = year_birth        
+        self.is_programmer = is_programmer
 
-def sleep_one_sec():
-    # Запоминаем время перед выполнением исходной функции.
-    start_time = time.time()
-    # Выполняем код исходной функции:
-    time.sleep(1)
-    # Вычисляем, округляем и печатаем разницу
-    # между временем старта и актуальным временем.
-    execution_time = round(time.time() - start_time, 1)
-    print(f'Время выполнения функции: {execution_time} сек.')
-    return 'Результат первой функции.'
+    def age_define(self):
+        if 1946 < self.year_birth < 1980:
+            return 'Олдскул'
+        if self.year_birth >= 1980:
+            return 'Молодой'
+        return 'Старейшина'
 
+    def programmer_define(self):
+        if self.is_programmer:
+            return 'Программист'
+        return 'нормальный'
 
-def sleep_two_sec():
-    start_time = time.time()
-    # Теперь выполняем код исходной функции:
-    time.sleep(2)
-    execution_time = round(time.time() - start_time, 1)
-    print(f'Время выполнения функции: {execution_time} сек.')
-    return 'Результат второй функции.'
+    def show_contact(self):
+        return (f'{self.name}, '               
+                f'категория: {self.age_define()}, '
+                f'статус: {self.programmer_define()}')
 
+  
+obj = Contact('Евгений Собянин', 1999, True)
+expected_string = 'Евгений Собянин, категория: Молодой, статус: программист'
 
-sleep_one_sec()
-sleep_two_sec()
+assert obj.show_contact() == expected_string, 'Что-то пошло не так.'
+
+print(obj.show_contact())
