@@ -1,13 +1,11 @@
 import tkinter as tk
 
 def start_timer():
-    # Скрыть элементы интерфейса
+    total_seconds = hour_scroll.get() * 3600 + minute_scroll.get() * 60
+    update_time(total_seconds)
     hour_scroll.pack_forget()
     minute_scroll.pack_forget()
     start_button.pack_forget()
-
-    total_seconds = hour_scroll.get() * 3600 + minute_scroll.get() * 60
-    update_time(total_seconds)
 
 def countdown(timer):
     if timer > 0:

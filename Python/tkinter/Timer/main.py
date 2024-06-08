@@ -10,6 +10,7 @@ hours = [str(el) for el in range(24)]
 minutes = [str(el) for el in range(60)]
 my_font = ('Arial', 16)
 my_font_bold = ('Arial', 18, 'bold')
+timer_font = ('Arial', 50, 'bold')
 
 
 
@@ -23,7 +24,14 @@ def on_select2(event):
 
 
 def time_count():
-    root.update()
+    # Скрываем элементы
+    label.pack_forget()
+    frame.pack_forget()
+    frame2.pack_forget()
+    button1.pack_forget()
+    timer_time = dt.datetime(hour=hours_select_var, minute=min_select_var)
+    label_timer = Label(text=f'{timer_time}')
+    label_timer.pack()
     
 
 

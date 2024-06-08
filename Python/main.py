@@ -1,7 +1,42 @@
+<<<<<<< HEAD
 def foo(num):
     if num > 0:
         return [el for el in range(num+1) if not (el % 2)]
     return [el for el in range(num, 1)if not (el % 2)]
+=======
+class Contact:
+>>>>>>> 8384fc074b98d387e5724939dfe7336196c58d44
 
+    def __init__(self, name, year_birth, is_programmer):
+        self.name = name        
+        self.year_birth = year_birth        
+        self.is_programmer = is_programmer
 
+<<<<<<< HEAD
 print(foo(-10))
+=======
+    def age_define(self):
+        if 1946 < self.year_birth < 1980:
+            return 'Олдскул'
+        if self.year_birth >= 1980:
+            return 'Молодой'
+        return 'Старейшина'
+
+    def programmer_define(self):
+        if self.is_programmer:
+            return 'Программист'
+        return 'нормальный'
+
+    def show_contact(self):
+        return (f'{self.name}, '               
+                f'категория: {self.age_define()}, '
+                f'статус: {self.programmer_define()}')
+
+  
+obj = Contact('Евгений Собянин', 1999, True)
+expected_string = 'Евгений Собянин, категория: Молодой, статус: программист'
+
+assert obj.show_contact() == expected_string, 'Что-то пошло не так.'
+
+print(obj.show_contact())
+>>>>>>> 8384fc074b98d387e5724939dfe7336196c58d44
