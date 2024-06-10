@@ -1,0 +1,86 @@
+#include <iostream>
+#include <cstring>
+#include <cmath>
+using namespace std;
+
+
+// Задача 1.
+void cutFistLetters(string& str) {
+	char space = ' ';
+	for (int i = 0; i < str.length() - 1; i++) {
+		if (str[i] == space) {
+			str.erase(i+1, 1);
+		}
+	}
+	str.erase(0, 1);
+}
+
+
+// Задача 2.
+template <typename T>
+double avg(T* numbers, int size) {
+	double sum = 0;
+	int i = 0;
+	while (i < size){
+		sum += numbers[i];
+		i += 1;
+	}
+	return sum / size;
+}
+
+
+// Задача 3.
+// Стоит доделать функцию с учетом знаков препинания
+string findShortestWord(string str) {
+	string current = "", min_str = str;
+	char space = ' ';
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] == space) {
+			min_str = current.length() < min_str.length() ? current : min_str;
+			current = "";
+		}
+		else current += str[i];
+	}
+	return min_str;
+}
+
+
+// Задача 5.
+int foo() {
+	int num, sum = 0;
+	cout << "Введите число:";
+	cin >> num;
+	while (num >= 0) {
+		if (!(num % 5)) {
+			sum += num;
+			cout << num << " ";
+		}
+		num -= 1;
+	}
+	return sum;
+}
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	// Задача 1.
+	string word = "Человек - паук";
+	cutFistLetters(word);
+	cout << word << endl;
+
+	// Задача 2.
+	int numbers[5]{ 1, 2, 3, 4, 5, };
+	cout << "Среднее значение: " << avg(numbers, 5) << endl;
+
+	// Задача 3.
+	string word2 = "человек галактика Галя мак Тарантино";
+	cout << "Самое короткое слово: " << findShortestWord(word2) << endl;
+
+	// Задача 4.
+	cout << "Результат возведения в степень: " << pow(3, 2) << endl;
+
+	// Задача 5.
+	cout << "Результат: " << foo() << endl;
+
+}
