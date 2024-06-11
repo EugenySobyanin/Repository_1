@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <cmath>
+#include <vector>
+#include <map>
 using namespace std;
 
 
@@ -29,35 +31,54 @@ void printArr(int* arr, int size) {
 
 // Задача 2
 bool isCompound(int num) {
-	for (int i = 2; i < num; i++) {
-		if (num % i == 0) {
-			return false;
-		}
-		return true;
+	for (int i = 2; i < abs(num); i++){
+	    if (num % i == 0)
+	        return true;
 	}
+	return false;
 }
+
+
+// Задача 3
+void main_play(){
+    // объеявление словаря.
+    // ключ - вопрос, значение вектор с подсказками.
+    map<string, vector<string>> dict;
+    
+    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
+    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
+    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
+    
+    
+}
+
+
+
+
+
 
 
 int main() {
 	setlocale(LC_ALL, "RU");
 
+
 	// Задача 1
-	const int size = 5;
-	int* arr = new int[size] {1, 2, 3, 4, 5};
-	delElement(arr, size, 3);
-	printArr(arr, size - 1);
+// 	const int size = 5;
+// 	int* arr = new int[size] {1, 2, 3, 4, 5};
+// 	delElement(arr, size, 3);
+// 	printArr(arr, size - 1);
+// 	cout << endl;
 
 
 	// Задача 2
-	const int size2 = 20;
-	int num[size2];
-	for (int i = 0; i < size2; i++) {
-		num[i] = i + 1;
-		cout << num[i] << " - " << isCompound(num[i]) << endl;
-	}
-
-
-
-
-
+// 	const int size2 = 20;
+// 	int num[size2];
+// 	for (int i = 0; i < size2; i++) {
+// 		num[i] = i + 1;
+// 		cout << num[i] << " - " << isCompound(num[i]) << endl;
+// 	}
+	
+	
+	// Задача 3
+	main_play();
 }
