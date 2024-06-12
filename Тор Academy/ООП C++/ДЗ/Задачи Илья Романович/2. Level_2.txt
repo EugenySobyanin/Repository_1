@@ -3,6 +3,11 @@
 #include <cmath>
 #include <vector>
 #include <map>
+#include <typeinfo>
+#include <time.h>
+#include <locale>
+#include <string>
+#include <cstdlib>
 using namespace std;
 
 
@@ -31,26 +36,113 @@ void printArr(int* arr, int size) {
 
 // Задача 2
 bool isCompound(int num) {
-	for (int i = 2; i < abs(num); i++){
-	    if (num % i == 0)
-	        return true;
+	for (int i = 2; i < abs(num); i++) {
+		if (num % i == 0)
+			return true;
 	}
 	return false;
 }
 
 
 // Задача 3
-void main_play(){
-    // объеявление словаря.
-    // ключ - вопрос, значение вектор с подсказками.
-    map<string, vector<string>> dict;
-    
-    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
-    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
-    dict["Вопрос1"] = {"1", "2", "3", "Правильный ответ"};
-    
-    
+void show_rules() {
+	cout << "Правила:\nНа экране появится вопрос, вы можете: "
+		 << "ввести ответ или запросить подсказку\n"
+		 << "Количество жизней - 5, количество подсказок - 3\n"
+		 << "Стоимость одной подсказки - 1 жизнь\n"
+		 << "Чтобы получить подсказку - введите 1\n";
 }
+
+
+void to_start() {
+	string start = "";
+	cout << "Для начала игры введите любой символ: ";
+	cin >> start;
+}
+
+
+string lower(string str) {
+	string low;
+	for (int i = 0; i < str.length(); i++) {
+		low[i] = tolower(str[i]);
+	}
+	return low;
+}
+
+
+void main_play() {
+	setlocale(LC_ALL, "RU");
+	// объеявление словаря.
+	// ключ - вопрос, значение вектор с подсказками.
+	map<int, vector<string>> dict;
+
+	dict[0] = {
+		"Вопрос1", "Правильный ответ1",
+		"Подсказка1", "Подсказка2", "Подсказка3" 
+	};
+	dict[1] = {
+		"Вопрос2", "Правильный ответ2",
+		"Подсказка1", "Подсказка2", "Подсказка3"
+	};
+	dict[2] = {
+		"Вопрос3", "Правильный ответ3",
+		"Подсказка1", "Подсказка2", "Подсказка3"
+	};
+
+	int qustion_number = rand() % dict.size();
+	show_rules();
+	to_start();
+	cout << dict[qustion_number][0] << endl;
+	bool player_win = false;
+	int attempt = 5;
+	int hint = 0;
+
+	while (attempt > 0 and !player_win) {
+		string choice;
+		cout << "Осталось жизней: " << attempt << endl;
+		cout << "Осталось подсказок: " << 3 - hint << endl;
+		cout << "Введите ответ или запросите подсказку(введите 1): ";
+		
+		// Очистка буфера ввода
+		// Без этих строчек 1ая итерация цикла проходить без ввода пользователя(с пустой строкой).
+		if (attempt == 5) {
+			cin.clear();
+			cin.ignore(INT_MAX, '\n');
+		}
+		
+		
+		
+		getline(cin, choice);
+
+		
+
+
+		if (choice == "1") {
+			cout << dict[qustion_number][hint + 2] << endl;
+			hint++;
+			attempt --;
+		}
+		else {
+			if (lower(choice) == lower(dict[qustion_number][1])) {
+				player_win = true;
+			}	
+			else {
+				cout << "Неправильный ответ." << endl;
+				attempt --;
+			} 
+		}
+	}
+	if (player_win)
+		cout << "Вы победили!" << endl;
+	else cout << "Вы проиграли." << endl;
+
+	
+
+	
+
+
+}
+
 
 
 
@@ -59,7 +151,9 @@ void main_play(){
 
 
 int main() {
+	system("chcp 1251>nul");
 	setlocale(LC_ALL, "RU");
+	srand(time(0));
 
 
 	// Задача 1
@@ -77,8 +171,8 @@ int main() {
 // 		num[i] = i + 1;
 // 		cout << num[i] << " - " << isCompound(num[i]) << endl;
 // 	}
-	
-	
+
+
 	// Задача 3
 	main_play();
 }

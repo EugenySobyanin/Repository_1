@@ -1,6 +1,6 @@
 from random import randint
 
-
+# Пример 1
 def square(foo):
     def wrapper():
         original_result = foo()
@@ -16,3 +16,6 @@ def make_list(size) -> list:
 
 nums = make_list(10)
 print(nums)
+
+
+# Пример 2
