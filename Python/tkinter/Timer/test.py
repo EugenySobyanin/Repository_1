@@ -1,31 +1,40 @@
-from tkinter import *
-from tkinter import ttk
+import tkinter as tk
 
-def on_select(event):
-    index = listbox.curselection()[0]
-    selected_language.set(languages[index])
+def start_timer():
+    # Скрыть элементы интерфейса
+    hour_scroll.pack_forget()
+    minute_scroll.pack_forget()
+    start_button.pack_forget()
 
-languages = ["Python", "JavaScript", "C#", "Java", "C++", "Rust", "Kotlin", "Swift",
-             "PHP", "Visual Basic.NET", "F#", "Ruby", "R", "Go", "C", 
-             "T-SQL", "PL-SQL", "Typescript", "Assembly", "Fortran"]
-  
-root = Tk()
-root.title("METANIT.COM")
-root.geometry("250x200")
+    total_seconds = hour_scroll.get() * 3600 + minute_scroll.get() * 60
+    update_time(total_seconds)
 
-selected_language = StringVar()
-  
-languages_var = StringVar(value=languages)
-listbox = Listbox(listvariable=languages_var)
-listbox.pack(side=LEFT, fill=BOTH, expand=1)
-listbox.bind("<<ListboxSelect>>", on_select)
-  
-scrollbar = ttk.Scrollbar(orient="vertical", command=listbox.yview)
-scrollbar.pack(side=RIGHT, fill=Y)
-  
-listbox["yscrollcommand"] = scrollbar.set
-  
-selected_label = Label(root, textvariable=selected_language)
-selected_label.pack()
+def countdown(timer):
+    if timer > 0:
+        hours = timer // 3600
+        minutes = (timer % 3600) // 60
+        seconds = timer % 60
+        time_label.config(text=f'{hours:02d}:{minutes:02d}:{seconds:02d}')
+        root.after(1000, countdown, timer - 1)
+    else:
+        time_label.config(text='Time\'s up!')
+
+def update_time(seconds):
+    countdown(seconds)
+
+root = tk.Tk()
+root.title('Simple Timer')
+
+hour_scroll = tk.Scale(root, from_=0, to=23, orient=tk.HORIZONTAL, label='Hours')
+hour_scroll.pack()
+
+minute_scroll = tk.Scale(root, from_=0, to=59, orient=tk.HORIZONTAL, label='Minutes')
+minute_scroll.pack()
+
+start_button = tk.Button(root, text='Start Timer', command=start_timer)
+start_button.pack()
+
+time_label = tk.Label(root, text='')
+time_label.pack()
 
 root.mainloop()
