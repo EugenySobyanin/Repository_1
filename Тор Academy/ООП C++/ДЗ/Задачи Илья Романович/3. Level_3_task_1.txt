@@ -1,0 +1,98 @@
+#include <iostream>
+#include <time.h>
+using namespace std;
+
+// Level3 - task1
+
+void filling_arr(int*& arr, int size) {
+	/*Заполнение массива случайными числами.*/
+	for (int i = 0; i < size; i++) {
+		arr[i] = rand() % 20;
+	}
+}
+
+void print_arr(int* arr, int size) {
+	/*Вывод массива.*/
+	for (int i = 0; i < size; i++) {
+		cout << arr[i] << " ";
+	}
+	cout << endl;
+}
+
+int selection_sort(int*& arr, int size) {
+	/*Сортировка выбором.*/
+	int min_indx;
+	for (int i = 0; i < size; i++) {
+		min_indx = i;
+		for (int j = i + 1; j < size; j++) {
+			if (arr[j] < arr[min_indx]) {
+				int tmp = arr[min_indx];
+				arr[min_indx] = arr[j];
+				arr[j] = tmp;
+			}
+		}
+	}
+	return 1;
+}
+
+int bubble_sort(int*& arr, int size) {
+	/*Пузырьковая сортировка.*/
+	bool is_sort = true;
+	int last_indx = size - 1;
+	while (is_sort) {
+		is_sort = false;
+		for (int i = 0; i < last_indx; i++) {
+			if (arr[i] > arr[i + 1]) {
+				swap(arr[i], arr[i + 1]);
+				is_sort = true;
+			}
+		}
+		last_indx--;
+	}
+	return 1;
+}
+
+int shaker_sort(int*& arr, int size) {
+	/*Шейкер сортировка.*/
+	bool is_sort = true;
+	int left = 0;
+	int right = size - 1;
+	while (is_sort) {
+		is_sort = false;
+		for (int i = left; i < right; i++) {
+			if (arr[i] > arr[i + 1]) {
+				swap(arr[i], arr[i + 1]);
+				is_sort = true;
+			}
+		}
+		right--;
+		for (int j = right; j > left; j--) {
+			if (arr[j] < arr[j - 1]) {
+				swap(arr[j], arr[j - 1]);
+				is_sort = true;
+			}
+		}
+		left++;
+	}
+	return 1;
+}
+
+void check_sorts_is_correct() {
+
+}
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+	srand(time(0));
+
+	int size = 10;
+	int* arr = new int[size];
+	filling_arr(arr, size);
+	cout << "Изначальный массив: ";
+	print_arr(arr, size);
+	//int* arr = new int[5] {9, 5, 1, 7, 8};
+	shaker_sort(arr, size);
+	cout << "После сортировки:   ";
+	print_arr(arr, size);
+}
