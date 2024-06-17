@@ -1,0 +1,60 @@
+24. Библиотека unittest
+    1. Библиотека unittest
+        - unittest.TestCase
+	- запуск тестов
+	- падающие тесты
+	- выполнение до первого упавшего теста
+	- методы класса TestCase
+	- управление запуском тестов
+	- ожидаемое падение vs проверка на исключение
+    2. Метод subTest, параметризация тестов
+	- subTest()
+	- with self.subTest()
+    3. Фикстуры
+	- Хранение тестов в проекте
+	- tearDown
+	- tearDownClass
+	- setUp()
+	- setUpClass()
+
+25. Unittest в Django
+    1. Unittest в Django
+	- план тестирования YaNotes
+	- запуск и обнаружение тестов в Django
+	- Где живут тесты Django
+    2. дополнительные инструменты
+	- Выборочный запуск тестов Пример: python manage.py test news.tests.test_trial
+	- Тестовая база данных
+	- Создание объектов для тестов
+	- Метод setUpTestData() вместо setUpClass()
+	- Программный Http-клиент
+		- Client()
+		- self.client
+	- Объект response: ответ на запрос
+		- response.status_code, response.content, response.context, response.templates
+    3. тестирование маршрутов
+	- работа с subTest()
+	- работа с setUpTestData(cls)
+	- вложенные циклы
+	- проверка редиректов
+    4. тестирование контента
+	- групповое создание объектов
+		- bulk_create() - передаем в него список объектов
+		- работа со словарем контекста в ответе 
+			- Responce / - context / - response.context['object_list']
+			- другой ключ: он состоит из имени модели и окончания _list
+			- .count()
+	- тестируем сортировку
+		- datetim, timedelta
+		- timezone.now()
+	- news.comment_set.all() - получение комментариев
+	- тест наличия формы в словаре контекста
+		- assertNotIn() / - assertIn() / - assertIsInstance
+		- 
+    5. тестирование логики
+	- проверка Post запросов на добавление комментариев
+	- якорь #comments
+	- проверка блокировка стоп-слов
+		- assertFormError()
+	- проверка удаления и редактирования комментария
+		- refresh_from_db() - обновить объект в БД
