@@ -2,7 +2,7 @@
 #include <time.h>
 using namespace std;
 
-// Level3 - task1
+// Level 3 - task 1
 
 void filling_arr(int*& arr, int size) {
 	/*Заполнение массива случайными числами.*/
@@ -21,35 +21,40 @@ void print_arr(int* arr, int size) {
 
 int selection_sort(int*& arr, int size) {
 	/*Сортировка выбором.*/
-	int min_indx;
+	int min_indx, operations =0;
 	for (int i = 0; i < size; i++) {
 		min_indx = i;
 		for (int j = i + 1; j < size; j++) {
+			operations++; // Увеличиваем счетчик операций при сравнении.
 			if (arr[j] < arr[min_indx]) {
 				int tmp = arr[min_indx];
 				arr[min_indx] = arr[j];
 				arr[j] = tmp;
+				operations++; // Увеличиваем счетчик операций при перемещении эл.тов.
 			}
 		}
 	}
-	return 1;
+	return operations;
 }
 
 int bubble_sort(int*& arr, int size) {
 	/*Пузырьковая сортировка.*/
 	bool is_sort = true;
 	int last_indx = size - 1;
+	int operations = 0;
 	while (is_sort) {
 		is_sort = false;
 		for (int i = 0; i < last_indx; i++) {
+			operations++; // Увеличиваем счетчик операций при сравнении.
 			if (arr[i] > arr[i + 1]) {
 				swap(arr[i], arr[i + 1]);
 				is_sort = true;
+				operations++; // Увеличиваем счетчик операций при перемещении эл.тов.
 			}
 		}
 		last_indx--;
 	}
-	return 1;
+	return operations;
 }
 
 int shaker_sort(int*& arr, int size) {
@@ -57,27 +62,69 @@ int shaker_sort(int*& arr, int size) {
 	bool is_sort = true;
 	int left = 0;
 	int right = size - 1;
+	int operations = 0;
 	while (is_sort) {
 		is_sort = false;
 		for (int i = left; i < right; i++) {
+			operations++; // Увеличиваем счетчик операций при сравнении.
 			if (arr[i] > arr[i + 1]) {
 				swap(arr[i], arr[i + 1]);
 				is_sort = true;
+				operations++; // Увеличиваем счетчик операций при перемещении эл.тов.
 			}
 		}
 		right--;
 		for (int j = right; j > left; j--) {
+			operations++; // Увеличиваем счетчик операций при сравнении.
 			if (arr[j] < arr[j - 1]) {
 				swap(arr[j], arr[j - 1]);
 				is_sort = true;
+				operations++; // Увеличиваем счетчик операций при перемещении эл.тов.
 			}
 		}
 		left++;
 	}
-	return 1;
+	return operations;
 }
 
 void check_sorts_is_correct() {
+
+}
+
+
+void avg_efficiency(int size_arr, int count_sort, int (*sortFunc1)(int*&, int), int (*sortFunc2)(int*&, int), int (*sortFunc3)(int*&, int)) {
+	/*Для каждой сортировки будет count_sort раз создаваться массив длиной size_arr,
+	затем считается среднее значение для количества операций в сортировке*/
+	
+	// Первая сортировка.
+	long int sum_sort_operations =0;
+	for (int i = 0; i < count_sort; i++) {
+		int* arr = new int[count_sort];
+		filling_arr(arr, size_arr);
+		sum_sort_operations += sortFunc1(arr, size_arr);
+	}
+	//cout << "Сортировка 1 - " << sum_sort_operations / count_sort << endl;
+	cout << "Сортировка 1 - " << sum_sort_operations << endl;
+	
+	// Вторая сортировка.
+	sum_sort_operations = 0;
+	for (int i = 0; i < count_sort; i++) {
+		int* arr2 = new int[count_sort];
+		filling_arr(arr2, size_arr);
+		sum_sort_operations += sortFunc2(arr2, size_arr);
+	}
+	//cout << "Сортировка 2 - " << sum_sort_operations / count_sort << endl;
+	cout << "Сортировка 2 - " << sum_sort_operations << endl;
+
+	// Третья сортировка.
+	sum_sort_operations = 0;
+	for (int i = 0; i < count_sort; i++) {
+		int* arr3 = new int[count_sort];
+		filling_arr(arr3, size_arr);
+		sum_sort_operations += sortFunc3(arr3, size_arr);
+	}
+	//cout << "Сортировка 3 - " << sum_sort_operations / count_sort << endl;
+	cout << "Сортировка 3 - " << sum_sort_operations << endl;
 
 }
 
@@ -86,13 +133,6 @@ int main() {
 	setlocale(LC_ALL, "RU");
 	srand(time(0));
 
-	int size = 10;
-	int* arr = new int[size];
-	filling_arr(arr, size);
-	cout << "Изначальный массив: ";
-	print_arr(arr, size);
-	//int* arr = new int[5] {9, 5, 1, 7, 8};
-	shaker_sort(arr, size);
-	cout << "После сортировки:   ";
-	print_arr(arr, size);
+	avg_efficiency(100, 1, selection_sort, bubble_sort, shaker_sort);
+
 }
