@@ -44,12 +44,34 @@
 		- Автоматически используемые фикстуры
 			- autouse=True
 		- Области видимости фикстуры
-			- 
-	6. 
+			- scope='...'
+			- function, class, module, package, session
+		- Очистка (teardown)
+			- yield - момент когда надо переходить к тестам	
+			- если фикстура возвращает какой-то объект, то yield используется вместо return
+		- confest.py
+			- хранение фикстур
+	6. Файл конфигураций
+		- ...
 27. Pytest для Django
-	1.
-	2.
+	1. Плагин pytest-django
+		- pip install pytest-django==4.5.2
+		- указать в pytest.ini расположение файла с настройками
+		- дополнительные встроенные функции 
+			- assertRedirects()
+			- assertFormError()
+		        - импорт из pytest_django.asserts
+		- Фикстуры pytest-django
+			- client
+			- admin_client
+			- admin_user
+			- django_user_model
+			- force_login()
+		- db
+			- @pytest.mark.django_db
+	2. Тестирование маршрутов
+		- Подготовка проекта YaNote к тестированию
+			- ограничить список директорий для pytest
+
 	3.
 	4.
-	5.
-	6.
