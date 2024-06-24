@@ -13,7 +13,7 @@ class Abonent {
     char* _info{ nullptr };
 
 public:
-    Abonent(const char* fullname, const char* telephone, const char* info="") :
+    Abonent(const char* fullname, const char* telephone, const char* info = "") :
         _fullname(new char[strlen(fullname) + 1]),
         _telephone(new char[strlen(telephone) + 1]),
         _info(new char[strlen(info) + 1])
@@ -44,7 +44,7 @@ void show_menu() {
     cout << "Показать список всех абонентов\t- нажмите 1" << endl;
     cout << "Добавить абонента\t\t- нажмите 2" << endl;
     cout << "Удалить абонента\t\t- нажмите 3" << endl;
-    cout << "Найти абонента\t\t\t- нажмите 4" << endl;
+    cout << "Найти абонента по ФИО\t\t- нажмите 4" << endl;
     cout << "Завершить программу\t\t- нажмите 5" << endl;
 }
 
