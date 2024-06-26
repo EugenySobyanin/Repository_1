@@ -1,18 +1,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<cstring>
+#include<string>
 
 using namespace std;
 
-// Класс телефонная книга
+// Задание телефонная книга.
+
 
 class Abonent {
+    /*Класс обдного абонента (контакта в телефонной книге).*/
 
     char* _fullname{ nullptr };
     char* _telephone{ nullptr };
     char* _info{ nullptr };
 
 public:
+
     Abonent(const char* fullname, const char* telephone, const char* info = "") :
         _fullname(new char[strlen(fullname) + 1]),
         _telephone(new char[strlen(telephone) + 1]),
@@ -23,9 +27,24 @@ public:
         strcpy(_info, info);
     }
 
-
     Abonent() {}
 
+    // С деструктором почему-то не работает.
+    //~Abonent() {
+    //    delete[] _fullname;
+    //    delete[] _telephone;
+    //    delete[] _info;
+    //}
+
+    void showContact() {
+        /*Вывод данных об отдельном абоненте.*/
+        cout << _fullname << "- " << _telephone << " ";
+        int end = strlen(_info) < 15 ? strlen(_info) : 15;
+        for (int i = 0; i < end; i++) {
+            cout << _info[i];
+        }
+        cout << endl;
+    }
 
     const char* getFullname() { return _fullname; }
     const char* getTelephone() { return _telephone; }
@@ -40,6 +59,69 @@ public:
 };
 
 
+class TelephoneBook {
+    /*Класс хранит массив абонентов.*/
+
+private:
+    int size = 0;
+    int cap = 20;
+    Abonent* abonentList = new Abonent[cap];
+
+public:
+
+    void addAbonent(Abonent contact) {
+        /*Добавить объект класса Abonent*/
+        if (size == cap)
+            cap *= 2;
+        abonentList[size] = contact;
+        size++;
+    }
+
+    void showBook() {
+        /*Вывести данные обо всех абонентах.*/
+        for (int i = 0; i < size; i++) {
+            abonentList[i].showContact();
+        }
+    }
+
+    bool comparison(const char* a, const char* b) {
+        /*Сравнение двух строк.*/
+        for (int i = 0; i < strlen(a); i++) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void findAbonent(const char* find_name) {
+        /*Найти абонента по ФИО.*/
+        for (int i = 0; i < size; i++) {
+            const char* full_name = abonentList[i].getFullname();
+            if (this->comparison(find_name, full_name)) {
+                abonentList[i].showContact();
+                return;
+            }      
+        }
+        cout << "абонент с именем" << find_name << "не найден." << endl;
+    }
+
+    void delAbonent(const char* name) {
+        /*Удалить абонента.*/
+        for (int i = 0; i < size; i++) {
+            if (this->comparison(name, abonentList[i].getFullname())) {
+                for (int j = i; j < size - 1; j++) {
+                    abonentList[j] = abonentList[j + 1];
+                }
+                size--;
+                return;
+            }    
+        }
+        cout << "Контатка " << name << " в базе нет." << endl;
+    }
+};
+
+
 void show_menu() {
     cout << "Показать список всех абонентов\t- нажмите 1" << endl;
     cout << "Добавить абонента\t\t- нажмите 2" << endl;
@@ -49,37 +131,78 @@ void show_menu() {
 }
 
 
-void add_abonent(Abonent* book) {
-    const char* name;
-    const char* telephone;
-    const char* info;
+void main_func(TelephoneBook& main_book) {
+    /*Обеспечивает взаимодействие с пользователем.*/
+
+    show_menu();
+    int choice = 1;
+    while (choice) {
+        cout << endl << "Ввод: ";
+        cin >> choice;
+
+        if (choice == 1) {  // список всех абонентов
+            main_book.showBook();
+        }
+        else if (choice == 2) {  // добавить абонента
+            char new_fullname[30];
+            char number[15];
+            char info[50];
+            cout << "Введите имя: ";
+            cin.ignore();
+            cin.getline(new_fullname, 30);
+            cout << "Введите номер: ";
+            cin.getline(number, 15);
+            cout << "Добавить доп.информацию?" << endl;
+            cout << "Да - 1" << endl << "Нет - 2" << endl;
+            cin >> choice;
+            cin.ignore();
+            if (choice == 1) {
+                cin.getline(info, 50);
+                Abonent new_abonent(new_fullname, number, info);
+                main_book.addAbonent(new_abonent);
+            } 
+            else {
+                Abonent new_abonent(new_fullname, number);
+                main_book.addAbonent(new_abonent);
+            }   
+        }
+        else if (choice == 3) {  // удалить абонента
+            char del_name[30];
+            cout << "Введите имя абонента: ";
+            cin.ignore();
+            cin.getline(del_name, 30);
+            main_book.delAbonent(del_name);
+        }
+        else if (choice == 4) {  // найти абонента
+            char find_name[30];
+            cout << "Введите имя: ";
+            cin.ignore();
+            cin.getline(find_name, 30);
+            main_book.findAbonent(find_name);
+        }
+        else if (choice == 5) {  // завершить программу
+            choice = 0;
+        }
+    }
+    cout << "Завершение программы." << endl;
 }
 
 
-
-
-void functional(int choice) {
-    NULL;
-}
 
 
 int main() {
     setlocale(LC_ALL, "RU");
 
-    Abonent* abonent_list = new Abonent[100];
-    Abonent obj1("Собянин Е.А.", "89040006789");
-    Abonent obj2 = { "Марат", "890001112233", "Риэлтор" };
-    abonent_list[0] = obj1;
-    abonent_list[1] = obj2;
+    TelephoneBook main_book;
+    Abonent obj1("Sobyanin E.A.", "89040006789");
+    Abonent obj2 = { "Marat", "890001112233", "Риэлтор" };
+    Abonent obj3 = { "Norman", "9999", "friend" };
+    Abonent obj4 = { "Alise", "55555", "girl" };
+    main_book.addAbonent(obj1);
+    main_book.addAbonent(obj2);
+    main_book.addAbonent(obj3);
+    main_book.addAbonent(obj4);
 
-    cout << "Приложение телефонная книга." << endl << endl;
-    int choice;
-    while (true) {
-        show_menu();
-        cin >> choice;
-        functional(choice);
-        if (choice == 5) break;
-    }
-
-
+    main_func(main_book);
 }
+
