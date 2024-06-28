@@ -1,0 +1,84 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class MyString {
+
+private:
+	static int count;
+	int size;
+	int cap;
+	char* str;
+	
+
+public:
+
+	MyString() : size(0), cap(80), str(new char[cap]) { count++; }
+
+
+	MyString(int capasity) : size(0), cap(capasity), str(new char[cap]) { count++; }
+
+	MyString(const char* user_str) : size(strlen(user_str)), cap(size), str(new char[cap]) {
+		count++;
+		strcpy(str, user_str);
+	}
+
+	//MyString(bool user_input_str = false) {
+	//	char buf[100];
+	//	cout << "Введите строку: ";
+	//	cin.getline(buf, 100);
+	//	size = strlen(buf);
+	//	cap = size;
+	//	str = new char[cap];
+	//	strcpy(str, buf);
+	//	count++;
+	//}
+
+	int getSize() { return size; }
+	int getCap() { return cap; }
+	const char* getStr() { return str;}
+	static int getCountStr() { return count; }
+
+
+	void setSize(int sz) { size = sz; }
+	void setCap(int cp) { cap = cp; }
+	void setStr(const char* st) {
+		if (strlen(st) > cap) {
+			cap = strlen(st);
+		}
+		strcpy(str, st); 
+	}
+
+	~MyString() {
+		delete[] str;
+	}
+
+};
+
+
+int main() {
+	setlocale(LC_ALL, "RU");
+
+	// Подготовительные данные
+	char* arr1 = new char[80] {"Человек паук"};
+
+
+	MyString obj1;
+
+
+
+	//MyString obj1("Скооооооооооор");
+	//MyString obj1(true);
+
+
+
+
+	cout << obj1.getSize() << endl;
+	cout << obj1.getCap() << endl;
+	//obj1.setStr("Человек-паук");
+	cout << obj1.getStr() << endl;
+	cout << MyString::getCountStr() << endl;
+
+}

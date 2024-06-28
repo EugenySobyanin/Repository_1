@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include<cstring>
-#include<string>
+#include <cstring>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -69,6 +70,15 @@ private:
 
 public:
 
+     int getSize() {
+        return size;
+     }
+
+     Abonent getAbonent(int indx) {
+         return abonentList[indx];
+     }
+
+
     void addAbonent(Abonent contact) {
         /*Добавить объект класса Abonent*/
         if (size == cap)
@@ -101,7 +111,7 @@ public:
             if (this->comparison(find_name, full_name)) {
                 abonentList[i].showContact();
                 return;
-            }      
+            }
         }
         cout << "абонент с именем" << find_name << "не найден." << endl;
     }
@@ -115,7 +125,7 @@ public:
                 }
                 size--;
                 return;
-            }    
+            }
         }
         cout << "Контатка " << name << " в базе нет." << endl;
     }
@@ -127,7 +137,8 @@ void show_menu() {
     cout << "Добавить абонента\t\t- нажмите 2" << endl;
     cout << "Удалить абонента\t\t- нажмите 3" << endl;
     cout << "Найти абонента по ФИО\t\t- нажмите 4" << endl;
-    cout << "Завершить программу\t\t- нажмите 5" << endl;
+    cout << "Записать данные в файл\t\t- нажмите 5" << endl;
+    cout << "Завершить программу\t\t- нажмите 6" << endl;
 }
 
 
@@ -160,11 +171,11 @@ void main_func(TelephoneBook& main_book) {
                 cin.getline(info, 50);
                 Abonent new_abonent(new_fullname, number, info);
                 main_book.addAbonent(new_abonent);
-            } 
+            }
             else {
                 Abonent new_abonent(new_fullname, number);
                 main_book.addAbonent(new_abonent);
-            }   
+            }
         }
         else if (choice == 3) {  // удалить абонента
             char del_name[30];
@@ -180,14 +191,20 @@ void main_func(TelephoneBook& main_book) {
             cin.getline(find_name, 30);
             main_book.findAbonent(find_name);
         }
-        else if (choice == 5) {  // завершить программу
+        else if (choice == 5) {  // записать данные в файл
+            ofstream file("telephone_number.txt");
+            for (int i = 0; i < main_book.getSize(); i++) {
+                file << main_book.getAbonent(i).getFullname() << " "
+                     << main_book.getAbonent(i).getTelephone() << " "
+                     << main_book.getAbonent(i).getInfo() << "\n";
+            }
+        }
+        else if (choice == 6) {  // завершить программу
             choice = 0;
         }
     }
     cout << "Завершение программы." << endl;
 }
-
-
 
 
 int main() {
@@ -205,4 +222,3 @@ int main() {
 
     main_func(main_book);
 }
-
