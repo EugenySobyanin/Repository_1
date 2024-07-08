@@ -34,10 +34,12 @@ class Film(models.Model):
 
     title = models.CharField('Название', max_length=255)
     rating = models.DecimalField('Оценка', max_digits=2, decimal_places=1)
+    year_release = models.SmallIntegerField('Год выпуска')
     type = models.ForeignKey(
         Type,
         on_delete=models.CASCADE,
         verbose_name='Тип',
         help_text='Например: фильм, мультфильм, сериал.'   
     )
-    
+    genre = models.ManyToManyField(Genre)
+
