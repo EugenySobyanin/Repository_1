@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    FILE* file1 = fopen("c:/Sobyanin_Eugeny", "r");
+    FILE* file2 = fopen("c:/Sobyanin_Eugeny", "r");
+    char buffer1[100]{ 0 };
+    char buffer2[100]{ 0 };
+    if (file1 != NULL) {
+        while (!feof(file1)) {
+            char s[100];
+            fgets(s, 100, file1);
+            strcat(buffer1, s);
+        }
+        fprintf(file1, "%s", "hello");
+    }
+    if (file2 != NULL) {
+        while (!feof(file2)) {
+            char s[100];
+            fgets(s, 100, file2);
+            strcat(buffer1, s);
+        }
+        fprintf(file2, "%s", "hello");
+    }
+    else {
+        cout << "ERORR!";
+    }
+    fclose(file1);
+}

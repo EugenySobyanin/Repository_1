@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    cout << "Домашнее задание 5.2\n" << endl;
+    int hours, minutes, seconds;
+    cout << "Введите часы: ";
+    cin >> hours;
+    cout << "Введите минуты: ";
+    cin >> minutes;
+    cout << "Введите секунды: ";
+    cin >> seconds;
+    float total_minutes = hours * 60 + minutes + seconds / 60;
+    cout << "Пользователь заплатит: " << total_minutes * 2 << " гривен.";
+
+    return 0;
+}

@@ -1,0 +1,326 @@
+#include <iostream>
+#include<time.h>
+#include <chrono>
+#include <thread>
+
+using namespace std;
+using namespace std::this_thread;
+using namespace std::chrono;
+
+char** createArr(int size);
+
+void make_move(char **arr, int step, int player_number);
+
+void show_situation_in_play(char **arr);
+
+void computer_move(char **arr, int player_number, int* free_cells);
+
+bool result_game(char **arr);
+
+void main_play();
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    srand(time(0));
+
+    main_play();
+
+    return 0;
+}
+
+
+char** createArr(int size){
+    /*Создание первоначального массива*/
+    
+    int k = 0;
+    char nums[9] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    char **arr = new char*[size];
+    
+    for (int i = 0; i < size; ++i){
+        arr[i] = new char[size]{};
+        
+        for (int j = 0; j < size; ++j){
+            arr[i][j] = nums[k++];
+        }
+    }
+    return arr;
+}
+
+
+void make_move(char **arr, int step, int player_number){
+    /*Ход пользователя
+        Аргументы:
+            - двумерный массив
+            - step - номер ячейки куда сделан ход
+            - player_number - позиция хода пользователя ( 1 или 2)
+        Возвращает:
+            - изменяет исходный массив arr*/
+            
+    char symbol = 'X';
+    int k = 0;
+    
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j < 3; j++){
+            
+            if(k == step - 1) arr[i][j] = symbol;
+            
+            ++k;
+        }
+    }
+}
+
+
+void show_situation_in_play(char **arr){
+    
+    cout << " _______________" << endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[0][0] << " |  " << arr[0][1] << "  |  " 
+         << arr[0][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[1][0] << " |  " << arr[1][1] << "  |  " 
+         << arr[1][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+    cout << "|    |     |    |"<< endl;
+    cout << "|  " << arr[2][0] << " |  " << arr[2][1] << "  |  " 
+         << arr[2][2] << " |"<< endl;
+    cout << "|____|_____|____|"<< endl;
+}
+
+
+void computer_move(char **arr, int player_number, int* free_cells){
+
+    int computer_choice;
+    
+    while (true){
+        computer_choice = rand() % 9 + 1;  
+        if(free_cells[computer_choice - 1] != 0) break;
+    }
+    
+    int i, j;
+    
+    cout << "Компьютер выбрал ячейку " << computer_choice << endl;
+    free_cells[computer_choice - 1] = 0;
+    
+    
+    switch(computer_choice){
+        case(1):
+            i = 0; j = 0;
+            break;
+        case(2):
+            i = 0; j = 1;
+            break;
+        case(3):
+            i = 0; j = 2;
+            break;
+        case(4):
+            i = 1; j = 0;
+            break;
+        case(5):
+            i = 1; j = 1;
+            break;
+        case(6):
+            i = 1; j = 2;
+            break;
+        case(7):
+            i = 2; j = 0;
+            break;
+        case(8):
+            i = 2; j = 1;
+            break;
+        case(9):
+            i = 2; j = 2;
+            break;
+        default:
+            cout << "Неподходящее значение в switch" << endl;
+            break;
+    }
+    
+    char ch = computer_choice;
+    
+    arr[i][j] = '0';
+
+}
+
+
+bool result_game(char **arr){
+    
+    char zero = '0';
+    char cross = 'X';
+    
+    //проверка на победу компьютера
+    if (arr[0][0] == zero 
+        and arr[0][1] == zero
+        and arr[0][2] == zero
+        
+        or arr[1][0] == zero
+        and arr[1][1] == zero
+        and arr[1][2] == zero
+        
+        or arr[2][0] == zero
+        and arr[2][1] == zero
+        and arr[2][2] == zero
+        
+        or arr[0][0] == zero
+        and arr[1][0] == zero
+        and arr[2][0] == zero
+        
+        or arr[0][1] == zero
+        and arr[1][1] == zero
+        and arr[2][1] == zero
+        
+        or arr[0][2] == zero
+        and arr[1][2] == zero
+        and arr[2][2] == zero
+        
+        or arr[0][0] == zero
+        and arr[1][1] == zero
+        and arr[2][2] == zero
+        
+        or arr[0][2] == zero
+        and arr[1][1] == zero
+        and arr[2][0] == zero){
+            
+            show_situation_in_play(arr);
+            cout << "\nПобедил Компьютер!" << endl;
+            return true;
+        }
+    
+    //проверка на победу пользователя    
+    else if (arr[0][0] == cross 
+            and arr[0][1] == cross
+            and arr[0][2] == cross
+        
+            or arr[1][0] == cross
+            and arr[1][1] == cross
+            and arr[1][2] == cross
+        
+            or arr[2][0] == cross
+            and arr[2][1] == cross
+            and arr[2][2] == cross
+        
+            or arr[0][0] == cross
+            and arr[1][0] == cross
+            and arr[2][0] == cross
+        
+            or arr[0][1] == cross
+            and arr[1][1] == cross
+            and arr[2][1] == cross
+        
+            or arr[0][2] == cross
+            and arr[1][2] == cross
+            and arr[2][2] == cross
+        
+            or arr[0][0] == cross
+            and arr[1][1] == cross
+            and arr[2][2] == cross
+        
+            or arr[0][2] == cross
+            and arr[1][1] == cross
+            and arr[2][0] == cross){
+                
+                show_situation_in_play(arr);
+                cout << "\nПоздравляю, Вы победили!\nВы гений!\n";
+                return true;
+            }
+            
+    return false;
+}
+
+
+void main_play(){
+    
+    int free_cells[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    
+    int my_position, computer_position;
+    
+    cout << "Добро пожаловать в игру крестики-нолики!" << endl;
+    cout << "Начинать игру первым - 1\nНачинать игру вторым - 2\n";
+    cin >> my_position;
+    if (my_position == 1)
+        computer_position = 2;
+    else
+        computer_position = 1;
+    
+    char **massive = createArr(3);
+    
+    if (my_position == 1){
+        //ход игры когда ползователь ходит первым
+        
+        while(true){
+        
+            int step;
+            
+            cout << "\nВаш ход.\nВведите номер ячейки куда вы хотите сделать ход" << endl;
+            show_situation_in_play(massive);
+            cout << endl << ": ";
+            cin >> step;
+            free_cells[step - 1] = 0;
+            make_move(massive, step, my_position);
+            bool end1 = result_game(massive);
+            
+            if (end1){
+                cout << "Игра окончена." << endl;
+                return;
+            }
+            
+            sleep_for(seconds(1));
+            cout << endl << "Компьютер делает свой ход" << endl;
+            sleep_for(seconds(1));
+            cout << "Компьютер думает..." << endl;
+            sleep_for(seconds(3));
+            computer_move(massive, computer_position, free_cells);
+            show_situation_in_play(massive);
+            cout << endl;
+            bool end2 = result_game(massive);
+            
+            if (end2){
+                cout << "Игра окончена." << endl;
+                return;
+            }
+            
+            sleep_for(seconds(1));
+            
+        
+        }
+    }
+    else{
+        // ход игры когда первым ходит компьютер
+        while (true){
+            
+            int step;
+            cout << "Компьютер делает свой ход" << endl;
+            cout << "Компьютер задумался..." << endl;
+            sleep_for(seconds(3));
+            computer_move(massive, computer_position, free_cells);
+            
+            bool end_1 = result_game(massive);
+            if (end_1){
+                cout << "Конец игры." << endl;
+                return;
+            }
+            
+            cout << endl << "Введите номер ячейки куда вы хотите сделать ход" << endl;
+            show_situation_in_play(massive);
+            cout << endl << ": ";
+            cin >> step;
+            free_cells[step - 1] = 0;
+            make_move(massive, step, my_position);
+            
+            bool end_2 = result_game(massive);
+                if (end_2){
+                    cout << "Игра окончена." << endl;
+                    return;
+                }
+        }
+            
+        
+    }
+}
+
+
+
+

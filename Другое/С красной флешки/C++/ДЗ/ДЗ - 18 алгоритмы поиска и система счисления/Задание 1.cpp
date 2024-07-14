@@ -1,0 +1,51 @@
+﻿#include <iostream>
+#include <time.h>
+
+
+void find_number(int numbers[], int len, int num);
+
+int main()
+{
+    using namespace std;
+    srand(time(NULL));
+    setlocale(LC_ALL, "RU");
+
+    const int len = 20;
+    int numbers[len]{};
+
+    for (int i = 0; i < len; i++)
+    {
+        numbers[i] = rand() % 30;
+        cout << numbers[i] << endl;
+    }
+    cout << "_____________________________________________" << endl;
+    find_number(numbers, len, 0);
+
+
+}
+
+void find_number(int numbers[], int len, int num)
+{
+    using namespace std;
+    bool in_massive;
+
+    for (int i = 0; i < len; i++)
+    {
+        if (numbers[i] == num)
+        {
+            in_massive = true;
+            cout << "Заданное число находится под индексом: " << i << endl;
+            break;
+        }
+
+        else
+        {
+            in_massive = false;
+        }
+    }
+
+    if (!in_massive)
+    {
+        cout << "Искомого элемента нет в массиве." << endl;
+    }
+}

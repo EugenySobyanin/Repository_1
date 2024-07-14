@@ -1,0 +1,24 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    cout << "Домашнее задание 4.2\n" << endl;
+    int num;
+    cout << "Введите четырехзначное число: ";
+    cin >> num;
+    if (num > 999 && num < 10000) {
+        int num1 = num / 1000;       //Получам кол-во тысяч.
+        int num2 = (num / 100) % 10; //Получам кол-во сотен.
+        int num3 = (num / 10) % 10;  //Получам кол-во десятков.
+        int num4 = num % 10;         //Получам кол-во единиц.
+        cout << "Результат работы программы :"
+             << num2 * 1000 + num1 * 100 + num4 * 10 + num3;
+    }
+    else {
+        cout << "Ошибка!\nВы ввели некорректное число.";
+    }
+    return 0;
+}

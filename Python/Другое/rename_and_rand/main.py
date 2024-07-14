@@ -1,7 +1,7 @@
 import os
 from random import choice
 
-folder_path = 'files/'
+folder_path = 'E:/music/'
 count_files = len(
     [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f))]
 )

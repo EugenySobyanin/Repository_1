@@ -1,0 +1,65 @@
+#include <iostream>
+#include <time.h>
+using namespace std;
+
+
+int main()
+{
+	srand(time(0));
+	setlocale(LC_ALL, "RU");
+	int level, a, b, health, number, user_variant, help;
+	cout << "Приветствуем в игре!" << endl
+		<< "Выберите уровень сложности." << endl
+		<< "1 - легко" << endl
+		<< "2 - средне" << endl;
+	cin >> level;
+	if (level == 1) {
+		a = 1;
+		b = 10;
+		health = b / 2;
+		number = rand() % b + a;
+	}
+	else if (level == 2) {
+		a = 10;
+		b = 100;
+		health = (b - a + 1) / 4;
+		number = rand() % b + a;
+	}
+	else {
+		cout << "проверьте вводимые данные." << endl;
+	}
+	while (true)
+	{
+		cout << "Введите число: ";
+		cin >> user_variant;
+		if (user_variant == number) {
+			cout << "Молодец, ты победил!" << endl
+				<< " У тебя " << (level == 1 ? health * 5 : health * 10) << " очков.";
+			break;
+		}
+		else {
+			cout << "Неправильно." << endl;
+			--health;
+		}
+		if (health <= 0) {
+			cout << "У вас не осталось жизней, вы умерли(" << endl;
+			break;
+		}
+		else {
+			cout << "Хотите подсказку? Стоимость подсказки - 1 жизнь" << endl
+				<< "Введите 1 если да и 2 если нет" << endl;
+			cin >> help;
+			if (help == 1) {
+				if (user_variant > number) {
+					cout << "Ваше число больше чем загаданное." << endl;
+				}
+				else {
+					cout << "Ваше число меньше чем загаданное." << endl;
+				}
+				--health;
+			}
+		}
+
+	}
+
+}

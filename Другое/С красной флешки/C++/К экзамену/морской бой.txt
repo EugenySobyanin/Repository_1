@@ -1,0 +1,202 @@
+#include <iostream>
+using namespace std;
+
+
+void show_user_field(int* user_field);
+
+void computer_field(int* computer_field);
+
+void main_play();
+
+int main()
+
+{
+    setlocale(LC_ALL, "RU");
+    main_play();
+
+}
+
+// Вывод поля для юзера (с кораблями)
+// В самом массиве 0 - пустая клетка
+//                 1 - сделан выстрел мимо
+//                 2 - подбитый корабль
+//                 3 - неподбитый корабль
+void show_user_field(int user_field[][10])
+{
+    cout << "    A B C D E F G H I J " << endl;
+    cout << "   ____________________" << endl;
+
+    for (int i = 0; i < 10; i++)
+    {
+        cout << i + 1;
+        if (i < 9) cout << " ";
+        cout << " |";
+        for (int j = 0; j < 10; j++)
+        {
+            if (user_field[i][j] == 1) cout << "* ";
+            if (user_field[i][j] == 2) cout << "X ";
+            if (user_field[i][j] == 3) cout << "/ ";
+            if (user_field[i][j] == 0) cout << "0 ";
+        }
+        cout << endl;
+    }
+
+    cout << endl;
+}
+
+
+//ВВод в ячейку
+// принимает массив и ячейку в виде строки
+// возвращает ссылку на ячейку массива
+int &cell_input(int arr[][10], char first, char second, char third)
+{
+    setlocale(LC_ALL, "RU");
+    int a, b;
+    switch (first)
+    {
+        case('A'):
+        {
+            a = 0;
+        }break;
+
+        case('B'):
+        {
+            a = 1;
+        }break;
+
+        case('C'):
+        {
+            a = 2;
+        }break;
+
+        case('D'):
+        {
+            a = 3;
+        }break;
+
+        case('E'):
+        {
+            a = 4;
+        }break;
+
+        case('F'):
+        {
+            a = 5;
+        }break;
+
+        case('G'):
+        {
+            a = 6;
+        }break;
+
+        case('H'):
+        {
+            a = 7;
+        }break;
+
+        case('I'):
+        {
+            a = 8;
+        }break;
+
+        case('J'):
+        {
+            a = 9;
+        }break;
+    }
+
+    if (third == NULL)
+    {
+        cout << "third = NULL" << endl;
+        switch (second)
+        {
+        case('1'):
+        {
+            b = 0;
+        }break;
+
+        case('2'):
+        {
+            b = 1;
+        }break;
+
+        case('3'):
+        {
+            b = 2;
+        }break;
+
+        case('4'):
+        {
+            b = 3;
+        }break;
+
+        case('5'):
+        {
+            b = 4;
+        }break;
+
+        case('6'):
+        {
+            b = 5;
+        }break;
+
+        case('7'):
+        {
+            b = 6;
+        }break;
+
+        case('8'):
+        {
+            b = 7;
+        }break;
+
+        case('9'):
+        {
+            b = 8;
+        }break;
+        }
+    }
+    else b = 10;
+ 
+
+
+    return arr[a][b];
+}
+
+
+// Заполнение кораблями в начале игры, в ручную пользователем
+void the_arrangement_of_ships_user(int arr[][10])
+{
+    setlocale(LC_ALL, "RU");
+    char cell[3] = {'?', '?', '?'};
+    int part_of_the_ship = 1;
+        while (part_of_the_ship > 0)
+        {
+            cout << "Введите ячейку " << endl;
+            cin >> cell;
+            cout << cell << endl;
+            cout << cell[0] << endl;
+            cout << cell[1] << endl;
+            cout << cell[2] << endl;
+            cell_input(arr, cell[0], cell[1], cell[2]) = 3;
+            part_of_the_ship -= 1;
+        }
+}
+
+
+void main_play()
+{
+    cout << "Добро пожаловать в игру морской бой!" << endl;
+    // Сделали 2 массива
+    int user_massive[10][10]{0};
+    int computer_massive[10][10]{0};
+    // Расставаить корабли
+    cout << "Расставьте свои корабли" << endl;
+    show_user_field(user_massive);
+    the_arrangement_of_ships_user(user_massive);
+    show_user_field(user_massive);
+    
+}
+
+
+

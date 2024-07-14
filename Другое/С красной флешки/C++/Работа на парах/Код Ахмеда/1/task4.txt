@@ -1,0 +1,43 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+int main()
+{
+    srand(time(0));
+
+    setlocale(LC_ALL, "ru");
+
+    const int a = 3,b=4;
+    int arr[a][b], totalsum = 0, sumstolb[b]{0};
+
+    for (int i = 0; i <= a; ++i)
+    {
+        if (i < a)
+        {
+            int sumstrok = 0;
+            for (int j = 0; j < b; ++j)
+            {
+
+                arr[i][j] = rand() % 10;
+                sumstrok += arr[i][j];
+                sumstolb[j] = sumstolb[j] + arr[i][j];
+                totalsum = totalsum + arr[i][j];
+                cout << arr[i][j] << "\t";
+            }
+            cout << " | " << sumstrok << endl;
+        }
+        else
+        {
+            cout << "-------------------------------------" << endl;
+            for (int j = 0; j < b; ++j)
+            {
+
+                
+                cout << sumstolb[j] << "\t";
+            }
+            cout <<" | "<< totalsum;
+        }
+    }
+
+}

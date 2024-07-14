@@ -1,0 +1,35 @@
+﻿#include <iostream>
+#include <time.h>
+#include <cmath>
+
+int from_2_to_10(int number, int base);
+
+
+int main()
+{
+    using namespace std;
+    setlocale(LC_ALL, "RU");
+    srand(time(0));
+    
+    cout << from_2_to_10(10101, 2);
+
+}
+
+
+int from_2_to_10(int number, int base)
+{
+    int temp = number;
+    int counter = 0;
+    int remains;
+    int result = 0;
+
+    while (temp > 0)
+    {
+        remains = temp % 10;
+        temp /= 10;
+        result += remains * pow(base, counter);
+        ++counter;
+    }
+    return result;
+}
+
