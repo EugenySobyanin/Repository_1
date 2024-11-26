@@ -1,0 +1,1 @@
+print(page.cell(row=2, column=6).value)
