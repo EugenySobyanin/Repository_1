@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 from num2words import num2words
 from pathlib import Path
 
-wb = load_workbook('workdir/calc.xlsx')
+wb = load_workbook('calc.xlsx')
 page = wb["Page_1"]
 data = {}
 
@@ -27,8 +27,8 @@ def get_str_numbers(data):
 # Создаем файлы и заполняем их данными
 def make_files(data):
     for key, value in data.items():
-        template_path = "workdir/example_2.docx"
-        new_file_path = f"workdir/files/{key}.docx"
+        template_path = "example_2.docx"
+        new_file_path = f"files/{key}.docx"
         year_coast = str(value[0])
         year_coast_str = value[3]
         days = str(value[2])
