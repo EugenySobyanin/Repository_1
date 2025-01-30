@@ -85,16 +85,6 @@
 // alert(result + "палиндром.");
 
 
-// Задание 6.
-let amount = document.getElementById("amount");
-// let result = document.getElementById("result");
-let button = document.getElementById("submit");
-
-button.onclick = function(event){
-    
-}
-
-
 // Задание 7.
 // let sum = prompt("Введите сумму покупки");
 // let sale = 0;
@@ -115,8 +105,3 @@ button.onclick = function(event){
 // let p = prompt("Введите периметр квадрата");
 // let result_2 = p / 4 > l / Math.PI ? "Помещается!": "Не помещается(";
 // alert(result_2);
-
-
-// Задание 9.
-
-
