@@ -18,6 +18,7 @@ let start_button = document.getElementById("start-button");
 var result_button = document.createElement("button");
 result_button.textContent = "Отправить";
 
+// Вывод самой викторины
 start_button.onclick = function(event){
     event.preventDefault();
     
@@ -29,17 +30,17 @@ start_button.onclick = function(event){
         div.appendChild(linebreak);
 
         for(let j = 0; j < answers[i].length; j++){
-            let checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.id = `checkbox${i}_${j}`;
-            checkbox.class = `checkbox${i}`;
+            let radio = document.createElement("input");
+            radio.type = "radio";
+            radio.id = `radio${i}_${j}`;
+            radio.name = `question${i}`;
 
             let label = document.createElement("label");
-            label.class = `label${i}`;
-            label.htmlFor = checkbox.id;
+            label.className = `label${i}`;
+            label.htmlFor = radio.id;
             label.textContent = answers[i][j];
 
-            div.appendChild(checkbox);
+            div.appendChild(radio);
             div.appendChild(label);
 
             let linebreak2= document.createElement("br");
@@ -50,14 +51,17 @@ start_button.onclick = function(event){
     quiz.appendChild(result_button);
 }
 
+// Подсчет баллов
 result_button.onclick = function(event){
     event.preventDefault();
+    points = 0;
 
     for(let i = 0; i < questions.length; i++){
-        let check_answers = document.getElementsByClassName(`checkbox${i}`);
-        let labels= document.getElementsByClassName(`label${i}`);
-        for(let j = 0; j < answers[i].length; j++){
-            if (check_answers[i].checked && (labels[i].textContent == "Том Хэнкс" || labels[i].textContent == "Мэтью Макконахи")){
+        let selected = document.querySelector(`input[name="question${i}"]:checked`);
+        
+        if (selected){
+            let select_label = document.querySelector(`label[for="${selected.id}"]`)
+            if (select_label && (select_label.textContent == "Том Хэнкс" || select_label.textContent == "Мэтью Макконахи")) {
                 points += 2;
             }
         }
