@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 2.</title>
+</head>
+<body>
+  <h3>Дз № 2</h3>
+  <div id="convertor">
+    <h5>Задание № 6. Конвертор валют.</h5>
+    <form>
+      <input id="amount" type="integer" placeholder="Введите кол.во долларов."><br>
+      <labeL>Выберите валюту для перевода</labeL><br>
+      <input id="currency" type="text" list="options">
+      <datalist id="options">
+        <option value="EUR">
+        <option value="AZN">
+        <option value="RUB">
+      </datalist>
+      <br>
+      <input id="submit" type="submit" value="рассчитать">
+    </form>
+  </div>
+  <div id="quiz">
+    <hr>
+    <br>
+    <h5>Задание № 9</h5>
+    <button id="start-button">Начать викторину</button>
+
+  </div>
+  <hr>
+  <div id="next-date-generator">
+    <h5>Задание № 10</h5>
+    <form>
+      <p>Выберите дату.</p>
+      <input type="date" id="date-input">
+      <input id="get-date" type="submit" value="рассчитать">
+    </form>
+  </div>
+  <hr>
+
+  <script src="script.js"></script>
+  <script src="task_6.js"></script>
+  <script src="task_9.js"></script>
+  <script src="task_10.js"></script>
+</body>
+</html>
