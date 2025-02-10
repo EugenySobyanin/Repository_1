@@ -1,0 +1,118 @@
+#include <iostream>
+using namespace std;
+
+void swap_2(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void randomizer_2(int* arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        arr[i] = rand() % 10;
+    }
+}
+
+void print(int* arr, int size) {
+    for (int i = 0; i < size; ++i) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+int* creatArr(int size) {
+    return new int[size];
+}
+template<typename T>
+T in_massive(int* arr, T size, T element) {
+    for (int i = 0; i < size; i++) {
+        if (*(arr + i) == element) {
+            return true;
+        }
+    }
+    return false;
+}
+template<typename T>
+void relloc(T* &arr, int size, int newsize) {
+    if (size = newsize) {
+        return;
+    }
+    T* newArr = new T[size];
+    T sz = newsize < size ? newsize : size;
+    for (int i = 0; i < sz; ++i) {
+        newArr[i] = arr[i];
+    }
+    delete[] arr;
+    arr = newArr;
+}
+
+template<typename T>
+T* cut_massive(T* A, T* B,  T &size1, T size2) {
+
+    int* C = new int[size1];
+    int k = 0;
+    for (int i = 0; i < size1; i++) {
+        bool in_masss = in_massive(A, size1, *(B + i));
+        if (!in_massive(B, size1, A[i])) {
+            if (!in_massive (C, size1, A[i])){
+                C[k++] = A[i];
+            }
+            
+        }
+    }
+
+    if (k != size1) {
+        relloc(C, size1, k);
+    }
+    size1 = k;
+    return C;
+}
+
+
+int main() /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+{
+    srand(time(0));
+    setlocale(LC_ALL, "RU");
+
+    int a = 10;
+    int b = 20;
+    swap_2(a, b);
+    cout << a << " " << b << endl;
+
+    int size = 10;
+    int* ptr = creatArr(size);           //динамическое выделение памяти
+
+    randomizer_2(ptr, size);
+    print(ptr, size);
+
+    delete[] ptr;
+    
+    int* p = new int(5);
+    cout << *p << endl;;
+    delete p;
+    ///////////////////////// Задача 1 /////////////////////////////////
+    cout << endl << endl << endl;
+    int M = 10;
+    int N = 5;
+    int* A = creatArr(M);
+    int* B = creatArr(N);
+    randomizer_2(A, M);
+    randomizer_2(B, N);
+    print(A, M);
+    print(B, N);
+    int* C = cut_massive(A, B, M, N);
+    print(C, M);
+
+    delete[] A;
+    delete[] B;
+    delete[] C;
+
+
+
+
+
+
+
+
+    return 0;
+}

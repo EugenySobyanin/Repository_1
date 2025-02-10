@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    cout << "Домашнее задание 6.2\n" << endl;
+    int total_seconds;
+    cout << "Введите время в секундах с начала рабочего дня: ";
+    cin >> total_seconds;
+    int seconds_to_day_end = 8 * 3600 - total_seconds;
+    cout << "До конца рабочего дня осталось: Часы: " << seconds_to_day_end / 3600 << endl;
+    return 0;
+}

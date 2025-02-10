@@ -1,0 +1,185 @@
+#include <iostream>
+using namespace std;
+
+//многомерные динамические массивы
+
+template<typename T>
+void print(T** arr, int row, int col) {
+	for (int i = 0; i < row; i++) {
+
+		for (int j = 0; j < col; j++) {
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+	
+
+}
+
+void randomer(int** arr, int row, int col, int start = 0, int end = 101) {
+
+	for (int i = 0; i < row; i++) {
+
+		for (int j = 0; j < col; j++) {
+			arr[i][j] = rand() % (end - start) - start;
+		}
+	}
+}
+
+size_t mystrlen(const char* str) { 
+/*Задача 1
+считает количество элементов строки*/
+	size_t i;
+	
+	for (i = 0; str[i] != '\0'; i++) {}
+	return i;
+}
+
+char* mystrcpy(char* str1, const char* str2) {
+
+	auto len1 = mystrlen(str1);
+	auto len2 = mystrlen(str2);
+
+	if (mystrlen(str1) < mystrlen(str2)) return nullptr;
+
+	int i = 0;
+
+	while (str2[i] != '\0'){
+		str1[i] = str2[i];
+		++i;
+    }
+	str1[i] = '\0';
+
+	return str1;
+
+}
+
+char* mystrcat(char* str1, const char* str2) {
+	/*Задача3
+	присоединяет вторую строку к первой
+	*/
+	auto len1 = mystrlen(str1);
+	auto len2 = mystrlen(str2);
+
+	int i = 0;
+	while (str2[i] != '\0') {
+		str1[len1++] = str2[i++];
+	}
+	str1[len1] = '\0';
+
+	return str1;
+}
+
+char* mystrchr(char* str, char s) {
+	
+
+	int8_t j = 0;
+
+	for (size_t i = 0; str[i] != '\n'; i++) {
+
+		if (str[i] == s) return &str[i];
+	}
+}
+
+
+int main()
+{
+	//задача 4
+	char word[10] = "Word";
+	cout << mystrchr(word, 'o');
+	 
+	 
+	 
+	
+	 
+	//задача 3
+	//char str[11] = "hello";
+	//auto char_ptr = mystrcat(str, "world");
+
+	//cout << char_ptr;
+	
+
+
+
+
+
+	// задача 2
+	/*char str[] = "hello";
+	auto ptr = mystrcpy(str, "world log");
+	cout << ptr << endl;*/
+
+	
+
+
+
+
+
+	// задача 1
+	//cout << mystrlen("Hello");
+
+
+
+
+
+	//ключевое слово auto и decltype
+
+	//auto value = 100;
+	//cout << typeid(value).name() << endl;
+
+	//decltype(value) value2 = value * 2;
+	//cout << typeid(value2).name() << endl;
+
+	//int a = 20;
+	//auto val3 = &a; // указатель через auto
+	//cout << typeid(val3).name() << endl;
+
+
+
+
+
+	//enum - набор констант.............................................................................
+	//enum { a1 = 10, a2 = 23, a3 }; //a3 - присвоено по умолчанию
+	//cout << a1 << " " << a2 << " " << a3 << endl;
+
+
+
+
+
+	//вывод двумерного массива .........................................................................
+	//int row = 5, col = 5;
+	//int** arr = new int* [5] {nullptr};
+
+	//for (int i = 0; i < 5; i++) {
+
+	//	arr[i] = new int[col];
+	//}
+
+	//randomer(arr, row, col, 0, 50);
+	//print(arr, row, col);
+
+
+
+
+
+	// вводная часть ....................................................................................
+	//int a = 10;
+	//int *ptr_a = &a;
+	// 
+	//int **ptr_ptr = &ptr_a; //указатель на указатель
+
+	//int **arr = new int*[5] {nullptr}; //создание многомерного массива
+	//arr[0] = new int[10] {0};
+	//arr[1] = new int[10] {0};
+
+
+	//for (int i = 0; i < 5; i++) {
+	//	arr[i] = new int[5];
+	//}
+
+
+
+
+
+
+}
+

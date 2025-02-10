@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+
+//// Операторы выделения памяти new и delete
+
+template <typename T>
+void print_massive(T* massive, int size);
+
+int main()
+{
+	setlocale(LC_ALL, "RU");
+
+	// Форма 1. Выделение памяти под один объект некоторого типа
+	int* ptr_1 = new int;
+	int a = 100;
+	//ptr_1 = &a; // здесь указателю присвоена ссылка на другой объект
+				// и доступ к выделеному динамически месту в памяти потерян - это утечка памяти
+	*ptr_1 = 500;
+	cout << *ptr_1 << endl;
+	delete ptr_1;
+
+	// выделение с инициализацией
+	int* ptr_2 = new int(12);
+	cout << *ptr_2 << endl;
+	delete ptr_2;
+
+
+	// Форма 2. Выделение памяти под массив
+	int* arr_1 = new int[10];
+	delete[] arr_1;
+
+
+	// Запрашиваем размер массива, выделяем под него память и заполняем рандомными числами
+	int num;
+	int* arr_2; // указатель для массива
+	cout << "Введите длину массива: ";
+	cin >> num;
+	arr_2 = new int[num]; // выдеделели память
+	
+	// заполнение массива
+	for (int i = 0; i < num; ++i)
+	{
+		arr_2[i] = rand() % 20;
+	}
+
+	print_massive(arr_2, num);
+	delete[] arr_2;
+
+}
+
+
+template <typename T>
+void print_massive(T* massive, int size)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		cout << massive[i] << " ";
+	}
+	cout << endl;
+}

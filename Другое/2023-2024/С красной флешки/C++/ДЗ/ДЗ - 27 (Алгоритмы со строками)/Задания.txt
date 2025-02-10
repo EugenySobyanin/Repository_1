@@ -1,0 +1,180 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+
+void deleteSymbol(char* str, int position);
+
+void deletAll(char* str, char symbol);
+
+void insertSymbol(char* str, int pos, char symbol);
+
+char* getLineAndChangePoints();
+
+int getLineAndCountSymbol();
+
+void getLineAndCountGroupOfSymbols();
+
+
+int main()
+{
+    setlocale(LC_ALL, "RU");
+
+    // Задание 1. Удаляем из строки символ с заданным индексом
+    char word[] = "Математика";
+    deleteSymbol(word, 1);
+    cout << word << endl;
+
+    // Задание 2. Удалить все вхождения заданного символа
+    char word_2[] = "математикак";
+    deletAll(word_2, 'к');
+    cout << word_2 << endl;
+
+    // Задание 3. Вставить переданный символ по переданному индексу
+    char word_3[50] = "математика";
+    insertSymbol(word_3, 5, '|');
+    cout << word_3 << endl;
+
+    // Задание 4. Получить строку от пользователя и заменить все "." на "!"
+    // не работает при ввода пользователем кирилицы.
+    char* result = getLineAndChangePoints();
+    cout << result << endl;
+    delete[] result;
+
+    // Задание 5.
+    // Получает строку от пользователя и символ от пользователя
+    // и считает сколько раз встречается символ в строке
+    int res = getLineAndCountSymbol();
+    cout << res << endl;
+
+    // Задание 6.
+    // Получает строку от пользовател
+    // Некорректно работает с кирилицей
+    getLineAndCountGroupOfSymbols();
+}
+
+
+void deleteSymbol(char* str, int position) {
+    /*Удаляет символ с заданным индексом*/
+
+    int i = position;
+    while (str[i] != '\0')
+    {
+        str[i] = str[i + 1];
+        ++i;
+    }
+}
+
+void deletAll(char* str, char symbol) {
+    /*Удаляет все вхождения заданного символа*/
+
+    int position = 0;
+    while (str[position] != '\0')
+    {
+        if (str[position] == symbol)
+        {
+            int pos = position;
+            while (str[pos] != '\0')
+            {
+                str[pos] = str[pos + 1];
+                ++pos;
+            }
+        }
+        ++position;
+    }
+}
+
+void insertSymbol(char* str, int pos, char symbol) {
+    /*Вставляет символ по переданному индексу*/
+
+    int last_index = strlen(str) - 1;
+    char last_el = str[last_index];
+
+    for (int i = last_index; i > pos; i--)
+    {
+        str[i] = str[i - 1];
+    }
+    str[pos] = symbol;
+    str[last_index + 1] = last_el;
+}
+
+
+char* getLineAndChangePoints()
+{
+    /*Получает строку и заменяет "." на "!"*/
+
+    setlocale(LC_ALL, "RU");
+
+    char* str = new char[100] {};
+    cout << "Введите текст: " << endl;
+    cin.getline(str, 100);
+
+    int pos = 0;
+    while (str[pos] != '\0') 
+    {
+        if (str[pos] == '.')
+        {
+            str[pos] = '!';
+        }
+        ++pos;
+    }
+    return str;
+}
+
+
+int getLineAndCountSymbol()
+{
+    /*Получает строку и символ от пользователя
+    и считает кол.во вхождения символа*/
+
+    char symbol;
+    char str[100];
+
+    cout << "Введите строку: " << endl;
+    cin.getline(str, 100);
+    cout << "Введите символ: " << endl;
+    cin >> symbol;
+
+    int pos = 0, result = 0;
+    while (str[pos] != '\0')
+    {
+        if (str[pos] == symbol)
+        {
+            ++result;
+        }
+        ++pos;
+    }
+    return result;
+}
+
+
+void getLineAndCountGroupOfSymbols()
+{
+    /*Получает строку от пользователя и считает
+    кол.во в ней цифр, букв и др.символов*/
+    char str[100];
+    int digit = 0, letter = 0, other = 0, pos = 0;
+    cout << "Введите строку: ";
+    cin.getline(str, 100);
+
+    while (str[pos] != '\0')
+    {
+        if (str[pos] >= 48 and str[pos] <= 57)
+        {
+            ++digit;
+        }
+        else if (str[pos] >= 65 and str[pos] <= 90
+            or str[pos] >= 97 and str[pos] <= 122
+            or str[pos] >= -64 and str[pos] <= -1
+            )
+        {
+            ++letter;
+        }
+        else ++other;
+
+        ++pos;
+    }
+    cout << "В строке " << digit << " цифр." << endl;
+    cout << "В строке " << letter << " букв." << endl;
+    cout << "В строке " << other << " других символов." << endl;
+}
