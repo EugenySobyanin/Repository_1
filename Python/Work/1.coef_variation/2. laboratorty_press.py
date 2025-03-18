@@ -3,7 +3,7 @@
 from math import sqrt
 
 
-def find_variation_coef(coasts: list) -> tuple[str, float]:
+def find_variation_coef(coasts: list) -> str:
     """"Расчет коэф.вариации и средней цены на основании списка с коммерческими предложениями."""
     AVG_coast = round(sum(coasts) / len(coasts), 2)
     standard_deviation = 0
