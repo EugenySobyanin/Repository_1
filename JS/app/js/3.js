@@ -18,3 +18,11 @@ var b = 0.0000005;  // В строковом виде представлен к�
 console.log(String(b));
 console.log(parseInt(b));
 
+
+// NaN и isNaN (Not a Number)
+// NaN - значение, которое возращается, если строку нельзя преобразовать к числу
+console.log(parseInt("abc")); // NaN
+const type = typeof NaN;
+console.log(type); // number
+
+
