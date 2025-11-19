@@ -1,59 +1,108 @@
+import logging
 import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from constants import (FINANCIAL_COLUMNS_A,
+                       FINANCIAL_COLUMNS_B,
+                       KBK_COLUMNS,
+                       TABLE_DATA_PATH,
+                       TABLE_NEW_PATH)
 
-from constants import TABLE_DATA_PATH, TABLE_NEW_PATH
+
+logging.basicConfig(level=logging.INFO)
 
 
 def update_table_a_with_b(table_a_path, table_b_path):
     """
-    Обновляет таблицу A данными из таблицы B по совпадающим КБК
-    Таблица A изменяется напрямую
+    Обновляет таблицу A данными из таблицы B с сохранением форматирования
     """
     # 1. Загрузка таблиц
-    df_a = pd.read_excel(table_a_path)
-    df_b = pd.read_excel(table_b_path)
+    try:
+        df_a = pd.read_excel(table_a_path, skiprows=1)
+        df_b = pd.read_excel(table_b_path, skiprows=2)
+        logging.info("Успешное чтение файлов")
+    except Exception as e:
+        logging.critical(f'Произошла ошибка при чтении файлов: {e}')
+        return
     
-    # 2. Определение колонок
-    kbk_columns = ['цст', 'КВР', 'КОСГУ', 'Рег.класс', 'доп.код']
+    # 2. Проверяем наиличие всех колонок в обеих таблицах
+    # logging.info("Колонки в таблице A:", df_a.columns.tolist())
+    # logging.info("Колонки в таблице B:", df_b.columns.tolist())
     
-    # Предположим, финансовые колонки называются так:
-    # В таблице A: ['Лимит_A', 'БО_A', 'Остаток_A']
-    # В таблице B: ['Лимит_B', 'БО_B', 'Остаток_B']
-    financial_columns_a = ['Лимиты бюджетных обязательств на 2025', 'Бюджетные обязательства на 2025', 'Предварительные заявки на 2025', 'Другое_A', 'Еще_A']
-    financial_columns_b = ['Лимит_B', 'БО_B', 'Остаток_B', 'Другое_B', 'Еще_B']
+    missing_in_a = [col for col in KBK_COLUMNS if col not in df_a.columns]
+    missing_in_b = [col for col in KBK_COLUMNS if col not in df_b.columns]
     
+    if missing_in_a:
+        logging.critical(f"В таблице A отсутствуют колонки: {missing_in_a}")
+        return
+    if missing_in_b:
+        logging.critical(f"В таблице B отсутствуют колонки: {missing_in_b}")
+        return
+            
     # 3. Создание словаря для сопоставления колонок
-    column_mapping = dict(zip(financial_columns_b, financial_columns_a))
+    column_mapping = dict(zip(FINANCIAL_COLUMNS_B, FINANCIAL_COLUMNS_A))
     
     # 4. Объединение таблиц по ключевым полям КБК
-    merged = pd.merge(
-        df_a, 
-        df_b, 
-        on=kbk_columns, 
-        how='left', 
-        suffixes=('_a', '_b')
-    )
+    try: 
+        merged = pd.merge(
+            df_a, 
+            df_b, 
+            on=KBK_COLUMNS, 
+            how='left', 
+            suffixes=('_a', '_b')
+        )
+    except Exception as e:
+        logging.critical(f'Произошла ошибка при слиянии таблиц: {e}')
+        return
     
-    # 5. Обновление данных в таблице A
+    # 5. Загружаем исходный файл с форматированием
+    try:
+        workbook = load_workbook(table_a_path)
+        sheet = workbook.active
+    except Exception as e:
+        logging.error("Произошла ошибка про загрузке таблицы в openpyxl: {e}")
+    
+    # 6. Обновление данных с сохранением форматирования
     total_changes = 0
+    
+    # Находим индексы колонок для обновления
+    header_row = 2  # предполагая, что заголовки во 2 строке (после skiprows=1)
+    column_indices = {}
+    
+    # Получаем индексы колонок которые нужно обновить (из таблицы А)
+    for idx, cell in enumerate(sheet[header_row], 1):
+        if cell.value in FINANCIAL_COLUMNS_A:
+            column_indices[cell.value] = idx
+    
+    # Обновляем данные
     for col_b, col_a in column_mapping.items():
-        # Создаем маску для строк, где данные отличаются
-        mask = (merged[col_a] != merged[col_b]) & (~merged[col_b].isna())
+        if col_a not in column_indices:
+            continue
         
-        # Обновляем значения в таблице A
-        changes_count = mask.sum()
+        # Получаем индекс колонки, которую будем проверять
+        col_idx = column_indices[col_a]
+        changes_count = 0
+        
+        for row_idx, (_, row_data) in enumerate(merged.iterrows(), header_row + 1):
+            original_val = sheet.cell(row=row_idx, column=col_idx).value
+            new_val = row_data[col_b]
+            
+            # Проверяем, нужно ли обновлять значение
+            if pd.notna(new_val) and original_val != new_val:
+                sheet.cell(row=row_idx, column=col_idx).value = new_val
+                changes_count += 1
+        
         if changes_count > 0:
-            df_a.loc[mask, col_a] = merged.loc[mask, col_b]
             print(f"Обновлено {changes_count} значений в столбце {col_a}")
             total_changes += changes_count
     
-    # 6. Перезаписываем исходную таблицу A
-    df_a.to_excel(table_a_path, index=False)
-    print(f"Таблица A обновлена. Всего изменений: {total_changes}")
-    
+    # 7. Сохраняем файл с исходным форматированием
+    workbook.save(table_a_path)
+    print(f"Таблица A обновлена. Всего изменений: {total_changes}.")
     return df_a
 
 
-# Пример использования
+# Вызов функции
 if __name__ == "__main__":
     updated_df = update_table_a_with_b(
         table_a_path=TABLE_DATA_PATH,
