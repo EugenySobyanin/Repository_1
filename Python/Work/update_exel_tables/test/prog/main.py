@@ -4,6 +4,7 @@ from openpyxl import load_workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from constants import (FINANCIAL_COLUMNS_A,
                        FINANCIAL_COLUMNS_B,
+                       HEADER_ROW_NUMBER,
                        KBK_COLUMNS,
                        TABLE_DATA_PATH,
                        TABLE_NEW_PATH)
@@ -66,7 +67,7 @@ def update_table_a_with_b(table_a_path, table_b_path):
     total_changes = 0
     
     # Находим индексы колонок для обновления
-    header_row = 2  # предполагая, что заголовки во 2 строке (после skiprows=1)
+    header_row = HEADER_ROW_NUMBER
     column_indices = {}
     
     # Получаем индексы колонок которые нужно обновить (из таблицы А)
@@ -89,6 +90,9 @@ def update_table_a_with_b(table_a_path, table_b_path):
             
             # Проверяем, нужно ли обновлять значение
             if pd.notna(new_val) and original_val != new_val:
+                # Формируем строку с информацией о КБК
+                # print(f'{row_data['Вед']}.{row_data['Подр']}.{row_data['ЦСт']}.{row_data['Pacx']}.{row_data['КОСГУ']}.{}')
+                    
                 sheet.cell(row=row_idx, column=col_idx).value = new_val
                 changes_count += 1
         
