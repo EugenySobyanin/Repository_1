@@ -10,7 +10,11 @@ from constants import (FINANCIAL_COLUMNS_A,
                        TABLE_NEW_PATH)
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    filename='update.log',
+    filemode='a',        # 'a' - дописывать, 'w' - перезаписывать
+)
 
 
 def concatenate_kbk_str(data: dict) -> str:
@@ -111,15 +115,15 @@ def update_table_a_with_b(table_a_path, table_b_path):
                 
         
         if changes_count > 0:
-            print(f"Обновлено {changes_count} значений в столбце {col_a}")
+            logging.info(f"Обновлено {changes_count} значений в столбце {col_a}")
             for kbk in changes_kbk:
-                print(kbk)
+                logging.info(kbk)
             changes_kbk = []
             total_changes += changes_count
     
     # 7. Сохраняем файл с исходным форматированием
     workbook.save(table_a_path)
-    print(f"Таблица A обновлена. Всего изменений: {total_changes}.")
+    logging.info(f"Таблица A обновлена. Всего изменений: {total_changes}.")
     return df_a
 
 
