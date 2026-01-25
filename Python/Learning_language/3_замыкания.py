@@ -2,6 +2,7 @@
 def fib():
     x1 = 0
     x2 = 1
+
     def get_next_number():
         nonlocal x1, x2
         x3 = x1 + x2
