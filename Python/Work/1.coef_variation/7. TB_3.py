@@ -19,9 +19,9 @@ def find_variation_coef(coasts: list) -> str:
 
 
 # входные данные
-price_1 = 1_380_000
-price_2 = 1_380_000
-price_3 = 1_500_000
+price_1 = 25_000
+price_2 = 16_000
+price_3 = 15_000
 price_list = [price_1, price_2, price_3]
 
 # Вывод полученных результатов
