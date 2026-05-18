@@ -22,18 +22,28 @@ int main(void)
     printf("%d - %d - %d\n", sym1, sym2, sym3);
 
     // Целочисленные типы
+    // signed - может принимать отрицательные значения
+    // unsigned - может принимать только положительные значения
     short short_num = 15155;  // 2байта от -32 768 до 32 767
     long long_num = 2099123124;  // 4байта от −2 147 483 648 до 2 147 483 647
     long long long_long_num = 9223372036854775807;  // 8байт от -9 223 372 036 854 775 807 до +9 223 372 036 854 775 807
     printf("short = %hd\n", short_num);
-    printf("Size of long: %zu bytes\n", sizeof(int));  // Проверка сколько памяти занимает определенный тип данных
+
+    printf("Size of short: %zu bytes\n", sizeof(short)); // Проверка сколько памяти занимает short
+    printf("Size of int: %zu bytes\n", sizeof(int));  // Проверка сколько памяти занимает int
+    printf("Size of long: %zu bytes\n", sizeof(long)); // Проверка сколько памяти занимает long
+    printf("Size of long long: %zu bytes\n", sizeof(long long)); // Проверка сколько в памяти занимает long long
+
     printf("LONG_MAX = %ld\n", LONG_MAX);  // Максимальное значение, которое помещается в long
     printf("long = %ld\n", long_num);
     printf("long_long = %lld\n", long_long_num);
 
+    // int
+    // Псевдонимы: int, signed int, signed
     // Получатся, что int не отличается от long
     int num5 = 2147483647;  // 4байта от −2 147 483 648 до 2 147 483 647
-    printf("int = %d\n", num5);
+    signed num5_2 = 333555; // Используем другой псевдоним
+    printf("int = %d signed = %d\n", num5, num5_2);
 
     // unsigned типы и их спецификаторы при выводе %u
     unsigned int num6 = 3000000000;  // 4байта
