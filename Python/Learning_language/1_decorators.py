@@ -1,5 +1,6 @@
 from random import randint
 
+
 # Пример 1
 def square(foo):
     def wrapper():
@@ -7,6 +8,7 @@ def square(foo):
         modified = [el**2 for el in original_result]
         return modified
     return wrapper
+
 
 @square
 def make_list(size) -> list:
