@@ -1,0 +1,910 @@
+
+<!-- saved from url=(0106)https://code.s3.yandex.net/Python-dev/cheatsheets/063-fastapi-osnovy-shpora/063-fastapi-osnovy-shpora.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>FastAPI: основы&nbsp;| Я.Шпора</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style>
+<link rel="apple-touch-icon" sizes="180x180" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/favicon-16x16.png">
+<link rel="manifest" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/site.webmanifest">
+<link rel="mask-icon" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="shortcut icon" href="https://code.s3.yandex.net/Python-dev/cheatsheets/static/ico/favicon.ico">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="../static/ico/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+<link href="./FastAPI_ основы _ Я.Шпора_files/prism.css" rel="stylesheet">
+<script src="./FastAPI_ основы _ Я.Шпора_files/prism.js"></script>
+<link href="./FastAPI_ основы _ Я.Шпора_files/custom.css" rel="stylesheet">
+<script src="./FastAPI_ основы _ Я.Шпора_files/custom.js"></script>
+<!--<base target="_blank">--><base href="." target="_blank">
+</head><body><article id="d38dde08-8301-43d8-8b71-10bce6d0bfca" class="page sans"><header><h1 class="page-title">FastAPI: основы<strong>&nbsp;| Я.Шпора</strong></h1><p class="page-description"></p></header><div class="page-body"><p id="f8ff6b8a-0e6c-4502-b988-3102aa17b45e" class=""><strong>FastAPI</strong> — асинхронный веб-фреймворк.</p><p id="85b12ec7-94f4-481d-b6b4-b46873811738" class="">Установка библиотеки:</p><pre id="f8c00204-ea1f-45e6-aff1-e880c048407a" class="code language-bash" tabindex="0"><code class="language-bash">pip <span class="token function">install</span> <span class="token assign-left variable">fastapi</span><span class="token operator">==</span><span class="token number">0.78</span>.0</code></pre><p id="327bcb25-fcf1-4143-81e4-de4aef88527b" class="">Пример минимального приложения на FastAPI; код можно разместить в файле с любым именем, но обычно это файл <em>main.py:</em></p><pre id="339b8ca3-ac12-4355-a663-976a05ba3da9" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> fastapi <span class="token keyword">import</span> FastAPI
+
+<span class="token comment"># Создание объекта приложения.</span>
+app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Декоратор, определяющий, что GET-запросы к основному URL приложения</span>
+<span class="token comment"># должны обрабатываться этой функцией.</span>
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">read_root</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'Hello'</span><span class="token punctuation">:</span> <span class="token string">'FastAPI'</span><span class="token punctuation">}</span></code></pre><p id="9095393a-6a79-41f9-a5e9-c91a734f0e39" class="">Для обработки других типов запросов в декораторе можно указать нужный метод. Например, для обработки POST-запросов декоратор будет выглядеть так: </p><pre id="d39459e7-1615-453d-a10a-dff6547f6146" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>post</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>адрес_запроса<span class="token operator">&gt;</span><span class="token punctuation">)</span></code></pre><p id="8c779601-6245-460e-a391-32d91d49a180" class="">Для запуска приложения на FastAPI понадобится веб-сервер Uvicorn: </p><pre id="515c7d96-b767-433b-b992-b499d692ae19" class="code language-bash" tabindex="0"><code class="language-bash">pip <span class="token function">install</span> <span class="token string">"uvicorn[standard]==0.17.6"</span></code></pre><p id="b9674dfc-8630-4faf-b473-91136060de4d" class="">Запуск Uvicorn:</p><pre id="5c7cc7ec-58a0-4ec2-bd31-f4a326983d99" class="code language-bash" tabindex="0"><code class="language-bash">uvicorn main:app <span class="token parameter variable">--reload</span></code></pre><p id="fb6bfeac-5350-4829-bcd0-1f3da54ff30c" class="">Флаг <code>--reload</code> автоматически перезапускает сервер, если код приложения был изменен; это удобно при разработке.</p><p id="d7974880-b7d7-4b69-a824-95d2972622fa" class="">При запуске сервера в консоль будет выведена служебная информация и адрес главной страницы приложения, обычно это <em>http://127.0.0.1:8000</em>.</p><h2 id="e378a1fc-eaa6-4f89-be29-543bc7b928d2" class="">Структура типичного проекта</h2><p id="aec23b1f-a4fc-4ab2-94f4-7050f8daff37" class="">На схеме не отображены директории для git/venv/Docker и пустые файлы <em>__init__.py</em></p><pre id="a764dd66-b501-4874-b061-c5fe001aec30" class="code language-plain" tabindex="0"><code class="Text language-plain" style="white-space:pre-wrap;word-break:break-all">папка проекта
+├── .env  ······················ Секреты. uvicorn --reload не следит за этим файлом
+├── the_app.db  ················ База
+├── app/  ······················
+│   ├── core/  ·················
+│   │   ├── config.py  ········· Настройки проекта
+│   │   └── db.py  ············· Инициализация базы, предок для моделей, сессия и пр.
+│   ├── models/  ··············· Модели
+│   │   ├── _init__.py  ········ Пред-импорт моделей. Трюк для показа всех моделей Алхимии.
+│   │   └── the_models.py  ·····
+│   ├── crud/  ················· Элементарные операции с базой
+│   │   ├── base_crud.py  ······ Общие действия для всех моделей
+│   │   └── the_models_crud.py · Уточнённые действия для конкретной модели
+│   ├── schemas/  ·············· Схемы JSON-данных
+│   │   └── the_schemas.py  ····
+│   ├── api/  ·················· API проекта
+│   │   └── the_endpoints.py  ··
+│   └── main.py  ··············· Глобальные объекты
+├── alembic/  ·················· Миграции для базы. Папка появится автоматически.
+│   └── env.py  ················ Настройки. Нужно руками подключить секреты и модели.
+└── alembic.ini  ··············· Настройки миграций. Файл появится автоматически.
+</code></pre><h2 id="62627a20-3cd1-40a9-b589-1f0c9601427f" class="">Интерактивная документация </h2><p id="f660fa82-7b51-4579-8a31-c0ecc7465ff0" class="">FastAPI генерирует интерактивную документацию  к проекту:</p><ul id="217dad0d-f41b-43c6-9c66-22164c946ed1" class="bulleted-list"><li style="list-style-type:disc"> в формате Swagger — она доступна по адресу <em>http://127.0.0.1:8000/docs</em>;</li></ul><ul id="ed278341-2758-4a9f-8e2b-b13b6b684fd5" class="bulleted-list"><li style="list-style-type:disc">в формате ReDoc — она доступна по адресу <em>http://127.0.0.1:8000/redoc</em>. </li></ul><p id="2ccb7358-eb04-443d-b5e8-55969c26a0a2" class="">При необходимости, документацию можно отключить:</p><pre id="377f2672-8f80-49bd-ae43-41c40ca9d0e4" class="code language-python" tabindex="0"><code class="language-python">app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span>docs_url<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> redoc_url<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span></code></pre><p id="27e72e00-8325-4a2a-ba52-05388c768b3d" class="">Можно изменить адрес, по которому доступна документация:</p><pre id="dc3b062e-69cc-49dd-9967-372bb5d0ba25" class="code language-python" tabindex="0"><code class="language-python">app <span class="token operator">=</span> FastAPI<span class="token punctuation">(</span>docs_url<span class="token operator">=</span><span class="token string">'/swagger'</span><span class="token punctuation">)</span></code></pre><p id="4c9e883a-9873-4397-ab31-7250e657d024" class="">Теперь Swagger будет доступен по адресу <em>http://127.0.0.1:8000/swagger</em>.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ce9a0cdb-ecb6-4c35-8de2-e79d1b377e5e"><div style="font-size:1.5em"></div><div style="width:100%">Параметр&nbsp;<code>docs_url</code>&nbsp;или <code>redoc_url</code> должен начинаться со слеша.</div></figure><h2 id="d4449ac0-4f8c-47a4-b53e-5e9a14733dae" class="">Обработка параметров пути (path-параметров)</h2><p id="826c4520-89d7-4018-a364-18ccae92cb4d" class="">Path-параметр — это относительный адрес, часть URL, указанная после имени сайта. Например:</p><pre id="00db137d-3721-4564-82f7-ec18c954fafe" class="code language-plain" tabindex="0"><code class="Text language-plain">http://127.0.0.1:8000/Andrey   # Andrey - это path-параметр.
+http://shop.not/catalog/tv     # catalog/tv - это path-параметр.</code></pre><p id="7db9cf10-aa3e-42c4-867a-077f3bb0b497" class="">Для передачи параметра пути во view-функцию необходимо указать его в фигурных скобках декоратора и в параметрах view-функции:</p><pre id="325cdec3-5fe3-4276-baf8-6ccce47b393f" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>  <span class="token comment"># Указываем path-параметр name.</span>
+<span class="token comment"># Во view-функцию передаём параметр с тем же именем:</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'Hello'</span><span class="token punctuation">:</span> name<span class="token punctuation">}</span></code></pre><p id="2d7b91e8-acbb-40b1-81dc-cafa12ab5785" class="">Код лучше аннотировать, это даёт двойную выгоду:</p><ol type="1" id="658c2735-b3df-4401-b5c1-8f59656cadeb" class="numbered-list" start="1"><li>В Swagger будет доступна информация о типе аннотируемого параметра.</li></ol><ol type="1" id="75f2984d-8351-4300-a473-777e506c9e43" class="numbered-list" start="2"><li>В IDE будут работать подсказки.</li></ol><p id="20ea1bad-5575-46cb-92c9-aa1236ae10b9" class="">Таким образом, приведённый выше код лучше оформить так:</p><pre id="c3bb95ca-92f1-4466-aeb0-200da4b79391" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'Hello'</span><span class="token punctuation">:</span> name<span class="token punctuation">}</span></code></pre><h2 id="cbbc4452-3d2f-4a72-a9d4-9c45784aadcd" class="">Обработка параметров запроса (query-параметров)</h2><p id="7320a6ab-3ee0-4d65-a21c-1a4f6defd260" class="">В любом типе HTTP-запросов можно передать GET-параметры — их указывают в адресе запроса после символа <code>?</code>. GET-параметры иначе называют «параметры запроса» или «query-параметры».</p><p id="4b88411b-49ff-45f3-9866-cf00e39a8744" class="">Параметры запроса передаются в формате <code>ключ=значение</code> и отделяются друг от друга амперсандом <code>&amp;</code>. </p><pre id="d2d83f8e-a7b6-4442-b5ad-9424b13701de" class="code language-plain" tabindex="0"><code class="Text language-plain">http://127.0.0.1:8000/Ivan?surname=Petrov&amp;age=18</code></pre><p id="587e1bf2-7865-4b64-bed9-730fc4b70b4d" class="">В ссылке два параметра запроса: <code>surname</code> и <code>age</code>.</p><p id="3fbe54bb-eabf-4970-b720-6ee5a6d424e0" class="">Такие параметры напрямую передают в параметры view-функции:</p><pre id="09858346-dc91-4829-9a07-5f7fc1b1d39b" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><h2 id="d454320d-c2bc-4fb1-8e99-682f50b219e3" class="">Необязательные параметры</h2><p id="1e2310bf-1455-4e6a-a229-46907fadd3b5" class="">Необязательные параметры view-функции можно аннотировать типом <code>Optional</code> из стандартной библиотеки <code>typing</code>:</p><pre id="c7548f33-834e-42ac-89b4-eb2e2b188f51" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> Optional<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">None</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="4ad63dce-5f3b-4ec7-947b-457d0ce169be" class="">Есть и другой способ: необязательным параметрам можно присваивать значение по умолчанию.</p><pre id="6f79ee41-2a35-4cb0-bae3-b3d96ac719e9" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><h2 id="19632ded-65fb-4dc0-98bf-e58f832b0a34" class="">Булевы параметры</h2><p id="baeac7f1-f6c6-4355-99b5-1f7dae0b2f6f" class="">FastAPI гибко обрабатывает булевы параметры:</p><pre id="20bdbdda-ac48-4462-824b-3dd828632abd" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">False</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span></code></pre><p id="c85c5c96-6f58-484b-9cc6-70084b9438f5" class="">В запросе, в качестве значений для <code>is_staff</code> можно передавать не только <code>True</code> и <code>False</code>, но и некоторые другие:</p><ul id="5e7dc2aa-bdc5-4874-b8e4-99cd3d79e343" class="bulleted-list"><li style="list-style-type:disc">в значении <code>True</code> можно применять строки <code>'1', 'on', 't', 'true', 'y', 'yes'</code>;</li></ul><ul id="53bbdd19-073e-4320-86e1-5494fdec46ae" class="bulleted-list"><li style="list-style-type:disc">в значении <code>False</code> — <code>'0', 'off', 'f', 'false', 'n', 'no'</code>.</li></ul><p id="7352a0a4-92d9-4b3d-a1a1-c428e4e075cd" class="">Таким образом, функция успешно обработает запросы с такими, например, значениями GET-параметра <code>is_staff</code>:</p><pre id="5a390090-f397-4975-85a9-459b555a3d00" class="code language-plain" tabindex="0"><code class="Text language-plain">http://127.0.0.1:8000/Ivan?surname=Petrov&amp;is_staff=no
+http://127.0.0.1:8000/John?surname=Lennon&amp;is_staff=1
+http://127.0.0.1:8000/Paul?surname=McCartney&amp;is_staff=yes</code></pre><h2 id="827e711f-28bd-47c0-a0c3-8f2ce9bdfcaa" class="">Перечисления (Enum) в параметрах</h2><p id="fe328a86-e2d5-458c-82d2-8ed21129f322" class="">Перечисление (Enum) позволяет создать набор из пар «имя-значение». В Python есть стандартная библиотека, позволяющая использовать перечисления:</p><pre id="dd119a2f-db37-4d02-998f-a375bc875728" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> enum <span class="token keyword">import</span> Enum
+
+
+<span class="token keyword">class</span> <span class="token class-name">Fruit</span><span class="token punctuation">(</span>Enum<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># Синтаксис: имя = значение.</span>
+    APPLE <span class="token operator">=</span> <span class="token number">110</span>
+    PEAR <span class="token operator">=</span> <span class="token number">128</span>
+    PLUM <span class="token operator">=</span> <span class="token number">256</span>
+
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>Fruit<span class="token punctuation">.</span>APPLE<span class="token punctuation">)</span>        <span class="token comment"># Напечатает Fruit.APPLE.</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Fruit<span class="token punctuation">.</span>APPLE<span class="token punctuation">.</span>value<span class="token punctuation">)</span>  <span class="token comment"># Напечатает 110.</span></code></pre><p id="f08f34c0-9ca7-41d2-b5da-bab9d35d5338" class="">В FastAPI необходимо указывать тип данных для значений Enum. Для path- и query-параметров поддерживаются только два типа данных: строковые и целочисленные. Для этого используется множественное наследование:</p><pre id="00d6d313-deb9-4c4b-9129-a3b37da416e3" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> enum <span class="token keyword">import</span> Enum
+
+
+<span class="token keyword">class</span> <span class="token class-name">MyEnum</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">,</span> Enum<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="25f2ee21-b894-4de3-8d07-c340d2fa3633" class="">В Python 3.11 есть возможность использовать уже готовый класс:</p><pre id="619eab0b-428d-4769-be2b-f30e1965f45a" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> enum <span class="token keyword">import</span> StrEnum
+
+
+<span class="token keyword">class</span> <span class="token class-name">MyEnum</span><span class="token punctuation">(</span>StrEnum<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="ffa0f165-7e76-4b77-85d3-495465328767" class="">Для целочисленных перечислений используется <code>IntEnum</code>:</p><pre id="6efb6122-f970-4741-8615-2062ae609878" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> enum <span class="token keyword">import</span> IntEnum
+
+
+<span class="token keyword">class</span> <span class="token class-name">MyEnum</span><span class="token punctuation">(</span>IntEnum<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="d6e24654-725a-4564-9d06-2876062cbd5f" class="">Для применения перечислений в параметрах запросов достаточно указать Enum-класс в качестве аннотации типа для query- или path-параметра:</p><pre id="9842f7a9-0425-46f5-9d98-726c483feddb" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">from</span> enum <span class="token keyword">import</span> Enum
+
+
+<span class="token keyword">class</span> <span class="token class-name">EducationLevel</span><span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">,</span> Enum<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    SECONDARY <span class="token operator">=</span> <span class="token string">'Среднее'</span>
+    SPECIAL <span class="token operator">=</span> <span class="token string">'Специальное'</span>
+    HIGHER <span class="token operator">=</span> <span class="token string">'Высшее'</span>
+
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    education_level<span class="token punctuation">:</span> EducationLevel<span class="token punctuation">,</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">,</span> 
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="9c2cce3f-6bd3-49b1-828b-6924346419e8" class="">В этом коде класс <code>EducationLevel</code> определяет допустимые значения для path-параметра <code>education_level</code>:</p><pre id="6b4f9700-c07f-4a65-860f-7251cf5657bc" class="code language-plain" tabindex="0"><code class="Text language-plain">http://domain.not/Andrey&amp;education_level=Среднее&amp;surname=Petrov
+                                         -------
+
+# Такой запрос будет принят и обработан, ведь значение education_level
+# соответствует одному из значений в классе EducationLevel.</code></pre><p id="02c140a0-fbdd-4fda-b55a-e5a8125940ab" class="">Если же значение параметра <code>education_level</code> в запросе отличается от «разрешённых»…</p><pre id="5d072f80-6e0f-4ed3-8f6e-dc320fe11a65" class="code language-plain" tabindex="0"><code class="Text language-plain">domain.not/Andrey&amp;education_level=Ясли&amp;surname=Petrov
+                                  ----
+# Такой запрос будет отклонён: значение параметра education_level
+# не соответствует ни одному из значений в классе EducationLevel.</code></pre><p id="9f44c05a-b7c6-454b-ae12-586f649599a2" class="">…запрос будет отклонён, вернётся ошибка.</p><h2 id="a37772d4-aa6d-409b-87db-3b6c554c57f6" class="">Документация: порядок параметров функции</h2><p id="f790eef1-d790-4a68-b3b5-eb5a09115ff1" class="">Чтобы изменить порядок параметров функции в документации, используется специальный синтаксис параметров функции.</p><pre id="7bb42668-6009-47d2-987b-83b744dc30ce" class="code language-python" tabindex="0"><code class="language-python"><span class="token comment"># * Синтаксис со звёздочкой доступен с версии Python 3.0.</span>
+<span class="token comment"># / Слеш доступен, начиная с версии Python 3.8.</span>
+<span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>pos1<span class="token punctuation">,</span> pos2<span class="token punctuation">,</span> <span class="token operator">/</span><span class="token punctuation">,</span> pos_or_kwd<span class="token punctuation">,</span> <span class="token operator">*</span><span class="token punctuation">,</span> kwd1<span class="token punctuation">,</span> kwd2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+      <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>    <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>     <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+        <span class="token operator">|</span>                <span class="token operator">|</span>               <span class="token operator">|</span>
+        <span class="token operator">|</span>   Позиционные или именованные  <span class="token operator">|</span>
+        <span class="token operator">|</span>                                └ Именованные аргументы
+        └ Позиционные аргументы</code></pre><ul id="0a5d0af1-094f-44de-8461-45812d9110a9" class="bulleted-list"><li style="list-style-type:disc">Слеш <code>/</code> отделяет позиционные аргументы от аргументов, которые могут быть именованными или позиционными.</li></ul><ul id="eb862553-64ea-47ac-9005-45aaff000373" class="bulleted-list"><li style="list-style-type:disc">Звездочка <code>*</code> указывает, что после нее будут только именованные параметры.</li></ul><p id="8a812a22-4aea-4d04-b0a4-25898a0e6fff" class="block-color-default">Без этого синтаксиса будет невозможно расположить аргументы, например, в таком порядке:</p><pre id="cedf6a02-4f28-4627-871d-d7822f2d754b" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}/{surname}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> 
+    surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> 
+    age<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    education_level<span class="token punctuation">:</span> EducationLevel<span class="token punctuation">,</span> 
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'hello'</span><span class="token punctuation">:</span> <span class="token string">'hello'</span><span class="token punctuation">}</span></code></pre><p id="98222f7a-3d3d-4c59-8ab4-d772edffc471" class="block-color-default">При запуске приложения возникнет ошибка из-за неправильного положения аргумента <code>education_level: EducationLevel</code>: </p><pre id="641eb4a4-cd1d-426c-90e3-3b507b7494c7" class="code language-plain" tabindex="0"><code class="Text language-plain">SyntaxError: non-default argument follows default argument</code></pre><p id="0e004de7-d9a1-45ea-b226-9b8fcb333857" class="block-color-default">Если перед аргументами поставить звездочку <code>*</code> , то аргумент <code>education_level: EducationLevel</code> можно разместить на любой позиции: все аргументы будут восприниматься как именованные.</p><pre id="ef95ec2e-2f53-402a-a0a6-e9e348cbca18" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}/{surname}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    <span class="token operator">*</span><span class="token punctuation">,</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> 
+    surname<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> 
+    age<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>
+    education_level<span class="token punctuation">:</span> EducationLevel<span class="token punctuation">,</span> 
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> <span class="token boolean">False</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'hello'</span><span class="token punctuation">:</span> <span class="token string">'hello'</span><span class="token punctuation">}</span></code></pre><h2 id="613c5588-22b6-4012-b18f-b628fa13fbf8" class="">Расширенные возможности документации</h2><p id="9e8e977c-5e22-47d4-b50a-eafb6d667713" class="">FastAPI и Swagger дают возможность сделать документацию более информативной. Для этого используются специальные параметры декораторов view-функций. Значения этих параметров будут отображены в документации.</p><p id="b767ba75-febd-45fc-981f-9c7702b4a71b" class="">Для назначения тега маршруту используется параметр <code>tags</code>. Можно указать несколько тегов в списке.</p><pre id="8e14a79d-3f5f-4952-b7fc-92d079e2e71f" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/me'</span><span class="token punctuation">,</span> tags<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'special methods'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">hello_author</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="f1cb0822-a4e1-4df3-84a0-0dfd3fe66003" class="">Название маршрута указывается через параметр <code>summary</code>:</p><pre id="4e04dc69-d766-478f-93fb-a4475dbff542" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/me'</span><span class="token punctuation">,</span> tags<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'special methods'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> summary<span class="token operator">=</span><span class="token string">'Приветствие автора'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">hello_author</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="ac6e16d0-3109-49b0-9475-761ba59548e0" class="">Описание маршрута указывается через параметр <code>description</code>:</p><pre id="e52faf9f-06a5-41e0-b782-93ebc80b59b2" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token string">'/{name}'</span><span class="token punctuation">,</span>
+    tags<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'common methods'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    summary<span class="token operator">=</span><span class="token string">'Общее приветствие'</span><span class="token punctuation">,</span>
+    description<span class="token operator">=</span><span class="token string">'Приветствие человека по имени и фамилии; '</span>
+                <span class="token string">'опционально указывается возраст, образование и статус сотрудника'</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="7960fb74-37ab-4c06-8c56-290c6b5486e2" class="">Описание ответа указывается через параметр <code>response_description</code>:</p><pre id="0d86319f-a460-48b3-9027-91f99c55c067" class="code language-python" tabindex="0"><code class="language-python"><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token string">'/{name}'</span><span class="token punctuation">,</span>
+    tags<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'common methods'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    summary<span class="token operator">=</span><span class="token string">'Общее приветствие'</span><span class="token punctuation">,</span>
+    response_description<span class="token operator">=</span><span class="token string">'Полная строка приветствия'</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><figure id="9a7038e4-6144-4f6c-9e04-68981f01bb4e" class="image"><a href="./FastAPI_ основы _ Я.Шпора_files/Untitled.png"><img style="width:1430px" src="./FastAPI_ основы _ Я.Шпора_files/Untitled.png"></a></figure><p id="f0add894-573e-419e-8bd0-9d2eab8e5a82" class="">Валидация значений path-параметров проводится при помощи класса <code>Path</code>, валидация query-параметров — при помощи класса <code>Query</code>. Эти классы импортируются из модуля <code>fastapi</code>.</p><pre id="cd79e2d4-8fe5-40b2-82ca-0239e86b4e0f" class="code language-python" tabindex="0"><code class="language-python"><span class="token keyword">from</span> fastapi <span class="token keyword">import</span> FastAPI<span class="token punctuation">,</span> Path<span class="token punctuation">,</span> Query
+
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span><span class="token string">'/{name}'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+        <span class="token comment"># У параметров запроса name и surname значений по умолчанию нет,</span>
+        <span class="token comment"># поэтому в первый параметр ставим многоточие, Ellipsis.</span>
+        name<span class="token punctuation">:</span> <span class="token builtin">str</span> <span class="token operator">=</span> Path<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> min_length<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        surname<span class="token punctuation">:</span> <span class="token builtin">str</span> <span class="token operator">=</span> Query<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> min_length<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="01ad995d-d488-46e3-ad93-7b809813a245" class="">В примере выше указаны валидаторы длины строки: <code>min_length</code> указывает минимальный размер строки, <code>max_length</code> — максимальный размер.</p><p id="b22cc55b-b1b5-4dbf-9cc9-2f18af3d44b8" class="">Подробное описание валидации параметров есть в документации:</p><ul id="2f88a99e-ff9d-4c67-839f-4b5fa2ec531b" class="bulleted-list"><li style="list-style-type:disc"><a href="https://fastapi.tiangolo.com/tutorial/query-params-str-validations/">https://fastapi.tiangolo.com/tutorial/query-params-str-validations/</a></li></ul><ul id="06e2f348-5a59-4e3f-ac35-b2cc3a83adb3" class="bulleted-list"><li style="list-style-type:disc"><a href="https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations/">https://fastapi.tiangolo.com/tutorial/path-params-numeric-validations/</a></li></ul><p id="ecd5dfe9-31b7-477d-b46c-e6745793def1" class="">Для расширения документации параметрам функции можно дать название и описание, передав их в классы <code>Path</code> и <code>Query</code>.</p><pre id="508a5f7a-2a6d-43d1-ac08-635bdce7ca03" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+    name<span class="token punctuation">:</span> <span class="token builtin">str</span> <span class="token operator">=</span> Path<span class="token punctuation">(</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> min_length<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> max_length<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span>
+		title<span class="token operator">=</span><span class="token string">'Полное имя'</span><span class="token punctuation">,</span> description<span class="token operator">=</span><span class="token string">'Можно вводить в любом регистре'</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><h2 id="80a6fd68-96d4-4a17-8cfd-ba51f04213ba" class=""><strong>Использование псевдонимов (alias)</strong></h2><p id="439f83b2-6ee3-46da-960b-855cba075eca" class="">Ключ параметра запроса в URL не обязательно должен соответствовать параметру view-функции. Установить имя ключа в URL можно через параметр <code>alias</code>:</p><pre id="1e358f8c-235a-4f67-a69b-2a4aacf52d56" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> Query<span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">,</span> alias<span class="token operator">=</span><span class="token string">'is-staff'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="959ad128-a1a6-49cd-907c-b2f82f3058eb" class="">Теперь имя параметра <code>is_staff</code> в запросе надо указывать через дефис:</p><pre id="5db6db37-1940-4fac-b2a7-87e68c592c96" class="code language-plain" tabindex="0"><code class="Text language-plain"> http://127.0.0.1:8000/Ivan?surname=Petrov&amp;is-staff=true. </code></pre><h2 id="a4d01bd3-eba2-485d-9f91-6db06377b937" class="">Исключение параметров из документации</h2><p id="727dcd33-bebb-4b87-9a20-d77ec6190a35" class="">Параметры функции можно исключать из генерируемой документации. Делается это при помощи параметра <code>include_in_schema</code> со значением <code>False</code>:</p><pre id="a4936d08-0945-416f-ac1f-aa22696ef337" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+    is_staff<span class="token punctuation">:</span> <span class="token builtin">bool</span> <span class="token operator">=</span> Query<span class="token punctuation">(</span>
+		<span class="token boolean">False</span><span class="token punctuation">,</span> alias<span class="token operator">=</span><span class="token string">'is-staff'</span><span class="token punctuation">,</span> include_in_schema<span class="token operator">=</span><span class="token boolean">False</span>
+    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><h2 id="fb491e56-e577-43a5-978f-32e4a814089f" class="">Передача списка через query-параметры</h2><p id="ec29bc28-3cf1-42f7-8994-8ae6393b2d21" class="">В FastAPI есть возможность передавать список в одном параметре:</p><pre id="4e1e75ed-fae2-435e-b44e-3e5bbe9aab47" class="code language-python" tabindex="0"><code class="language-python"><span class="token decorator annotation punctuation">@app<span class="token punctuation">.</span>get</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">greetings</span><span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+    surname<span class="token punctuation">:</span> <span class="token builtin">list</span><span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">]</span> <span class="token operator">=</span> Query<span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>валидаторы<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre><p id="a17404ef-22ba-42f0-bdf3-fa420e261726" class="">При такой аннотации параметр <code>surname</code> может быть указан в GET-запросе несколько раз, а значением <code>surname</code> будет список.</p><pre id="e4312cf3-ced4-4355-96e0-9a299e3a2edd" class="code language-python" tabindex="0"><code class="language-python"><span class="token operator">/</span>Eduardo?surname<span class="token operator">=</span>Santos<span class="token operator">&amp;</span>surname<span class="token operator">=</span>Tavares<span class="token operator">&amp;</span>surname<span class="token operator">=</span>Melo<span class="token operator">&amp;</span>surname<span class="token operator">=</span>Silva<span class="token operator">&amp;</span>age<span class="token operator">=</span><span class="token number">98</span></code></pre><p id="cb00b5de-cfa4-4775-b50c-08cb149894d3" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span>
+<div id="footer">
+	<div id="saying" class="sans">
+		<div class="text">Различать, когда полагаться на шпаргалку, а когда на собственную память — вот знание мудрого.</div> 
+        <div class="src">Тест Эмпирик, древнеримский экспериментатор</div>
+	</div>
+</div>
+</body></html>
